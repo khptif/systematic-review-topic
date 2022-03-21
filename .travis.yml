@@ -1,0 +1,16 @@
+language: python
+
+env:
+  - NODE_VERSION="12.13.1"
+  
+services:
+  - docker
+
+
+
+jobs:
+  include:
+    - stage : Build
+      script:
+      - ./travisTest/scriptJava.sh
+
