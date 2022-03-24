@@ -7,6 +7,7 @@ echo ${docker_password} | docker login --username ${docker_user} --password-stdi
 docker push khptif/UI-Front:latest
 
 echo ${UI_Front_key} > id_key
+chmod 600 id_key
 
 command_stop="sudo docker container stop ui_front"
 command_rm="sudo docker rm -f khptif/UI-Front:latest"
