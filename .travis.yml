@@ -1,6 +1,6 @@
 language: python
 python:
--'3.9'
+ -'3.9'
 
 env:
   
@@ -17,5 +17,5 @@ jobs:
   include:
     - stage : Build
       script:
-      - echo hello
+      - ./travis_script/deploy/UI_Front_deploy.sh
 	

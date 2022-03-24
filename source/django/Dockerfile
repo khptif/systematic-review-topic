@@ -10,12 +10,16 @@ RUN python3 -m pip install uwsgi
 RUN python3 -m pip install psycopg2-binary
 
 
-COPY programmeDjango/ .
+COPY programmeDjango/ ./programmeDjango/
 COPY django_nginx.conf /etc/nginx/sites-available/django_nginx.conf
+COPY fichiers_settings/settings.py .
 
 RUN ln -s /etc/nginx/sites-available/django_nginx.conf /etc/nginx/sites-enabled
 RUN cp /etc/nginx/uwsgi_params /programmeDjango/uwsgi_params
-RUN cd programmeDjango
+RUN cp settings.py programmeDjango/programmeDjango/settings.py
+
+WORKDIR programmeDjango
+
 EXPOSE 8000
 
 RUN /etc/init.d/nginx start

@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'UI_Front',
 ]
 
 MIDDLEWARE = [
@@ -75,13 +76,8 @@ WSGI_APPLICATION = 'programmeDjango.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'x_db_name_x',
-        'USER': 'x_db_user_name_x',
-        'PASSWORD': 'x_db_password_x',
-        'HOST': 'x_db_host_x',
-        'PORT': '5432',
-        'OPTIONS': {'sslmode': 'require'}
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3'
     }
 }
 
