@@ -15,6 +15,6 @@ command_start="sudo docker container run --env-file=docker_environnment.env --na
 
 adresse=${machine_front_user}@${machine_front_ip}
 
-ssh -o StrictHostKeyChecking=no -i id_key $adresse $command_stop
-ssh -o StrictHostKeyChecking=no -i id_key $adresse $command_rm
-ssh -o StrictHostKeyChecking=no -i id_key $adresse $command_start
+ssh -o StrictHostKeyChecking=no -o PasswordAuthentication=no -i id_key $adresse $command_stop
+ssh -o StrictHostKeyChecking=no -o PasswordAuthentication=no -i id_key $adresse $command_rm
+ssh -o StrictHostKeyChecking=no -o PasswordAuthentication=no -i id_key $adresse $command_start
