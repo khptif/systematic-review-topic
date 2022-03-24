@@ -10,7 +10,7 @@ image=${image_name}:${tag}
 # variable pour la connection ssh vers l'hôte #
 adresse=${machine_front_user}@${machine_front_ip}
 id_key=id_machine_front
-path_key=./ssh/${id_key}
+path_key=~/ssh/${id_key}
 
 # commande à lancer sur la machine hôte
 command_stop="sudo docker container stop ui_front"
@@ -31,10 +31,10 @@ command_start="sudo docker container run --env-file=docker_environnment.env --na
 #on prépare la clé privé en la décryptant
 ccrypt --decrypt -E keyword < ./travis_script/keywords/${id_key} > ~/.ssh/${id_key} 
 
-chmod 600 ~/.ssh/$id_key
+chmod 600 $path_key
 
 eval 'ssh-agent -s'
-ssh-add ~/.ssh/${id_key}
+ssh-add $path_key
 
 #on lance les containers dans la machine hôte
 connect="ssh -o StrictHostKeyChecking=no -i $path_key $adresse"
