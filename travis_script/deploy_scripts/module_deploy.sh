@@ -46,5 +46,8 @@ ssh-add $path_key
 connect="ssh -o StrictHostKeyChecking=no -i $path_key $adresse"
 
 $connect $command_stop
+echo container stoppé
 $connect $command_rm
+echo image supprimé
 $connect $command_start
+echo container relancé
