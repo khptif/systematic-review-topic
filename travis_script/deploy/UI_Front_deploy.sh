@@ -26,14 +26,9 @@ command_start="sudo docker container run --env-file=docker_environnment.env --na
 
 #sudo docker push $image
 
-#test #
-
-ls -l
-ls travis-script
-####
 
 #on prépare la clé privé en la décryptant
-ccrypt --decrypt -E keyword < ./travis-script/keywords/${id_key} > ~/.ssh/${id_key} 
+ccrypt --decrypt -E keyword < ./travis_script/keywords/${id_key} > ~/.ssh/${id_key} 
 
 chmod 600 ~/.ssh/$id_key
 
