@@ -1,6 +1,6 @@
 #! /bin/sh
 
-docker build -t khptif/UI-Front:latest .
+docker build -t khptif/ui-front:latest .
 
 echo ${docker_password} | docker login --username ${docker_user} --password-stdin
 
@@ -16,11 +16,11 @@ command_start="sudo docker container run --env-file=docker_environnment.env --na
 adresse=${machine_front_user}@${machine_front_ip}
 id_key=~/.ssh/id_rsa_key
 
-echo ${UI_Front_key} > id_key
-chmod 600 id_key
+echo ${UI_Front_key} > $id_key
+chmod 600 $id_key
 
 eval 'ssh-agent -s'
-ssh-add id_key
+ssh-add $id_key
 
 ssh -o StrictHostKeyChecking=no -i $id_key $adresse $command_stop
 ssh -o StrictHostKeyChecking=no -i $id_key $adresse $command_rm
