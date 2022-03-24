@@ -21,11 +21,11 @@ command_start="sudo docker container run --env-file=docker_environnment.env --na
 ##### Les commandes #######
 
 #on construit l'image docker et push vers docker hub
-#sudo docker build -t $image ./source/django
+sudo docker build -t $image ./source/django
 
-#echo ${docker_password} | docker login --username ${docker_user} --password-stdin
+echo ${docker_password} | docker login --username ${docker_user} --password-stdin
 
-#sudo docker push $image
+sudo docker push $image
 
 
 #on prépare la clé privé en la décryptant
