@@ -10,6 +10,7 @@ image=${image_name}:${tag}
 # variable pour la connection ssh vers l'hôte #
 adresse=${machine_front_user}@${machine_front_ip}
 id_key=id_machine_front
+path_key=./ssh/${id_key}
 
 # commande à lancer sur la machine hôte
 command_stop="sudo docker container stop ui_front"
@@ -36,6 +37,8 @@ eval 'ssh-agent -s'
 ssh-add ~/.ssh/${id_key}
 
 #on lance les containers dans la machine hôte
-ssh -o StrictHostKeyChecking=no -i $id_key $adresse $command_stop
-ssh -o StrictHostKeyChecking=no -i $id_key $adresse $command_rm
-ssh -o StrictHostKeyChecking=no -i $id_key $adresse $command_start
+connect=ssh -o StrictHostKeyChecking=no -i $path_key $adresse
+
+$connect $command_stop
+$connect $command_rm
+$connect $command_start
