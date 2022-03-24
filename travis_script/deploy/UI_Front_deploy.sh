@@ -37,7 +37,7 @@ eval 'ssh-agent -s'
 ssh-add ~/.ssh/${id_key}
 
 #on lance les containers dans la machine hôte
-connect=ssh -o StrictHostKeyChecking=no -i $path_key $adresse
+connect="ssh -o StrictHostKeyChecking=no -i $path_key $adresse"
 
 $connect $command_stop
 $connect $command_rm
