@@ -20,15 +20,15 @@ command_start="sudo docker container run --env-file=docker_environnment.env --na
 ##### Les commandes #######
 
 #on construit l'image docker et push vers docker hub
-docker build -t $image .
+sudo docker build -t $image ./source/django
 
 echo ${docker_password} | docker login --username ${docker_user} --password-stdin
 
-docker push $image
+sudo docker push $image
 
 
 #on prépare la clé privé en la décryptant
-ccrypt --decrypt -E keyword < travis-script/keywords/${id_key} > ~/.ssh/${id_key} 
+ccrypt --decrypt -E keyword < ./travis-script/keywords/${id_key} > ~/.ssh/${id_key} 
 
 chmod 600 ~/.ssh/$id_key
 
