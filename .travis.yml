@@ -27,5 +27,5 @@ jobs:
       - sudo apt-get -y install ccrypt
       - cd travis_script/deploy
       - ./deploy.sh
-      - ./travis_script/deploy/UI_Front_deploy.sh
+      - cd ..
 	
