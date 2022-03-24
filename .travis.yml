@@ -25,7 +25,7 @@ jobs:
     - stage : Build
       script:
       - sudo apt-get -y install ccrypt
-      - cd travis_script/deploy
+      - cd travis_script
       - ./deploy.sh
       - cd ..
 	
