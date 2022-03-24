@@ -19,8 +19,9 @@ path_key=~/.ssh/${id_key}
 # commande à lancer sur la machine hôte
 container_name=$container_name
 port=$port
-command_stop="sudo docker container stop $container_name"
-command_rm="sudo docker rm -f ${image}"
+command_stop="sudo docker container stop ${container_name}"
+command_rm_container="sudo docker container rm -f ${container_name}"
+command_rm_image="sudo docker image rm -f ${image}"
 command_start="sudo docker container run --env-file=docker_environnment.env --name=$container_name -d -p ${port}:8000 ${image}"
 
 
@@ -47,7 +48,10 @@ connect="ssh -o StrictHostKeyChecking=no -i $path_key $adresse"
 
 $connect $command_stop
 echo container stoppé
-$connect $command_rm
+$connect $command_rm_container
+echo container supprimé
+$connect $command_rm_image
 echo image supprimé
 $connect $command_start
-echo container relancé
+echo container lancé
+
