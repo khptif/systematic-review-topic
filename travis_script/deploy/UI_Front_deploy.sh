@@ -10,7 +10,7 @@ image=${image_name}:${tag}
 # variable pour la connection ssh vers l'hôte #
 adresse=${machine_front_user}@${machine_front_ip}
 id_key=id_machine_front
-path_key=~/ssh/${id_key}
+path_key=~/.ssh/${id_key}
 
 # commande à lancer sur la machine hôte
 command_stop="sudo docker container stop ui_front"
