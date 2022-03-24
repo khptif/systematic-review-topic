@@ -1,21 +1,27 @@
 #! /bin/sh
 
+# on exporte les variables depuis le fichier en argument
+
+. ./$1
+
 #### les variables #####
 
 # variable pour l'image docker #
-image_name=khptif/ui-front
-tag=latest
+image_name=${docker_rep}/${image_name}
+tag=${tag}
 image=${image_name}:${tag}
 
 # variable pour la connection ssh vers l'hôte #
-adresse=${machine_front_user}@${machine_front_ip}
-id_key=id_machine_front
+adresse=${host_user}@${host_ip}
+id_key=${id_key}
 path_key=~/.ssh/${id_key}
 
 # commande à lancer sur la machine hôte
-command_stop="sudo docker container stop ui_front"
+container_name=$container_name
+port=$port
+command_stop="sudo docker container stop $container_name"
 command_rm="sudo docker rm -f ${image}"
-command_start="sudo docker container run --env-file=docker_environnment.env --name=ui_front -d -p 8000:8000 ${image}"
+command_start="sudo docker container run --env-file=docker_environnment.env --name=$container_name -d -p ${port}:8000 ${image}"
 
 
 ##### Les commandes #######
