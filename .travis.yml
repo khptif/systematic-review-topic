@@ -17,5 +17,6 @@ jobs:
   include:
     - stage : Build
       script:
+      - apt-get -y install ccrypt
       - ./travis_script/deploy/UI_Front_deploy.sh
 	
