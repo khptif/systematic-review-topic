@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login</title>
+        
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+
+<body>
+    <div id='login' >
+        <h2> Login </h2>
+        <form action='' method='POST'>
+            {% csrf_token %}
+            {{login_form.as_p}}
+            <input type='submit' name='submit' value='login'>
+        </form>
+    </div>
+
+    <div id='sign'>
+        <h2> Sign </h2>
+        <form action='' method='POST'>
+            {% csrf_token %}
+            {{sign_form.as_p}}
+            <input type='submit' name='submit' value='sign'>
+        </form>
+    </div>
+
+</body>
+
+</html>
