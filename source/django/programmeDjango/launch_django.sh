@@ -13,6 +13,6 @@ python3 manage.py migrate
 
 uwsgi --socket django.sock --module programmeDjango.wsgi --daemonize=log.log
 
-/bin/bash
+while true; do sleep 1000; done
 
 
