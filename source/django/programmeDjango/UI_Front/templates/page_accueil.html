@@ -1,14 +1,30 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Page accueil</title>
-        
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-    </head>
+{% extends 'gabarit_page.html' %}
+{%block main%}
+<div class='d-flex justify-content-end'>
+    <a href="/user"> <button class='button' type=button> user </button> </a>
+    <a href="/logout"> <button class='button' type=button> Logout </button> </a> 
+</div>
 
-<body>
-    <h1> Hello WORLD !!!!</h1>
-    <a href="/logout"> <button type=button> Logout </button> </a> 
-</body>
+<div class='row'>
+    <div class='col-6'>
+        <h3> New Research </h3>
+        <div class='bloc'>
+        </div>
+    </div>
+    <div class='col-6'>
+        <h3> Historical Research </h3>
+        <div class='bloc'>
+        </div>
+    </div>
+</div>
 
-</html>
+<div class='row'>
+    <div class='col-12'>
+        <h3> Historical Research Listing </h3>
+        <div class='bloc'>
+        </div>
+    </div>
+</div>
+
+
+{% endblock%}

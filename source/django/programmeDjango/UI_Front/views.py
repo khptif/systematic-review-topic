@@ -53,4 +53,10 @@ def page_logout(request):
     logout(request)
     return redirect('/login')
 
+@login_required(login_url='/login')
+def page_utilisateur(request):
+    variables = dict()
+    variables['user'] = request.user
+    return render(request,'page_utilisateur.html',variables)
+
 # Create your views here.

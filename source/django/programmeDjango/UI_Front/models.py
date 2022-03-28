@@ -58,3 +58,4 @@ class CustomUser(AbstractUser):
         return self.email
      
     pass
+
