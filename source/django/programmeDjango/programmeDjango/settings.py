@@ -126,4 +126,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL='UI_Front.CustomUser'
 
-LOGIN_URL='/admin/login/'
