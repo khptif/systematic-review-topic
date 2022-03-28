@@ -1,28 +1,22 @@
-FROM nginx:1.20.2
+FROM ubuntu:20.04
 
 RUN apt-get -y update
-RUN apt-get -y install python3
+RUN apt-get -y install python3.9
 RUN apt-get -y install python3-pip
 RUN apt-get -y install python3-psycopg2
 
-RUN python3 -m pip install django
-RUN python3 -m pip install uwsgi
-RUN python3 -m pip install psycopg2-binary
-
-
 COPY programmeDjango/ ./programmeDjango/
+
+RUN python3 -m pip install -r programmeDjango/requirements.txt
+
 COPY django_nginx.conf /etc/nginx/sites-available/django_nginx.conf
 COPY fichiers_settings/settings.py .
 
-RUN ln -s /etc/nginx/sites-available/django_nginx.conf /etc/nginx/sites-enabled
-RUN cp /etc/nginx/uwsgi_params /programmeDjango/uwsgi_params
 RUN cp settings.py programmeDjango/programmeDjango/settings.py
 
 WORKDIR programmeDjango
 
 EXPOSE 8000
-
-RUN /etc/init.d/nginx start
 
 CMD ./launch_django.sh ${DB_NAME} ${DB_USER} ${DB_PASSWORD} ${DB_HOST} 
 

@@ -16,3 +16,6 @@ for i in ${!module[@]}; do
  echo ${module[$i]}==${version[$i]} >> $file
  
 done
+
+# on fait une copie de requirements.txt pour le dockerfile
+cp requirements.txt source/django/programmeDjango/requirements.txt

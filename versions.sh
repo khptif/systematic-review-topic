@@ -1,6 +1,6 @@
 #! /bin/sh
 
-export python=3.10
+export python=3.9
 export PostgreSQL=14.2
 export Docker=20.10.14
 
