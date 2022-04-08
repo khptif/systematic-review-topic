@@ -1,3 +1,4 @@
+from urllib import request
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
@@ -58,4 +59,5 @@ class CustomUser(AbstractUser):
         return self.email
      
     pass
+
 

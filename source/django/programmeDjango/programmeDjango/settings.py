@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'UI_Front',
     'oauth2_provider',
+    'DataBase',
 ]
 
 MIDDLEWARE = [
