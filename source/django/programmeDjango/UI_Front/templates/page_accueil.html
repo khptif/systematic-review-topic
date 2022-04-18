@@ -69,7 +69,7 @@
             {% for research in research_list%}
                 <ul>
                     {% autoescape off %}
-                    <li> {{research | historical}} <a href="http://{{host}}/select?research_id={{research | get_first_param}}" > link </a></li> 
+                    <li> {{research | historical}} <a href="select?research_id={{research | get_first_param}}" > link </a></li> 
                     {% endautoescape %}
                 </ul>
             {% endfor %}
