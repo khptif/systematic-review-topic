@@ -1,10 +1,10 @@
 
-from audioop import reverse
 from django import template
 from django.conf import settings
 
 import html
 import random
+
 
 from DataBase.models import *
 
@@ -151,18 +151,20 @@ def article_display(article_list):
     """ We display information about article"""
     return_html = """"""
     template = """
-                <p 
+                <div 
                     id='{article_id}' 
                     style=
                         "position:absolute; 
                         left:0px;
                         top:0px; 
-                        visibility:hidden;"
+                        visibility:hidden;
+                        margin:10px;
+                        "
                 > 
                     <b>Title</b><br> {title} <br>
                     <b>Authors</b><br> {authors}<br>
                     <b>Abstract</b><br> {abstract}
-                </p>
+                </div>
                     """
     for article in article_list:
         title = html.escape(article.title)
@@ -175,3 +177,14 @@ def article_display(article_list):
         html_code = template.format(article_id=article_id,title=title,authors=authors, abstract=abstract)
         return_html += html_code
     return return_html
+
+@register.filter
+def authors_display(row):
+    """display author in page_table_choice.html"""
+    article = row.article
+    authors = Author.objects.filter(article_author__article =article)
+    html_code = ""
+    for author in authors:
+        html_code += html.escape(author.last_name) + " " + html.escape(author.first_name) + " <br>"
+    return html_code
+    

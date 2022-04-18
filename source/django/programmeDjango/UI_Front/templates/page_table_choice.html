@@ -1,0 +1,42 @@
+{%extends 'gabarit_page.html'%}
+{% load filtre_perso%}
+{% load static %}
+
+{% block main%}
+
+<form action="" method='POST'>
+    {%csrf_token%}
+    <input type='submit' name='submit' value='finish'>
+    
+    <br>
+    {% for row in row_list%}
+        
+        
+            <div class="row" style="height:200px;border:1px solid black;width=100%;">
+                <div style="border-right:1px black solid; width:100px;height:100%;">
+                    <input type='checkbox' id="{{row.id}}" name='check_row' value="{{row.id}}" style="width:90%;height:90%; margin:auto;">
+                </div>
+                <div style="overflow:scroll;border-right:1px black solid; width:220px;height:100%;">
+                    <div style="margin:auto;" >{{row.article.title}} </div>
+                </div>
+                <div style="overflow:scroll;border-right:1px black solid; width:220px;height:100%;">
+                    {% autoescape off%}
+                    {{row | authors_display}}
+                    {% endautoescape%}
+                </div>
+                <div style="overflow:scroll;border-right:1px black solid; width:620px;height:100%;">
+                    {{row.article.abstract}}
+                </div>
+                <div style="margin:auto; margin-top:100px; width:40px;height:100%;">
+                    {% if not row.article.url_file == ""%}
+                    <a href="{{row.article.url_file}}" target="_blank" > Link </a>
+                    {%endif%}
+                </div>
+
+            </div>
+        
+        <br>
+    {%endfor%}
+</form>
+
+{%endblock%}

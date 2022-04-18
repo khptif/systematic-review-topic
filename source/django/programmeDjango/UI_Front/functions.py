@@ -212,6 +212,7 @@ def neighbour_article(article,research,number_neighbor=5):
         return (center[0] - pos_x)**2 + (center[1] - pos_y)**2
 
     nearest_cluster = []
+    
     while True:
         if len(nearest_cluster)>=number_neighbor or distant > 1000:
             break
@@ -237,7 +238,7 @@ def neighbour_article(article,research,number_neighbor=5):
                         break
 
         distant += 100
-
+   
     # we recuperate all article from cluster list
     for cluster in nearest_cluster:
         neighbour_articles.append(cluster.article)
@@ -301,9 +302,9 @@ def get_Articles_Filtered(research,filters):
             for author_list in filter['author']:
                 
                 article_author_list = []
-                #we retrieve all article_author objects for all author in the research name
+                #we retrieve all article_author objects for all author in the research 
                 for author in author_list:
-                    a = Article_Author.objects.filter(author=author)
+                    a = Article_Author.objects.filter(author=author,article__research_article__research = research)
                     for article_author in a:
                         article_author_list.append(article_author)
 
@@ -333,14 +334,17 @@ def get_Articles_Filtered(research,filters):
         if 'neighbour' in filter:
             for doi in filter['neighbour']:
                 #we retrieve the article. If doesn't exist, it give us an empty set and we continue to next block filter
-                article_center = Article.objects.filter(doi=doi)
+                string_reg = r".*" + doi + r".*"
+                article_center = Article.objects.filter(doi__iregex=string_reg, research=research)
                 if not article_center.exists():
                     empty = True
                     break
                 # we get nearest neighbour. By default, the fonction neighbour_article get 5 article
+                
                 article_center = article_center[0]
                 neighbour_articles_list = neighbour_article(article=article_center,research=research)
-                # if first, the inial list is composed from the nearest neighbour of the first article
+                
+                # if first, the initial list is composed from the nearest neighbour of the first article
                 if first:
                     for article in neighbour_articles_list:
                         article_list.append(article)
@@ -368,7 +372,7 @@ def get_Articles_Filtered(research,filters):
                 #if first, the initial set of article is all article in DataBase who have at least 1 match in his abstract firstly
                 # and in his full_text secondly. the match is insensitive case
                 if first:
-                    article_list = Article.objects.filter(Q(abstract__icontains=keyword) | Q(full_text__icontains=keyword))
+                    article_list = Article.objects.filter(research_article__research=research).filter(Q(abstract__icontains=keyword) | Q(full_text__icontains=keyword))
                     first = False
                     continue
                 

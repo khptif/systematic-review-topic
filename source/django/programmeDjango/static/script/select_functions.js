@@ -13,6 +13,7 @@ function escapeHtml(unsafe)
 // show the article when click on cluster
 function article_show(article_id)
 {
+    document.getElementById("article_details").style.visibility = 'visible';
     // hide the previous article
     if(id_article_shown != '0')
     {

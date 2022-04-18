@@ -5,7 +5,10 @@ import datetime
 # we create the articles and their author in the database
 # one row is (Title, PMCID, Authors, Abstract, Fulltext, URL, Year)
 title = True
+number = 0
 for article in articles:
+    print("\r"+str(number), end='')
+    number += 1
     # the first row are titles
     if title:
         title=False
@@ -19,15 +22,18 @@ for article in articles:
     url = article[7]
     year = int(re.findall("[0-9]{4}",article[9])[0])
 
-    article_object = Article.objects.create(title=title,pmcid=pmcid,abstract=abstract,full_text=fulltext,url_file=url,publication=datetime.date(year,1,1),doi=doi)
-
+    try:
+        article_object = Article.objects.create(title=title,pmcid=pmcid,abstract=abstract,full_text=fulltext,url_file=url,publication=datetime.date(year,1,1),doi=doi)
+    except:
+        pass
+    
     #if there are no authors
     if not re.findall("[a-zA-Z\-]+",article[4]):
         continue
     authors = article[4].split(',')
     
     for author in authors:
-        print(author)
+        
         names = re.findall("[a-zA-Z\-]+",author)
         if not names:
             continue

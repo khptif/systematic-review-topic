@@ -40,8 +40,8 @@
         </div>
     </div>
 </div>
-<div id="Filters_Block" class="row" style="height:400px;background-color:red;margin:30px;">
-    <div class="col-5" style="height:300px;background-color:green;margin:10px;">
+<div id="Filters_Block" class="row" style="height:400px;margin:30px;">
+    <div class="col-5" style="height:300px;background-color:rgba(0,255,0,0.6);margin:10px;">
         <h4> Author </h4>
         <label for='last_name'> last_name :</label>
         <input id='last_name' type='text' name='last_name' value=''>
@@ -61,7 +61,7 @@
         <button type='button' onclick="submit_neighbour()">submit</button>
 
     </div>
-    <div id='filters' class="col-6" style="height:300px;background-color:blue;margin:10px;padding:10px; overflow:auto;">
+    <div id='filters' class="col-6" style="height:300px;background-color:rgba(0,0,255,0.6);margin:10px;padding:10px; overflow:auto;">
         <h4> Filters </h4>
         <div id="add_filter">
             <button  type='button' style="margin:auto;" onclick="add_filter()"> + </button>
@@ -76,7 +76,7 @@
         <input type="submit" name="submit" value="generate">
     </form>
 
-<div id="article_details" style="position:absolute; background:red;width:14%;height:800px;right:10px;top:50px; overflow:auto; overflow-x:hidden;">
+<div id="article_details" style="position:absolute;width:14%;height:800px;right:10px;top:100px; overflow:auto; overflow-x:hidden; border: 2px black solid;visibility:hidden;">
     {%autoescape off%}
         {{article_list | article_display }}
     {%endautoescape%}

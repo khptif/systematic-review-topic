@@ -210,4 +210,20 @@ def page_select(request):
 
     return render(request, 'page_select.html', variables)
 
+
+@login_required(login_url='/login')
+def page_table_choice(request):
+    variables = dict()
+    #we check if the GET parameter is there and if the id match with one of the existant research
+    if not 'research_id' in request.GET:
+        return redirect("/accueil")
+    elif not Research.objects.filter(id=request.GET.get('research_id')).exists():
+        return redirect('/accueil')
+         
+
+    user = request.user
+    research = Research.objects.get(id=request.GET.get('research_id'))
+    variables['row_list'] = TableChoice.objects.filter(user=user,research=research,to_display=True)
+    return render(request,"page_table_choice.html",variables)
+
 # Create your views here.
