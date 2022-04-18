@@ -11,13 +11,14 @@ class Author(models.Model):
 
 class Article(models.Model):
     title = models.CharField(max_length=256,default='')
+    doi = models.CharField(max_length=256, default='')
     author = models.ManyToManyField(Author, through='Article_Author')
     abstract = models.CharField(max_length=4096)
     full_text = models.TextField()
     publication = models.DateField()
     url_file = models.URLField(null=True)
     is_file_get = models.BooleanField(default=False)
-    pmcid = models.IntegerField(null=True)
+    pmcid = models.CharField(max_length=256, null=True)
 
 class Article_Author(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
@@ -58,5 +59,12 @@ class Cluster(models.Model):
     pos_x = models.IntegerField()
     pos_y = models.IntegerField()
     article = models.ForeignKey(Article,on_delete=models.CASCADE)
+
+class TableChoice(models.Model):
+    user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
+    research = models.ForeignKey(Research,on_delete=models.CASCADE)
+    article = models.ForeignKey(Article,on_delete=models.CASCADE)
+    to_display = models.BooleanField(default=True)
+
 
 # Create your models here.

@@ -8,75 +8,7 @@ from UI_Front.forms import *
 from UI_Front.models import *
 from DataBase.models import *
 
-def word_list(string_to_parse):
-    """ From a search string, extract all keywords and return them"""
-   
-    lower_string = string_to_parse.lower()
-    # we recuperate word in double quotes
-    quotes_word = re.findall("\"[a-z0-9\-\s]+\"", lower_string)
-    # we delete the multiple words from the string search
-    for qw in quotes_word:
-        lower_string = lower_string.replace(qw,"")
-
-    # extract single words
-    single_word = re.findall("([a-z0-9\-]+)",lower_string)
-    return_list = []
-    #build the return list of keywords
-    for word in single_word:
-        return_list.append(word)
-    for word in quotes_word:
-        return_list.append(word)
-
-    return return_list
-    
-
-def sort_historical(research_list,sort_type):
-    """ take a dictionnary key: id of research, value: list of Keywords objects. Return a list sorted 
-    in this format: [(id research,[string keywords])]"""
-
-    
-    # for pertinance, we check the number of keywords by research found
-    if sort_type == 'pertinence':
-        # we will build a list [(id_research,number_keyword)] and sort on number_keyword
-        list_to_sort = []
-        for i,k in research_list.items():
-            list_to_sort.append((i,len(k)))
-        def sort_key(elem):
-            return elem[1]
-        list_to_sort.sort(key=sort_key,reverse=True)
-
-
-    # from + article to - article
-    elif sort_type == 'article+' or sort_type == 'article-':
-        # for each research, we count the number of article and build the list [(id,number_article)]
-        list_to_sort = []
-        for i,_ in research_list.items():
-            research_object = Research.objects.get(id=i)
-            number = len(Research_Article.objects.filter(research=research_object))
-            list_to_sort.append((i,number))
-
-        def sort_key(elem):
-            return elem[1]
-        
-        if sort_type== 'article+':
-            list_to_sort.sort(key=sort_key,reverse=True)
-        else:
-            list_to_sort.sort(key=sort_key)
-
-        pass
-    
-    return_list = []
-    # we build return list
-    for id, _ in list_to_sort:
-        keywords = []
-        key_list = research_list[id]
-        for k in key_list:
-            keywords.append(k.word)
-        keywords.sort()
-        return_list.append((id,keywords))
-
-    return return_list
-
+from .functions import *
 
 @login_required(login_url='/login')
 def page_accueil(request):
@@ -141,6 +73,10 @@ def page_accueil(request):
             # keywords
             for w in request.session['keywords']:
                 Keyword.objects.create(research=research,word=w)
+
+            #for test the UI_Front
+            mock_research(research)
+
 
         #if user search historical research
         if submit == 'historical':
@@ -215,9 +151,43 @@ def page_utilisateur(request):
     variables['user'] = request.user
     return render(request,'page_utilisateur.html',variables)
 
+
+
 @login_required(login_url='/login')
 def page_select(request):
     variables = dict()
+    # when we receive all data for filters
+    if request.method == 'POST':
+        submit = request.POST['submit'] 
+        if submit == 'generate':
+            research_id = int(request.POST.get("research_id"))
+            research = Research.objects.get(id=research_id)
+            # we transform the POST data
+            blocks_filters = filters_manager(request.POST)
+            # we get a list of id article who match all the filters
+            id_article_list = get_Articles_Filtered(research=research,filters=blocks_filters)
+            # we save this list in session user
+            request.session['id_article_list'] = id_article_list
+            request.session['id_research'] = research_id
+            variables['number_article'] = len(id_article_list)
+            variables['AreYouSure'] = True
+            return render(request,'page_select.html',variables)
+        
+        elif submit == 'continue':
+            user = request.user
+            research_id = request.session['id_research']
+            research = Research.objects.get(id=research_id)
+            update_new_TableChoice(user=user,research=research,article_id_list =request.session['id_article_list'])
+            update_neighbour_TableChoice(user=user,research=research)
+            
+            return redirect("/table_choice?research_id="+str(research_id))
+
+        elif submit == 'cancel':
+            request.session['id_article_list'] = []
+            pass
+
+        
+
     # we check if we have the id of the research and this id is available
     if not 'research_id' in request.GET:
         return redirect('/accueil')
@@ -229,10 +199,15 @@ def page_select(request):
     # we give all the variable
     # list of cluster
     research = Research.objects.get(id=id)
-    cluster_list = Cluster.objects.filter(research=research)
-    topic_list = []
-    research_article = Research_Article.objects.filter(research=research)
-        
+    variables['cluster_list'] = Cluster.objects.filter(research=research)
+    
+    #list of article
+    variables['article_list'] = Article.objects.filter(research_article__research=research)
+
+    #id of the research
+    variables['research_id'] = id
+    
+
     return render(request, 'page_select.html', variables)
 
 # Create your views here.

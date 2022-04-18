@@ -22,7 +22,7 @@ port=$port
 command_stop="sudo docker container stop ${container_name}"
 command_rm_container="sudo docker container rm -f ${container_name}"
 command_rm_image="sudo docker image rm -f ${image}"
-command_start="sudo docker container run --env-file=docker_environnment.env --name=$container_name -d -p ${port}:8000 ${image}"
+command_start="sudo docker container run --mount source=docker_volume,target=/programmeDjango/docker_volume --name=$container_name -d -p ${port}:443 ${image}"
 
 
 ##### Les commandes #######

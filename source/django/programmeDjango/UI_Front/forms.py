@@ -111,6 +111,9 @@ def errorParsingResearch(string_to_parse):
     # now, it must exist (number_keyword -1) characters from [ ',' ';' ',(' '),' ';(' ');']
     # we extract the cases with parenthesis
     parenthesis = re.findall("[,;]{1}\(",s)
+    s = s.replace(",(","")
+    s = s.replace(";(","")
+    
     p = re.findall("\)[,;]{1}",s)
     parenthesis.extend(p)
     # we delete parenthesis in string with their [',' ';'].

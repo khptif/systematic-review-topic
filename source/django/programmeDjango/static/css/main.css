@@ -7,3 +7,4 @@ button.button {background-color: aquamarine; margin:10px;}
 div.first_block {position: fixed; left:0px; top:0px; width : 100%; height : 100%; background-color: rgba(68, 67, 67, 0.486);}
 
 div.first_block div {position: absolute; border: black 2px solid; padding: 50px; left: 25%; right: 25%; top: 25%; bottom: 25%; background-color: white;}
+

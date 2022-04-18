@@ -1,60 +1,42 @@
-from UI_Front.models import *
-from UI_Front.mock_data.data import article
-from datetime import date
-
-# add some mock data in Database for testing UI_Front fonctions
-
-# create test user
-try:
-    test_user = CustomUser.objects.create(email="test@user.com",password="1234")
-    print("user created")
-except:
-    test_user = CustomUser.objects.get(email="test@user.com")
-    pass
-
-# create test_request
-test_request = Request.objects.create(type='research',user=test_user)
-print("request created")
-# create test_research
-test_research = []
-test_research.append( Research.objects.create(request=test_request,search='vih, africa',year_begin = date(1995,1,1),year_end = date(1999,1,1)))
-test_research.append( Research.objects.create(request=test_request,search='vih, usa, "new york"',year_begin = date(1995,1,1),year_end = date(1999,1,1)))
-
-print("research created")
-# keywords of the research
-words = []
-words.append(['vih','africa'])
-words.append(['vih', 'usa', '"new york"'])
-
-for w in words[0]:
-    Keyword.objects.create(word=w,research=test_research[0])
-for w in words[1]:
-    Keyword.objects.create(word=w,research=test_research[1])
-print("keywords created")
-# the articles
-
-for _,art in article.items():
-    # create the article
-    article_object = Article.objects.create(title = art['title'], 
-                            abstract = art['abstract'],
-                            full_text = art['full_text'],
-                            url_file=art['URL'],
-                            publication=art['date'],
-                            pmcid = art['pmcid'])
-
-    # create the authors 
-    authors = art['authors']
-    for last_name,first_name in authors:
-        a = Author.objects.create(last_name=last_name,first_name=first_name)
-        # link author to the article
-        Article_Author(article=article_object,author=a)
+from DataBase.models import Article , Author, Article_Author
+from DataBase.mock_data.data import articles
+import re
+import datetime
+# we create the articles and their author in the database
+# one row is (Title, PMCID, Authors, Abstract, Fulltext, URL, Year)
+title = True
+for article in articles:
+    # the first row are titles
+    if title:
+        title=False
+        continue
+    title = article[0]
     
-    #create the cluster data for the article
-    Cluster.objects.create(research=test_research[0],
-                            article=article_object,
-                            topic=art['cluster'][0],
-                            pos_x = art['cluster'][1],
-                            pos_y = art['cluster'][2])
+    doi = article[2]
+    pmcid = article[3]
+    abstract = article[5]
+    fulltext = article[6]
+    url = article[7]
+    year = int(re.findall("[0-9]{4}",article[9])[0])
 
-    #link the article to the research
-    Research_Article.objects.create(article=article_object,research=test_research[0])
+    article_object = Article.objects.create(title=title,pmcid=pmcid,abstract=abstract,full_text=fulltext,url_file=url,publication=datetime.date(year,1,1),doi=doi)
+
+    #if there are no authors
+    if not re.findall("[a-zA-Z\-]+",article[4]):
+        continue
+    authors = article[4].split(',')
+    
+    for author in authors:
+        print(author)
+        names = re.findall("[a-zA-Z\-]+",author)
+        if not names:
+            continue
+        last_name = names[0]
+        author = author.replace(last_name,"")
+        first_name = author
+        #we delete space in beginning and ending
+        last_name = re.findall("[a-zA-z\-]{1}[a-zA-z\-\s]*[a-zA-Z\-]{1}",last_name)
+        first_name = re.findall("[a-zA-z\-]{1}[a-zA-z\-\s]*[a-zA-Z\-]{1}",first_name)
+        authors_object = Author.objects.create(last_name=last_name,first_name=first_name)
+        Article_Author.objects.create(author=authors_object,article=article_object)
+        
