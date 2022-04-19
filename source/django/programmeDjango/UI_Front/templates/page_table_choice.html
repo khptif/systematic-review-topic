@@ -4,11 +4,22 @@
 
 {% block main%}
 
+<div class='header'>
+    <a href="/accueil" class='button' style='left:-30px;'> <button class='button' type=button> accueil </button> </a>
+     
+    <a  href="/user" class='button' style='right:100px;'> <button  type=button> user </button> </a>
+    <a  href="/logout" class='button' style='right:0px;'> <button type=button> Logout </button> </a> 
+    
+</div>
+
 <form action="" method='POST'>
     {%csrf_token%}
+    <input type='submit' name='submit' value='iterate'>
+    <input type='submit' name='submit' value='reset'>
     <input type='submit' name='submit' value='finish'>
-    
+    <input type="checkbox" onClick="toggle(this)"> Check/Uncheck all
     <br>
+   
     {% for row in row_list%}
         
         
@@ -37,6 +48,9 @@
         
         <br>
     {%endfor%}
+    
 </form>
+
+<script src={%static "script/select_functions.js"%}> </script>
 
 {%endblock%}

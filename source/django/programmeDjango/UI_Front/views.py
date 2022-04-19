@@ -1,3 +1,4 @@
+from urllib.request import Request
 from django.shortcuts import render , redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login , logout
@@ -30,7 +31,6 @@ def page_accueil(request):
             variables['research_form'] = research_form
             if research_form.is_valid():
                 variables['number_article'] = random.randint(0,100000)
-                
         # if we give a new research
         elif submit == 'research':
             research_form = Research_form(request.POST)
@@ -85,7 +85,7 @@ def page_accueil(request):
             if historical_form.is_valid():
                 search = historical_form.cleaned_data['search']
                 keywords = word_list(search)
-                print(keywords)
+                
                 # we check the Keywords object who match
                 # we build a dict() : dict[research id] = list of keywords who match the search
                 research_list = dict()
@@ -146,10 +146,16 @@ def page_logout(request):
     return redirect('/login')
 
 @login_required(login_url='/login')
-def page_utilisateur(request):
+def page_user(request):
     variables = dict()
     variables['user'] = request.user
-    return render(request,'page_utilisateur.html',variables)
+
+    variables['research_list'] = Research.objects.filter(user = request.user)
+    a = TableChoice.objects.filter(user=request.user)
+    if a.exists():
+        research_id = a[0].research.id
+    variables['research_id'] = research_id
+    return render(request,'page_user.html',variables)
 
 
 
@@ -177,9 +183,12 @@ def page_select(request):
             user = request.user
             research_id = request.session['id_research']
             research = Research.objects.get(id=research_id)
+
             update_new_TableChoice(user=user,research=research,article_id_list =request.session['id_article_list'])
             update_neighbour_TableChoice(user=user,research=research)
             
+            request.session['id_article_list'] = []
+            request.session['id_research'] = 0
             return redirect("/table_choice?research_id="+str(research_id))
 
         elif submit == 'cancel':
@@ -217,13 +226,37 @@ def page_table_choice(request):
     #we check if the GET parameter is there and if the id match with one of the existant research
     if not 'research_id' in request.GET:
         return redirect("/accueil")
+    id= request.GET.get('research_id')
+    if not id.isnumeric():
+        return redirect("/accueil")
     elif not Research.objects.filter(id=request.GET.get('research_id')).exists():
         return redirect('/accueil')
-         
+
+    
+    if request.method =='POST':
+        check_list = []
+        if 'check_row' in request.POST:
+            check_list = request.POST.getlist('check_row')
+        submit = request.POST.get('submit')
+        
+        user = request.user
+        research = Research.objects.get(id=int(request.GET.get('research_id')))
+        if submit == 'iterate':        
+            update_article_to_display_TableChoice(user=request.user,research=research,list_id=check_list)
+            update_neighbour_TableChoice(user=user,research=research)
+        elif submit == 'reset':
+            reset_TableChoice(user=user,research=research)
+        elif submit == 'finish':
+            update_article_to_display_TableChoice(user=request.user,research=research,list_id=check_list)
+            return test_download_finalzip(request=request,user=user,research=research)
 
     user = request.user
     research = Research.objects.get(id=request.GET.get('research_id'))
-    variables['row_list'] = TableChoice.objects.filter(user=user,research=research,to_display=True)
+    tablechoice_list = TableChoice.objects.filter(user=user,research=research,to_display=True)
+    
+    variables['row_list'] = tablechoice_list
+    
+        
     return render(request,"page_table_choice.html",variables)
 
 # Create your views here.

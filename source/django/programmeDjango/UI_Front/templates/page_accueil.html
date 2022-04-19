@@ -3,6 +3,7 @@
 {%block main%}
 
 {% if are_you_sure %}
+
 <div id="Research_commit" class='first_block'>
     <div>
         <ul style="overflow: auto; height:50%; border: black 1px solid;">
@@ -28,6 +29,13 @@
     </div>
 </div>
 {% endif %}
+
+<div class='header'>
+    <a href="/accueil" class='button' style='left:-30px;'> <button class='button' type=button> accueil </button> </a>
+     
+    <a  href="/user" class='button' style='right:100px;'> <button  type=button> user </button> </a>
+    <a  href="/logout" class='button' style='right:0px;'> <button type=button> Logout </button> </a> 
+</div>
 
 <div class='row'>
     <div class='col-6'>

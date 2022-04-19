@@ -228,3 +228,11 @@ function submit_neighbour()
     let doi_article = document.getElementById('neighbour').value;
     add_data_post("neighbour",doi_article)
 }
+
+//check, uncheck all
+function toggle(source) {
+    checkboxes = document.getElementsByName('check_row');
+    for(var i=0, n=checkboxes.length;i<n;i++) {
+      checkboxes[i].checked = source.checked;
+    }
+  }

@@ -65,6 +65,7 @@ class TableChoice(models.Model):
     research = models.ForeignKey(Research,on_delete=models.CASCADE)
     article = models.ForeignKey(Article,on_delete=models.CASCADE)
     to_display = models.BooleanField(default=True)
+    is_initial = models.BooleanField(default=True)
 
 
 # Create your models here.

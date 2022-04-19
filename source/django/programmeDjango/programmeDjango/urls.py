@@ -25,7 +25,7 @@ urlpatterns = [
     path('',RedirectView.as_view(url='accueil')),
     path('login',page_login),
     path('logout',page_logout),
-    path('user',page_utilisateur),
+    path('user',page_user),
     path('select',page_select),
     path('table_choice',page_table_choice),
 ]

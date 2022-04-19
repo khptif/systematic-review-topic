@@ -11,6 +11,12 @@ from DataBase.models import *
 register = template.Library()
 
 @register.filter
+def number_article(research):
+
+    number = Research_Article.objects.filter(research=research).count()
+    return str(number)
+
+@register.filter
 def get_first_param(elem):
     return elem[0]
 

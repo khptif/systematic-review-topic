@@ -1,0 +1,32 @@
+{% extends 'gabarit_page.html' %}
+{% load filtre_perso%}
+{% block main%}
+    <a href="/accueil" > <button> research page </button> </a>
+
+    
+
+    <div class='row'>
+        <div class='col-4'>
+            <p> email : {{user.email}} </p>
+        </div>
+        <div class='col-2'>
+            <p> last filtering research : <a href="table_choice?research_id={{research_id}}"> link </a> </p>
+        </div>
+    </div>
+
+    <div class='row'>
+        <div class='col-12'>
+            <h3> Historical Research Listing </h3>
+            <div class='bloc'>
+                {% for research in research_list%}
+                    <ul>
+                        
+                        <li> &lt {{research.search}} &gt | {{research | number_article}} articles | <a href="select?research_id={{research.id}}" > link </a></li> 
+                        
+                    </ul>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+{%endblock%}
