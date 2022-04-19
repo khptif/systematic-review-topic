@@ -137,3 +137,6 @@ STATICFILES_DIRS = [('images',os.path.join(BASE_DIR,'static/images')),
 ('css',os.path.join(BASE_DIR,'static/css')),
 ('script',os.path.join(BASE_DIR,'static/script'))]
 STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+
+
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 1000000
