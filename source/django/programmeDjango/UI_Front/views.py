@@ -5,11 +5,16 @@ from django.contrib.auth import authenticate, login , logout
 import random
 import re
 
-from UI_Front.forms import *
 from UI_Front.models import *
 from DataBase.models import *
 
-from .functions import *
+from UI_Front.functions.select_functions import * 
+from UI_Front.functions.accueil_functions import *
+from UI_Front.functions.tablechoice_functions import *
+from UI_Front.functions.login_functions import *
+from UI_Front.functions.user_page_functions import *
+from UI_Front.functions.utils_functions import *
+
 
 @login_required(login_url='/login')
 def page_accueil(request):

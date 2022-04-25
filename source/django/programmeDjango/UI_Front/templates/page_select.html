@@ -31,7 +31,7 @@
 </div>
 
 <div class="row" style='width:100%; height:800px;'>
-    <div id="cluster_display" class="col-10 bloc" style='height:100%; background-color:rgba(0,0,0,0.8); overflow:scroll; position:relative;'>
+    <div id="cluster_display" class="col-8 bloc" style='height:100%; background-color:rgba(0,0,0,0.8); overflow:scroll; position:relative;'>
         
         {% autoescape off %}
         {{cluster_list | cluster_display}}
@@ -46,7 +46,13 @@
             
         </div>
     </div>
+    <div id="article_details" class="col-2" style="position:relative;height:800px; overflow:auto; overflow-x:hidden; border: 2px black solid;visibility:hidden;">
+        {%autoescape off%}
+            {{article_list | article_display }}
+        {%endautoescape%}
+    </div>
 </div>
+
 <div id="Filters_Block" class="row" style="height:400px;margin:30px;">
     <div class="col-5" style="height:300px;background-color:rgba(0,255,0,0.6);margin:10px;">
         <h4> Author </h4>
@@ -82,12 +88,6 @@
         <input type="number" name="research_id" value="{{research_id}}" hidden>
         <input type="submit" name="submit" value="generate">
     </form>
-
-<div id="article_details" style="position:absolute;width:14%;height:800px;right:10px;top:50px; overflow:auto; overflow-x:hidden; border: 2px black solid;visibility:hidden;">
-    {%autoescape off%}
-        {{article_list | article_display }}
-    {%endautoescape%}
-</div>
 
 <script src={%static "script/select_functions.js"%}> </script>
 

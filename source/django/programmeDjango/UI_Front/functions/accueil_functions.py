@@ -1,65 +1,11 @@
-from dataclasses import replace
+import re
+from DataBase.models import *
+from UI_Front.functions.utils_functions import *
 from django import forms
 from django.core.exceptions import ValidationError
-from django.contrib.auth import authenticate
-import re
 
-from .models import CustomUser
-from DataBase.models import *
 
-class SignForm(forms.ModelForm):
-    password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
 
-    class Meta:
-        model = CustomUser
-        fields = ('email',)
-
-    def clean_email(self):
-        email = self.cleaned_data.get("email")
-        if CustomUser.objects.filter(email=email).exists():
-            raise ValidationError("email already exist")
-        else:
-            return email
-
-    def clean_password2(self):
-        # Check that the two password entries match
-        password1 = self.cleaned_data.get("password1")
-        password2 = self.cleaned_data.get("password2")
-        if password1 and password2 and password1 != password2:
-            raise ValidationError("Passwords don't match")
-        return password2
-
-    def save(self, commit=True):
-        # Save the provided password in hashed format
-        user = super().save(commit=False)
-        user.set_password(self.cleaned_data["password1"])
-        if commit:
-            user.save()
-        return user
-
-class LoginForm(forms.Form):
-
-    email = forms.EmailField()
-    password = forms.CharField(widget=forms.PasswordInput)
-
-    def clean(self):
-        data = super(LoginForm,self).clean()
-        email = data['email']
-        if not CustomUser.objects.filter(email=email).exists():
-            raise ValidationError("email doesn't exist")
-        else:
-            return data
-
-    def clean_password(self):
-        data = super(LoginForm,self).clean()
-        email = data['email']
-        password = data['password']
-        check = authenticate(email=email,password=password)
-        if check is None:
-            raise ValidationError("incorrect password")
-        else:
-            return password
 
 def errorParsingResearch(string_to_parse):
     """ Check if there is error in the search string for the research"""
@@ -71,7 +17,7 @@ def errorParsingResearch(string_to_parse):
         forbidden_char = ""
         for c in char:
             forbidden_char += " ' " + c + " ' "
-            forbidden_char += ' '
+        
         return (False, "Forbidden characters : " + forbidden_char)
 
     # check if there are words
@@ -164,30 +110,6 @@ def errorParsingResearch(string_to_parse):
 
     return (True,"")
 
-
-class Research_form(forms.Form):
-    search = forms.CharField(max_length=512)
-    year_begin = forms.IntegerField(min_value=1990)
-    year_end = forms.IntegerField(min_value=1990)
-
-    def clean(self):
-        data = super(Research_form,self).clean()
-        year_begin = data['year_begin']
-        year_end = data['year_end']
-        if year_end < year_begin :
-            raise ValidationError(" year_end must be higher or equal than year_begin")
-        else:
-            return data
-
-    def clean_search(self):
-        data = super(Research_form,self).clean()
-        search = data['search']
-        check , error = errorParsingResearch(search)
-        if check:
-            return search
-        else:
-            raise ValidationError(error)
-
 def errorParsingHistorical(search_string):
     """ Check if there are errors in the string search for historical"""
     lower_string = search_string.lower()
@@ -217,6 +139,29 @@ def errorParsingHistorical(search_string):
     
     return (True,'')
 
+class Research_form(forms.Form):
+    search = forms.CharField(max_length=512)
+    year_begin = forms.IntegerField(min_value=1990)
+    year_end = forms.IntegerField(min_value=1990)
+
+    def clean(self):
+        data = super(Research_form,self).clean()
+        year_begin = data['year_begin']
+        year_end = data['year_end']
+        if year_end < year_begin :
+            raise ValidationError(" year_end must be higher or equal than year_begin")
+        else:
+            return data
+
+    def clean_search(self):
+        data = super(Research_form,self).clean()
+        search = data['search']
+        check , error = errorParsingResearch(search)
+        if check:
+            return search
+        else:
+            raise ValidationError(error)
+
 
 class Historical_form(forms.Form):
     search = forms.CharField(max_length=1024)
@@ -229,3 +174,106 @@ class Historical_form(forms.Form):
             return search
         else:
             raise ValidationError(error)
+
+def word_list(string_to_parse):
+    """ From a search string that was control if there is bad characters,
+     extract all keywords and return them"""
+   
+    lower_string = string_to_parse.lower()
+    # we recuperate word in double quotes
+    quotes_word = re.findall("\"[a-z0-9\-\s]+\"", lower_string)
+    # we delete the multiple words from the string search
+    for qw in quotes_word:
+        lower_string = lower_string.replace(qw,"")
+
+    # extract single words
+    single_word = re.findall("([a-z0-9\-]+)",lower_string)
+    return_list = []
+    #build the return list of keywords
+    for word in single_word:
+        return_list.append(word)
+    for word in quotes_word:
+        return_list.append(word)
+
+    return return_list
+
+
+def sort_historical(research_list,sort_type):
+    """ take a dictionnary key: id of research, value: list of Keywords objects. Return a list sorted 
+    in this format: [(id research,[string keywords])]. For the sort type, we have 'pertinence',
+    'article+' and 'article-' """
+
+    
+    # for pertinance, we check the number of keywords by research found
+    if sort_type == 'pertinence':
+        # we will build a list [(id_research,number_keyword)] and sort on number_keyword
+        list_to_sort = []
+        for i,k in research_list.items():
+            list_to_sort.append((i,len(k)))
+        def sort_key(elem):
+            return elem[1]
+        list_to_sort.sort(key=sort_key,reverse=True)
+
+
+    # from + article to - article
+    elif sort_type == 'article+' or sort_type == 'article-':
+        # for each research, we count the number of article and build the list [(id,number_article)]
+        list_to_sort = []
+        for i,_ in research_list.items():
+            research_object = Research.objects.get(id=i)
+            number = len(Research_Article.objects.filter(research=research_object))
+            list_to_sort.append((i,number))
+
+        def sort_key(elem):
+            return elem[1]
+        
+        if sort_type== 'article+':
+            list_to_sort.sort(key=sort_key,reverse=True)
+        else:
+            list_to_sort.sort(key=sort_key)
+
+        pass
+    
+    return_list = []
+    # we build return list
+    for id, _ in list_to_sort:
+        keywords = []
+        key_list = research_list[id]
+        for k in key_list:
+            keywords.append(k.word)
+        keywords.sort()
+        return_list.append((id,keywords))
+
+    return return_list
+
+
+def mock_research(research):
+    """ For test. We arbitrarily associate a research with articles and clustering data for them.
+    The position for a group clustering will be set around a point."""
+    articles = Article.objects.all()
+    size = len(articles)
+    
+    # we randomly associate article to the research
+    import random
+    number_article_by_research = random.randint(0,int(size/2))
+    random_list = random.sample(range(0, size), number_article_by_research)
+    number_topics = random.randint(0,int(size/50))
+    topics = []
+    for n in range(number_topics):
+        center = (random.randint(0,600),random.randint(0,1000))
+        topics.append(("topics " + str(n) , center))
+
+    i = 0
+    for article in articles:
+        if i in random_list:
+            Research_Article.objects.create(research=research,article=article)
+            # the cluster data for the article. Choose randomly the topic and the position
+            
+            topic = topics[random.randint(0,number_topics - 1)]
+            pos_x = topic[1][0] + random.randint(0,200)
+            pos_y = topic[1][1] + random.randint(0,200)
+            topic_name = topic[0]
+            Cluster.objects.create(research=research,article=article,topic=topic_name,pos_x=pos_x,pos_y=pos_y)
+
+        i +=1
+    
