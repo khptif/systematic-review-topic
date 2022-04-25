@@ -159,7 +159,7 @@ def page_user(request):
     a = TableChoice.objects.filter(user=request.user)
     if a.exists():
         research_id = a[0].research.id
-    variables['research_id'] = research_id
+        variables['research_id'] = research_id
     return render(request,'page_user.html',variables)
 
 
