@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'UI_Front',
     'oauth2_provider',
     'DataBase',
+    'BackEnd',
 ]
 
 MIDDLEWARE = [

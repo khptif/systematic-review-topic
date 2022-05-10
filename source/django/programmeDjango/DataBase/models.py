@@ -68,4 +68,13 @@ class TableChoice(models.Model):
     is_initial = models.BooleanField(default=True)
 
 
-# Create your models here.
+
+class article_temporary(models.Model):
+    research = models.ForeignKey(Research,on_delete=models.CASCADE)
+    database_article = models.CharField(max_length=256)
+    title = models.CharField(max_length=1024,default='')
+    date = models.CharField(max_length=256,default='')
+    DOI = models.CharField(max_length=256,default='')
+    URL = models.CharField(max_length=1024,default='')
+    authors = models.CharField(max_length=1024,default='')
+    abstract = models.CharField(max_length=4096,default='')
