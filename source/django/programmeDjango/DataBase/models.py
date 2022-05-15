@@ -10,8 +10,8 @@ class Author(models.Model):
     first_name = models.CharField(max_length=128)
 
 class Article(models.Model):
-    title = models.CharField(max_length=256,default='')
-    doi = models.CharField(max_length=256, default='')
+    title = models.CharField(max_length=1024,default='')
+    doi = models.CharField(max_length=1024, default='')
     author = models.ManyToManyField(Author, through='Article_Author')
     abstract = models.CharField(max_length=4096)
     full_text = models.TextField()

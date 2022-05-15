@@ -2,6 +2,23 @@ from django.test import TestCase
 from BackEnd.functions.Get_PAP import *
 
 
+class test_get_search_term(TestCase):
+
+    def test_method(self):
+        input = "virus,hiv,(africa;new-york)"
+        output_expected = "virus+AND+hiv+AND+(+africa+OR+new-york+)+"
+        output_result = get_search_term(input)
+        print(output_result + " ?= " + output_expected)
+        self.assertEqual(output_expected,output_result)
+
+class test_get_max_article(TestCase):
+    
+    def test_method(self):
+        input="virus"
+        output_expected = 598204
+        output_result = get_max_article(input)
+        self.assertEqual(output_expected,output_result)
+        
 class test_extract_meta_data(TestCase):
     # we check if the meta data are corresctly extracted.
 
@@ -29,6 +46,77 @@ class test_get_article_parallel(TestCase):
     # We test the method to parallelise the id extraction
 
     # We first test the method individualy. After, we test it in sequentially and in parallel and we compare. We check the process time too.
-    # input:
+    # input: begin_page, the number of page total to process, the research associate, the search term,
+    # output: database will be filled with Article, Authors
 
-    pass
+
+    def test_sequential(self):
+        """test to check if the method functions"""
+
+        begin_page = 1
+        number_page = 1
+        research = Research.objects.create(search='',year_begin=datetime.date(1900,1,1),year_end=datetime.date(1901,1,1))
+       
+        search_term = "hiv"
+        get_article_parallel(begin_page,number_page,research,search_term)
+
+        number_Article_expected = 20
+        number_Article_result = Article.objects.all().count()
+        number_Author_result = Author.objects.all().count()
+
+        self.assertEqual(number_Article_expected,number_Article_result)
+        print("number of author: " + str(number_Author_result))
+
+    def test_parallel(self):
+        number_threads = 4
+        begin_page = 1
+        number_page = 12
+        research = Research.objects.create(search='',year_begin=datetime.date(1900,1,1),year_end=datetime.date(1901,1,1))
+        
+        search_term = "virus"
+ 
+        Get_article(search_term,research,number_threads=number_threads,test_number_page=number_page+1,test=True)
+        
+        number_Article_expected = 240
+        number_Article_result = Article.objects.all().count()
+        number_Author_result = Author.objects.all().count()
+
+        self.assertEqual(number_Article_expected,number_Article_result)
+        print("number of author: " + str(number_Author_result))
+
+
+    def test_time_gain(self):
+        """test if the parallel process is faster than the sequential one"""
+        number_threads = 4
+        begin_page = 1
+        number_page = 12
+        research_seq = Research.objects.create(search='',year_begin=datetime.date(1900,1,1),year_end=datetime.date(1901,1,1))
+        research_par = Research.objects.create(search='',year_begin=datetime.date(1900,1,1),year_end=datetime.date(1901,1,1))
+
+        search_term = "hiv"
+
+        # the sequential process
+        start = datetime.datetime.now()
+        get_article_parallel(begin_page,number_page,research_seq,search_term,test=True)
+        stop = datetime.datetime.now()
+        sequential_result = stop - start
+
+        sequential_Article = Article.objects.filter(research_article__research=research_seq)
+
+        # the parallel process
+        start = datetime.datetime.now()
+        Get_article(search_term,research_par,number_threads=number_threads,test_number_page=number_page+1,test=True)
+        stop = datetime.datetime.now()
+        parallel_result = stop - start
+
+        parallel_Article = Article.objects.filter(research_article__research = research_par)
+
+        # we check the time difference
+        print( str(sequential_result) + " > " + str(parallel_result))
+        self.assertGreater(sequential_result,parallel_result)
+
+        # we check if the both result are same
+        for article in sequential_Article:
+            doi = article.doi
+            self.assertTrue(parallel_Article.filter(doi=doi).exists(),"error: doi " + str(doi) + " is not in parallel result")
+        

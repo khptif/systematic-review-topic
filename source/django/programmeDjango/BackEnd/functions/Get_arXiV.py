@@ -6,119 +6,42 @@ from lxml import etree as ET
 
 #numpy is used for better arrays
 import numpy as np
+from requests import request
 #unidecoed is for removing accents
 import unidecode as UN
 
 import BackEnd.functions.PDF_download as pdf
-import BackEnd.functions.filter_article as filter
+from BackEnd.functions.Remove_references import remove_references
+from BackEnd.functions.filter_article import split_search_term
 
-def extract_metaData(fetch_url='',xml_data='',test=False):
-    """ Extract MetaData and abstract for an article. Return Date, Journal, Title, Authors, Aff, Abs, DOI.
-        In production, we give the url to fetch the xml file but during test, we give a xml file."""
+from DataBase.models import *
 
-   
-    # return data
-    DOI = ''
-    Date = ''
-    Journal = ''
-    Title = ''
-    Authors = ''
-    Aff = ''
-    Abstract = ''
+from threading import Thread
 
-    #url where we fetch data
-    fetch = fetch_url
-
-    # Extracts data from xml   
-    begin_sub = ''
-    try:
-        response = ''
-        if test:
-            response = xml_data
-        else:
-            response = urlopen(fetch)       
-        xml_doc = ET.fromstring(response.read())
-        for child in xml_doc:
-            begin = child.tag.split('}')[0]+ '}'
-            for subchild in child:
-                if subchild.tag.split('}')[0]+ '}' != begin:
-                    begin_sub = subchild.tag.split('}')[0]+ '}'
-                    break
-    except:
-        xml_doc = ET.fromstring("<root>blabla</root>")
-
-    #Extracts the DOI, not always available
-    doi = ''
-    for tag in xml_doc.findall('.//'+ begin_sub + 'doi'):
-        doi = tag.text
-    if doi != '':
-        DOI = doi
-    else:
-        DOI = np.nan
-
-    #Extracts the date from the XML, always available
-    date = ''
-    for tag in xml_doc.findall('.//'+ begin + 'published'):
-        date = tag.text.split('T')[0]
-        date = date.split('-')[0] + '-' + date.split('-')[1]
-    if date != '':
-        Date = date
-    else:
-        Date = np.nan
-    #Extracts the journal name, not always available
-    journ = ''
-    for tag in xml_doc.findall('.//' + begin_sub + 'journal_ref'):
-        journ = tag.text
-    if journ != '' and journ != None:
-        Journal = UN.unidecode(journ)
-    else:
-        Journal = np.nan
-    #Extracts the title of the paper, always available
-    title = ''
-    for tag in xml_doc.findall('.//'+ begin + 'title'):
-        if 'ArXiv' not in tag.text:
-            title = tag.text                                 
-    if title != '' and title != None:
-        Title = UN.unidecode(title)
-    else:
-        Title = np.nan
-    #Extract the names of the Authors, not always available
-    author = []
-    for tag in xml_doc.findall('.//' + begin + 'name'):
-        if (tag.text != None) and (tag.text != ''):
-            full_name = tag.text.split()[-1] + ' ' + tag.text.split()[0]
-            author.append(UN.unidecode(full_name))
-    if len(author) != 0:
-        for a in author:
-            Authors += ";".join(a)
-    else:
-        Authors = np.nan
-    #Extracts the corresponding affiliations not always available
-    affiliation = []
-    for tag in xml_doc.findall('.//'+ begin_sub + 'affiliation'):
-        temp = tag.text.split(';')
-        for item in temp:
-            if item not in affiliation:
-                try:
-                    affiliation.append(UN.unidecode(item))
-                except AttributeError:
-                    pass
-    if len(affiliation) !=0:
-        Aff = ";".join(affiliation)
-    else:
-        Aff = np.nan
-    #Extracts the full abstract not always available
-    abstract = ''
-    for tag in xml_doc.findall('.//' + begin + 'summary'):
-        abstract = tag.text
-    if abstract != '' and abstract != None:
-        Abstract = UN.unidecode(" ".join(abstract.split()))
-    else:
-        Abstract = np.nan
+def get_search_term(search):
+    """we translate the search to a readable string search for the api"""
+    split,_ = split_search_term(search)
+    search_term = ''
+    for c in split:
+        search_term += c
+        search_term += "+"
     
-    return Date, Journal, Title, Authors, Aff, Abstract, DOI
+    return search_term
 
+def get_max_article(search):
 
+    api_query = 'http://export.arxiv.org/api/query?search_query='
+    search_term = get_search_term(search)
+
+    query_base = api_query + search_term
+     
+    response = urlopen(query_base)
+    xml_doc = ET.fromstring(response.read())
+
+    total = xml_doc[4].text
+    total = int(total)
+
+    return total
 
 def Get_ID(search_term):
    
@@ -136,8 +59,17 @@ def Get_ID(search_term):
     #   extract the arxID from the it, and add it to a ID_list
     #gets the XML respon
     
-    for i in range (10):
-        response = urlopen(query_base + '&start=' + str(i*10000) + '&max_results=10000')       
+    response = urlopen(query_base)
+    xml_doc = ET.fromstring(response.read())
+
+    total = xml_doc[4].text
+    total = int(total)
+
+    article_by_page = 10000
+    page = int(total/10000) + 1
+
+    for i in range(page):
+        response = urlopen(query_base + '&start=' + str(i*article_by_page) + '&max_results='+str(article_by_page))       
         xml_doc = ET.fromstring(response.read())
 
         for child in xml_doc:
@@ -151,59 +83,121 @@ def Get_ID(search_term):
                 arXID.append(temp_ID)
     return arXID
 
-def Get_arXiV(search_term, name):
+def extract_article(id_list,research):
+    """ Extract MetaData and abstract for an article. Return Date, Journal, Title, Authors, Aff, Abs, DOI.
+        In production, we give the url to fetch the xml file but during test, we give a xml file."""
+
+    #url where we fetch data
+    api_fetch = 'http://export.arxiv.org/api/query?id_list='
+    
+    for ID in id_list:
+        URL = 'http://arxiv.org/pdf/' + ID + '.pdf'
+        fetch = api_fetch + ID 
+        # Extracts data from xml   
+        begin_sub = ''
+        try:
+            response = urlopen(fetch)       
+            xml_doc = ET.fromstring(response.read())
+            for child in xml_doc:
+                begin = child.tag.split('}')[0]+ '}'
+                for subchild in child:
+                    if subchild.tag.split('}')[0]+ '}' != begin:
+                        begin_sub = subchild.tag.split('}')[0]+ '}'
+                        break
+        except:
+            xml_doc = ET.fromstring("<root>blabla</root>")
+
+        #Extracts the DOI, not always available
+        doi = ''
+        for tag in xml_doc.findall('.//'+ begin_sub + 'doi'):
+            doi = tag.text
+         
+        #Extracts the date from the XML, always available
+        date = ''
+        for tag in xml_doc.findall('.//'+ begin + 'published'):
+            date = tag.text.split('T')[0]
+            date = datetime.datetime.strptime(str(date),"%Y-%m-%d").date()
+        if date != '':
+            Date = date
+        else:
+            Date = np.nan
+        
+        #Extracts the title of the paper, always available
+        title = ''
+        for tag in xml_doc.findall('.//'+ begin + 'title'):
+            if 'ArXiv' not in tag.text:
+                title = tag.text                                 
+        if title != '' and title != None:
+            Title = UN.unidecode(title)
+        else:
+            Title = np.nan
+        #Extract the names of the Authors, not always available
+        authors = []
+        for tag in xml_doc.findall('.//' + begin + 'name'):
+            if (tag.text != None) and (tag.text != ''):
+                last_name = tag.text.split(" ")[-1] 
+                first_name = tag.text.split(" ")[0:-1]
+
+                authors.append((last_name,first_name))
+        
+        #Extracts the full abstract not always available
+        abstract = ''
+        for tag in xml_doc.findall('.//' + begin + 'summary'):
+            abstract = tag.text
+        if abstract != '' and abstract != None:
+            Abstract = UN.unidecode(" ".join(abstract.split()))
+        else:
+            Abstract = np.nan
+
+        full_text = pdf.extract_full_text(URL,"research_"+str(research.id) + "_article_"+str(ID))
+
+        # we write the article in database
+        article = ''
+        if doi == '' or not Article.objects.filter(doi=doi).exists():
+            article = Article.objects.create(title=title,doi=doi,abstract=abstract,full_text=full_text,publication=Date,url_file=URL)
+        else:
+            article = Article.objects.filter(doi=doi)[0]
+        
+        # we bind to the research
+        Research_Article.objects.create(research=research,article=article)
+
+        # we add the author
+        for author in authors:
+            #we check if the author exist
+            a = Author.objects.filter(last_name = author[0],first_name = author[1])
+            if a.exists():
+                author = a[0]
+            else:
+                author = Author.objects.create(last_name=author[0],first_name=author[1])
+            # we binde the author the the article
+            Article_Author.objects.create(article=article,author=author)
+
+
+def get_article(search, research, number_threads=1):
     
     #sets the location of the API for the fetching
     api_fetch = 'http://export.arxiv.org/api/query?id_list='
 
     # we split the search string in individual element
-    search_term_split, keywords = filter.split_search_term(search_term)
+    search_term = get_search_term(search)
     
-    print("get all id key")
-    #for every key word, we make a research and extract all id article from this keyword
-    for key,_ in keywords.items():
-        keywords[key] = Get_ID(key)
+    ID_list = Get_ID(search_term)
 
-    print("id article done")
-    arXID = filter.parsing(search_term_split,keywords)
-    print("number final id: " + str(len(arXID)))
-    
-    #1 - Extracts the informaation
-    Date, Journal, Title, Authors, Aff, Abs, MesH,FullT, DOI = \
-                            [],[], [], [], [], [], [], [], []
-    Fetched = []
-    URL = []
-    dump_in = 0
-    print ('Extracting the data for the set of the request')
-    if os.path.exists("results/"+name):
-        os.remove("BackEnd/functions/results/"+name)
-    results_file = open("BackEnd/functions/results/"+name,"a")
-    size = len(arXID)
-    current = 0
-    for ID in arXID:
-        print("\r" + str(current) +"/" +str(size), end='')
-        URL = 'http://arxiv.org/pdf/' + ID + '.pdf'
-        fetch = api_fetch + ID 
-        Date, Journal, Title, Authors, Aff, Abstract, DOI = extract_metaData(fetch)
-        Full_Text = pdf.extract_full_text(URL,"arx")
+    # we distribute the job to the threads
+    list_job = []
+    for i in range(number_threads):
+        list_job.append([])
+    for i in range(len(ID_list)):
+        current_thread = i % number_threads
+        list_job[current_thread].append(ID_list[i])
 
-        results_file.write("Title: "+Title + "\n")
-        results_file.write("Authors: " + Authors + "\n")
-        results_file.write("DOI: " + str(DOI) + "\n")
-        results_file.write("Abstract :" + "\n" + Abstract + "\n")
-        
-        results_file.write("Full_Text: " + "\n" + str(Full_Text) + "\n")
-        current += 1
-
-    
-    results_file.close()
-
-    return True
-
-# for test
-if __name__ == "__main__":
-    import sys
-    term = sys.argv[1]
-    name = sys.argv[2]
-    print(Get_arXiV(term, name))
+    # we create the threads
+    list_threads = []
+    for i in range(number_threads):
+        list_threads.append(Thread(target=extract_article,args=(list_job[i],research)))
+    # we start the thread and wait it finish
+    for thread in list_threads:
+        thread.start()
+    for thread in list_threads:
+        thread.join()
     

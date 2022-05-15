@@ -79,10 +79,15 @@ WSGI_APPLICATION = 'programmeDjango.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR ,'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'db_test',
+        'USER': 'user_test',
+        'PASSWORD': '1234',
+        'HOST': 'localhost',
+        'PORT': '5432'
     }
 }
+
 
 
 
@@ -133,3 +138,4 @@ STATICFILES_DIRS = [('images',os.path.join(BASE_DIR,'static/images')),
 ('css',os.path.join(BASE_DIR,'static/css')),
 ('script',os.path.join(BASE_DIR,'static/script'))]
 STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+

@@ -196,7 +196,7 @@ def download_from_URL(url,path_file):
     try:
         response = urllib.request.urlopen(url)    
     except:
-        print("error url pdf")
+        print("error url pdf: " + url)
         return False
     
     
@@ -237,11 +237,12 @@ def convert_PDF(path_file):
     #create reader variable that will read the pdffileobj
     try:
         pdfreader=PyPDF2.PdfFileReader(pdffileobj)
+        num_page = pdfreader.numPages
     except:
         return False
         
     #This will store the number of pages of this pdf file
-    num_page = pdfreader.numPages
+    
     final_text = ''
     
     for page in range(num_page):
