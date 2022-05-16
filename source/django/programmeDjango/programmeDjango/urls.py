@@ -19,7 +19,6 @@ from UI_Front.views import *
 from django.views.generic import RedirectView
 
 urlpatterns = [
-    path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     path('admin/', admin.site.urls),
     path('accueil',page_accueil),
     path('',RedirectView.as_view(url='accueil')),

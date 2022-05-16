@@ -36,7 +36,7 @@ import unidecode
 from spellchecker import SpellChecker
 from gensim.models import phrases
 from sklearn.feature_extraction.text import TfidfVectorizer
-import pandas as pd
+
 
 
 def pre_processing(df_to_list):
@@ -60,29 +60,34 @@ def pre_processing(df_to_list):
     return list_zero
 
 
-def define_languages(list_pre_processing):
+def define_languages(list_pre_processing,list_index):
 
     languages = ["en"]
     list_languages = list_pre_processing[:]
     
     no_lang = {}
-
-    for paper in tqdm(list_pre_processing, desc="Removing non-specified languages"):
+    i = 0 
+    for paper in list_pre_processing:
         try:
             if detect(paper) not in languages:
                 no_lang[list_pre_processing.index(paper)] = paper
-                list_languages.remove(paper)
+                list_languages[i] = ""
+                list_index[i] = -1
+            
                 
         except:
             no_lang[list_pre_processing.index(paper)] = paper
-            list_languages.remove(paper)
+            list_languages[i] = ""
+            list_index[i] = -1
 
-    return list_languages
+        i += 1
+
+    return list_languages,list_index
 
 
 def sent_to_words(list_languages):
 
-    for sentence in tqdm(list_languages, desc="Sentences to words"):
+    for sentence in list_languages:
         yield (simple_preprocess(str(sentence), deacc=True))
 
 
@@ -92,7 +97,7 @@ def lemmatization(
 
     list_lemmatized = []
 
-    for sent in tqdm(list_words, desc="Lemmatization"):
+    for sent in list_words:
         doc = nlp(" ".join(sent))
         list_lemmatized.append(
             [token.lemma_ for token in doc if token.pos_ in allowed_postags]
@@ -174,7 +179,7 @@ def remove_words(list_lemmatized, list_stopwords):
     return list_one_two
 
 
-def remove_misspelled(list_one_two, save, path_data_folder):
+def remove_misspelled(list_one_two):
 
     f = open(f"{os.getcwd()}/BackEnd/files/dictionary_compact.json")
     dictionary = json.load(f)
@@ -192,7 +197,7 @@ def remove_misspelled(list_one_two, save, path_data_folder):
     return list_misspelled
 
 
-def create_ngrams(list_misspelled, save, path_data_folder):
+def create_ngrams(list_misspelled):
 
     bigram = phrases.Phrases(
         list_misspelled, min_count=2, threshold=0.8, scoring="npmi"
@@ -212,7 +217,7 @@ def create_ngrams(list_misspelled, save, path_data_folder):
         dict_bigram[phrase] = score
 
     list_bigrams = [
-        bigram_frozen[doc] for doc in tqdm(list_misspelled, desc="Creating bigrams")
+        bigram_frozen[doc] for doc in list_misspelled
     ]
 
     for phrase, score in trigram_frozen.find_phrases(
@@ -222,44 +227,34 @@ def create_ngrams(list_misspelled, save, path_data_folder):
 
     list_trigrams = [
         trigram_frozen[bigram_frozen[doc]]
-        for doc in tqdm(list_misspelled, desc="Creating trigrams")
+        for doc in list_misspelled
     ]
 
     return list_trigrams
 
 
-def remove_common_and_unique(list_trigrams, save, path_data_folder):
+def remove_common_and_unique(list_trigrams):
 
-    common_words = TfidfVectorizer(min_df=1, max_df=0.50).fit(
-        " ".join(doc) for doc in list_trigrams
-    )
-    unique_words = TfidfVectorizer(min_df=2, max_df=1.00).fit(
-        " ".join(doc) for doc in list_trigrams
-    )
-
-    if save:
-        pd.DataFrame(common_words.stop_words_).to_csv(
-            f"{path_data_folder}/common_words.csv", index=False
+    list_final = []
+    try:
+        common_words = TfidfVectorizer(min_df=1, max_df=0.50).fit(
+            " ".join(doc) for doc in list_trigrams
         )
-        pd.DataFrame(unique_words.stop_words_).to_csv(
-            f"{path_data_folder}/unique_words.csv", index=False
+        unique_words = TfidfVectorizer(min_df=2, max_df=1.00).fit(
+            " ".join(doc) for doc in list_trigrams
         )
 
-    common_and_unique_words = TfidfVectorizer(min_df=2, max_df=0.50).fit(
-        " ".join(doc) for doc in list_trigrams
-    )
-    list_temporary = [
-        [word for word in doc if word not in common_and_unique_words.stop_words_]
-        for doc in list_trigrams
-    ]
-    list_final = [" ".join(doc) for doc in list_temporary]
+        common_and_unique_words = TfidfVectorizer(min_df=2, max_df=0.50).fit(
+            " ".join(doc) for doc in list_trigrams
+        )
+        list_temporary = [
+            [word for word in doc if word not in common_and_unique_words.stop_words_]
+            for doc in list_trigrams
+        ]
+        list_final = [" ".join(doc) for doc in list_temporary]
 
-    print("Number of unique words removed:", len(unique_words.stop_words_))
-    print("Number of common words removed:", len(common_words.stop_words_))
-    print(
-        "Total number of remaining words:",
-        len(set(" ".join(doc for doc in list_final).split())),
-    )
+    except:
+        return list_final
 
     return list_final
 
