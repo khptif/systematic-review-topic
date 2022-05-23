@@ -32,7 +32,7 @@ echo UPDATE_INTERVAL=${UPDATE_INTERVAL} >> $settings_path
 # parameters to know the role
 echo IS_DATABASE=${IS_DATABASE} >> $settings_path
 echo IS_BACKEND=${IS_BACKEND} >> $settings_path
-echo IS_FRONEND=${IS_FRONTEND} >> $settings_path
+echo IS_FRONTEND=${IS_FRONTEND} >> $settings_path
 
 # give domaine name of the host in nginx conf file
 sed -i "s/x_domain_name_x/${HOST_DOMAIN}/g" /etc/nginx/sites-available/django_nginx.conf
