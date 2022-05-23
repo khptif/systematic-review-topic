@@ -20,10 +20,11 @@ path_key=~/.ssh/${id_key}
 # commande à lancer sur la machine hôte
 container_name=$container_name
 port=$port
+port_local=$port_local
 command_stop="sudo docker container stop ${container_name}"
 command_rm_container="sudo docker container rm -f ${container_name}"
 command_rm_image="sudo docker image rm -f ${image}"
-command_start="sudo docker container run --mount source=docker_volume,target=/programmeDjango/docker_volume --name=$container_name -d -p ${port}:443 ${image}"
+command_start="sudo docker container run --mount source=docker_volume,target=/programmeDjango/docker_volume --name=$container_name -d -p ${port}:${port_local} ${image}"
 
 
 ##### Les commandes #######
