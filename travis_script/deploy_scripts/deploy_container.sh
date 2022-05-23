@@ -30,7 +30,7 @@ command_start="sudo docker container run --mount source=docker_volume,target=/pr
 
 
 #on prépare la clé privé en la décryptant
-ccrypt --decrypt -E keyword < ./keywords/${id_key} > ~/.ssh/${id_key} 
+ccrypt --decrypt -E Keyword < ./keywords/${id_key} > ~/.ssh/${id_key} 
 
 chmod 600 $path_key
 
