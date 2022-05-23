@@ -13,12 +13,12 @@ sed -i "s/x_db_password_x/${DB_PASSWORD}/g" $settings_path
 sed -i "s/x_db_host_x/${DB_HOST}/g" $settings_path
 
 # we write the adresse of other host in settings.py
-echo UI_FRONT_HOST="${UI_FRONT_HOST}" >> $settings_path
-echo UI_FRONT_PORT="${UI_FRONT_PORT}" >> $settings_path
-echo BACKEND_HOST="${BACKEND_HOST}" >> $settings_path
-echo BACKEND_PORT="${BACKEND_PORT}" >> $settings_path
-echo DATABASE_HOST="${DATABASE_HOST}" >> $settings_path
-echo DATABASE_PORT="${DATABASE_PORT}" >> $settings_path
+echo UI_FRONT_HOST="'${UI_FRONT_HOST}'" >> $settings_path
+echo UI_FRONT_PORT="'${UI_FRONT_PORT}'" >> $settings_path
+echo BACKEND_HOST="'${BACKEND_HOST}'" >> $settings_path
+echo BACKEND_PORT="'${BACKEND_PORT}'" >> $settings_path
+echo DATABASE_HOST="'${DATABASE_HOST}'" >> $settings_path
+echo DATABASE_PORT="'${DATABASE_PORT}'" >> $settings_path
 
 # some global parameters for settings.py
 echo NUMBER_THREADS_ALLOWED=${NUMBER_THREADS_ALLOWED} >> $settings_path
@@ -38,11 +38,14 @@ echo IS_FRONEND=${IS_FRONTEND} >> $settings_path
 sed -i "s/x_domain_name_x/${HOST_DOMAIN}/g" /etc/nginx/sites-available/django_nginx.conf
 
 # according to the role assigned, we give the right urls.py file.
-if [${IS_DATABASE} == True]; then
+if test ${IS_DATABASE} = True
+then
 	cp fichiers_settings/database/urls.py programmeDjango/urls.py
-elif [${IS_BACKEND} == True];then
+elif test ${IS_BACKEND} = True
+then
 	cp fichiers_settings/backend/urls.py programmeDjango/urls.py
-elif [${IS_FRONTEND} == True];then
+elif test ${IS_FRONTEND} = True
+then
 	cp fichiers_settings/frontend/urls.py programmeDjango/urls.py
 	
 fi
