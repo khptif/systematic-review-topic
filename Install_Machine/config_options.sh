@@ -15,7 +15,9 @@ cd ..
 echo UI_FRONT_HOST=${host_adresse} >> $env_file
 echo UI_FRONT_PORT=${host_port} >> $env_file
 echo HOST_DOMAIN=${host_domain} >> $env_file
-
+export IS_DATABASE=${is_database} >> $env_file
+export IS_BACKEND=${is_backend} >> $env_file
+export IS_FRONTEND=${is_frontend} >> $env_file
 
 # Backend parameters
 cd Machine_Back
@@ -25,7 +27,7 @@ echo BACKEND_HOST=${host_adresse} >> $env_file
 echo BACKEND_PORT=${host_port} >> $env_file
 export IS_DATABASE=${is_database} >> $env_file
 export IS_BACKEND=${is_backend} >> $env_file
-export IS_FRONEND=${is_frontend} >> $env_file
+export IS_FRONTEND=${is_frontend} >> $env_file
 
 # DataBase parameters
 cd Machine_BD
@@ -39,7 +41,7 @@ echo DATABASE_HOST=${host_adresse} >> $env_file
 echo DATABASE_PORT=${host_port} >> $env_file
 export IS_DATABASE=${is_database} >> $env_file
 export IS_BACKEND=${is_backend} >> $env_file
-export IS_FRONEND=${is_frontend} >> $env_file
+export IS_FRONTEND=${is_frontend} >> $env_file
 
 # we fill the file with the settings parameters for settings.py
 . ./settings_parameters.sh
