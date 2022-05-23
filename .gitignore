@@ -1,3 +1,5 @@
 source/django/programmeDjango/db.sqlite3
 source/django/programmeDjango/env_test/*
 source/django/programmeDjango/DataBase/mock_data/df_sample.csv
+source/django/programmeDjango/BackEnd/data/*
+source/django/programmeDjango/BackEnd/functions/download/*

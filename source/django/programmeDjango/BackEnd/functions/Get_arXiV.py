@@ -26,6 +26,7 @@ def get_search_term(search):
         search_term += c
         search_term += "+"
     
+    search_term = search_term.replace(" ","+")
     return search_term
 
 def get_max_article(search):
@@ -59,8 +60,11 @@ def Get_ID(search_term):
     #   extract the arxID from the it, and add it to a ID_list
     #gets the XML respon
     
-    response = urlopen(query_base)
-    xml_doc = ET.fromstring(response.read())
+    try:
+        response = urlopen(query_base)
+        xml_doc = ET.fromstring(response.read())
+    except:
+        return False
 
     total = xml_doc[4].text
     total = int(total)
@@ -69,8 +73,11 @@ def Get_ID(search_term):
     page = int(total/10000) + 1
 
     for i in range(page):
-        response = urlopen(query_base + '&start=' + str(i*article_by_page) + '&max_results='+str(article_by_page))       
-        xml_doc = ET.fromstring(response.read())
+        try:
+            response = urlopen(query_base + '&start=' + str(i*article_by_page) + '&max_results='+str(article_by_page))       
+            xml_doc = ET.fromstring(response.read())
+        except:
+            continue
 
         for child in xml_doc:
             begin = child.tag.split('}')[0]+ '}'
@@ -149,11 +156,15 @@ def extract_article(id_list,research):
         else:
             Abstract = np.nan
 
-        full_text = pdf.extract_full_text(URL,"research_"+str(research.id) + "_article_"+str(ID))
 
         # we write the article in database
         article = ''
         if doi == '' or not Article.objects.filter(doi=doi).exists():
+            try:
+                full_text = pdf.extract_full_text(URL,"research_"+str(research.id) + "_article_"+str(ID))
+                full_text = remove_references(full_text)
+            except:
+                full_text = ""
             article = Article.objects.create(title=title,doi=doi,abstract=abstract,full_text=full_text,publication=Date,url_file=URL)
         else:
             article = Article.objects.filter(doi=doi)[0]
@@ -182,6 +193,12 @@ def get_article(search, research, number_threads=1):
     search_term = get_search_term(search)
     
     ID_list = Get_ID(search_term)
+    if ID_list == False:
+        time.sleep(5)
+        ID_list = Get_ID(search_term)
+        if ID_list == False:
+            return False
+
 
     # we distribute the job to the threads
     list_job = []

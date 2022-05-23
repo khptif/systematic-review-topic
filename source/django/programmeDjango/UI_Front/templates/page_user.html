@@ -13,12 +13,76 @@
             <p> last filtering research : <a href="table_choice?research_id={{research_id}}"> link </a> </p>
         </div>
     </div>
+    <div>
+        {{id_check}} id_check {{is_running}}
+    </div>
 
-    <div class='row'>
+    <div class='row' style='overflow:auto'>
+        <div class='col-12'>
+            <h3> Running Research Listing </h3>
+            <div class='bloc'>
+                <form action='' method='POST'>
+                {% csrf_token %}
+                {% for research in research_step_article%}
+                    <ul>
+                        <form action='' method='POST'>
+                            {% csrf_token %}
+                            <li> 
+                                &lt {{research.search}} &gt | step: "article" | progress: {{research | number_article }} / {{research.max_article}} articles 
+                                <input type=hidden name="research_id" value={{research.id}} >
+                                <input type=submit name=submit value="check"> 
+                                {%if id_check == research.id%}
+                                    <span> {{is_running}}</span>
+                                {%endif%}
+                                <input type=submit name=submit value="delete">
+                            </li> 
+                        </form>
+                    </ul>
+                {% endfor %}
+
+                {% for research in research_step_processing%}
+                    <ul>
+                        <form action='' method='POST'>
+                            {% csrf_token %}
+                            <li> 
+                                &lt {{research.search}} &gt | step: "processing articles" | progress: {{research | number_article_prepoc}} / {{research | total_article}} articles
+                                <input type=hidden name="research_id" value={{research.id}} >
+                                <input type=submit name=submit value="check">
+                                {%if id_check == research.id%}
+                                    <span> {{is_running}}</span>
+                                {%endif%}
+                                <input type=submit name=submit value="delete">
+                            </li> 
+                        </form>
+                    </ul>
+                {% endfor %}
+
+                {% for research in research_step_clustering%}
+                    <ul> 
+                        <form action='' method='POST'>
+                            {% csrf_token %}
+                            <li> 
+                                &lt {{research.search}} &gt | step: "clustering" | progress: {{research | number_trials}} / {{number_trials}} trials
+                                <input type=hidden name="research_id" value={{research.id}} >
+                                <input type=submit name=submit value="check">
+                                {%if id_check == research.id%}
+                                    <span> {{is_running}}</span>
+                                {%endif%}
+                                <input type=submit name=submit value="delete">
+                            </li> 
+                        </form>
+                    </ul>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+
+    <div class='row' style='overflow:auto'>
         <div class='col-12'>
             <h3> Historical Research Listing </h3>
             <div class='bloc'>
-                {% for research in research_list%}
+                {% for research in research_finished%}
                     <ul>
                         
                         <li> &lt {{research.search}} &gt | {{research | number_article}} articles | <a href="select?research_id={{research.id}}" > link </a></li> 

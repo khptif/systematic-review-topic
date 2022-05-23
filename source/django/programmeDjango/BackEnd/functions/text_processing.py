@@ -235,26 +235,14 @@ def create_ngrams(list_misspelled):
 
 def remove_common_and_unique(list_trigrams):
 
-    list_final = []
-    try:
-        common_words = TfidfVectorizer(min_df=1, max_df=0.50).fit(
-            " ".join(doc) for doc in list_trigrams
-        )
-        unique_words = TfidfVectorizer(min_df=2, max_df=1.00).fit(
-            " ".join(doc) for doc in list_trigrams
-        )
-
-        common_and_unique_words = TfidfVectorizer(min_df=2, max_df=0.50).fit(
-            " ".join(doc) for doc in list_trigrams
-        )
-        list_temporary = [
-            [word for word in doc if word not in common_and_unique_words.stop_words_]
-            for doc in list_trigrams
-        ]
-        list_final = [" ".join(doc) for doc in list_temporary]
-
-    except:
-        return list_final
+    #common_words = TfidfVectorizer(min_df=1, max_df=0.50).fit(" ".join(doc) for doc in list_trigrams)
+    #unique_words = TfidfVectorizer(min_df=2, max_df=1.00).fit(" ".join(doc) for doc in list_trigrams)
+    common_and_unique_words = TfidfVectorizer(min_df=2, max_df=0.50).fit(" ".join(doc) for doc in list_trigrams)
+    list_temporary = [
+        [word for word in doc if word not in common_and_unique_words.stop_words_]
+        for doc in list_trigrams
+    ]
+    list_final = [" ".join(doc) for doc in list_temporary]
 
     return list_final
 

@@ -1,5 +1,6 @@
 #! /bin/sh
 
+# we install docker in the host
 sudo apt-get remove docker docker-engine docker.io containerd runc
 
 sudo apt-get update
@@ -13,4 +14,10 @@ echo \
   
 sudo apt-get update
 sudo apt-get -y install docker-ce docker-ce-cli containerd.io
+
+# we create a repertory who will be a docker volume
+path_to_docker_volume=$(pwd)/docker_volume
+mkdir $path_to_docker_volume
+
+sudo docker volume create --name docker_volume --opt type=none --opt device=$path_to_docker_volume --opt o=bind
 

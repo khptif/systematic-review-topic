@@ -41,6 +41,11 @@ def get_max_article(search):
     return article_by_page * num_pages
 
 def extract_id(search_term):
+    """ 
+    input: search_term is the string that is send to the biorxiv.
+    output: a list of all the id article from biorxiv,
+            a dictionnary where the key is id article and value is the html code of the article. It corresponds to each entry.
+    """
     api_query = 'https://www.biorxiv.org/search/'
     query_base = api_query + search_term  
     
@@ -48,7 +53,11 @@ def extract_id(search_term):
     metadata ={}
     
     first_page_query = query_base
-    text = requests.get(first_page_query).text
+    try:
+        text = requests.get(first_page_query).text
+    except:
+        return [],{}
+    
     soup = BeautifulSoup(text, 'html.parser')
     last_str = soup.select_one('li.pager-last.last.odd a').string    
     num_pages = int(last_str)
@@ -56,7 +65,11 @@ def extract_id(search_term):
     for i in range(num_pages):
 
         query = query_base if i == 0 else query_base + '?page=' + str(i)
-        text = requests.get(query).text
+        try:
+            text = requests.get(query).text
+        except:
+            continue
+        
         soup = BeautifulSoup(text, 'html.parser')
         entries = soup.select('div.highwire-article-citation')
 
@@ -69,7 +82,8 @@ def extract_id(search_term):
 
 
 def extract_article(entry_id_list,entry,research):
-    """ input: a list of entry_id, the dictionnary with all entry and the research.
+    """ input:  a list of entry_id, 
+                the dictionnary with all entry and the research.
         For each id, we write the article and all data in our database"""
     
     size = len(entry_id_list)
@@ -110,14 +124,16 @@ def extract_article(entry_id_list,entry,research):
         except:
             abstract = ''
             
-        full_text = pdf.extract_full_text(url,"research_"+str(research.id) + "_id_" + str(entry_id))
-        full_text = remove_references(full_text)
-
-        #we write the article
+        #we write the article. We check if the article exist already. We check by doi.
         article = Article.objects.filter(doi = doi)
         if article.exists():
             article = article[0]
         else:
+            try:
+                full_text = pdf.extract_full_text(url,"research_"+str(research.id) + "_id_" + str(entry_id))
+                full_text = remove_references(full_text)
+            except:
+                full_text = ""
             article = Article.objects.create(title=title,doi=doi,abstract=abstract,full_text=full_text,publication=publication,url_file=url)
 
         # we bond the article to the research

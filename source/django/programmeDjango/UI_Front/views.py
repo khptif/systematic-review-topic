@@ -1,12 +1,14 @@
-from urllib.request import Request
 from django.shortcuts import render , redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login , logout
 import random
-import re
+import requests
+import json
+from BackEnd.functions.view_functions import max_article
 
 from UI_Front.models import *
 from DataBase.models import *
+from BackEnd.models import *
 
 from UI_Front.functions.select_functions import * 
 from UI_Front.functions.accueil_functions import *
@@ -15,6 +17,8 @@ from UI_Front.functions.login_functions import *
 from UI_Front.functions.user_page_functions import *
 from UI_Front.functions.utils_functions import *
 
+from programmeDjango.settings import BACKEND_HOST,BACKEND_PORT
+from programmeDjango.settings import NUMBER_TRIALS
 
 @login_required(login_url='/login')
 def page_accueil(request):
@@ -26,6 +30,7 @@ def page_accueil(request):
     variables['research_form'] = research_form
     variables['historical_form'] = historical_form
     variables['host'] = request.get_host()
+    variables['research_created'] = ""
 
     # if we receive POST form
     if request.method == 'POST':
@@ -35,7 +40,14 @@ def page_accueil(request):
             research_form = Research_form(request.POST)
             variables['research_form'] = research_form
             if research_form.is_valid():
-                variables['number_article'] = random.randint(0,100000)
+                search = research_form.cleaned_data['search']
+                r = requests.get("http://" + BACKEND_HOST + ":" + BACKEND_PORT + "/max_article?search=" + search)
+                if r.status_code < 400:
+                    data = json.loads(r.text)
+                    variables['number_article'] = data["max_article"]
+                else:
+                    variables['number_article'] = "error http status " + str(r.status_code)
+
         # if we give a new research
         elif submit == 'research':
             research_form = Research_form(request.POST)
@@ -72,15 +84,21 @@ def page_accueil(request):
             year_end = datetime.date(request.session['year_end'],1,1)
             search = request.session['search']
 
-            research = Research.objects.create(user=user,search=search,year_begin=year_begin,year_end=year_end)
+            total_article = max_article(search)
+            research = Research.objects.create(user=user,search=search,year_begin=year_begin,year_end=year_end,max_article=total_article)
 
             # set the keywords of the research
             # keywords
             for w in request.session['keywords']:
                 Keyword.objects.create(research=research,word=w)
 
-            #for test the UI_Front
-            mock_research(research)
+            #we send the request
+            r = requests.get("http://" + BACKEND_HOST + ":" + BACKEND_PORT + "/research?research_id=" + str(research.id))
+            if r.status_code < 400:
+                variables['research_created'] = "You research has been created and is running"
+            else:
+                research.delete()
+                variables['research_created'] = "error http status " + str(r.status_code) + " " + str(r.text)
 
 
         #if user search historical research
@@ -95,7 +113,8 @@ def page_accueil(request):
                 # we build a dict() : dict[research id] = list of keywords who match the search
                 research_list = dict()
                 for k in keywords:
-                    keyword_list = Keyword.objects.all().filter(word=k)
+                    # we take only research there are finish
+                    keyword_list = Keyword.objects.all().filter(word=k,research__is_finish=True)
                     for key in keyword_list:
                         if not key.research.id in research_list:
                             research_list[key.research.id] = []
@@ -155,8 +174,46 @@ def page_user(request):
     variables = dict()
     variables['user'] = request.user
 
-    variables['research_list'] = Research.objects.filter(user = request.user)
+    if request.method == "POST":
+        if "submit" in request.POST:
+            research_id = request.POST['research_id']
+            # if this is a request for check process
+            if request.POST['submit'] == "check":
+                r = requests.get("http://" + BACKEND_HOST + ":" + BACKEND_PORT + "/check?research_id=" + str(research_id))
+                if r.status_code < 400:
+                    data_json = json.loads(r.text)
+                    variables["id_check"] = research_id
+                    if data_json["is_running"]:
+                        variables["is_running"] = "running"
+                    else:
+                        variables["is_running"] = "not running"
+
+            if request.POST['submit'] == "delete":
+                requests.get("http://" + BACKEND_HOST + ":" + BACKEND_PORT + "/delete?research_id=" + str(research_id))
+
+    #we get user's research that are finished
+    variables['research_finished'] = Research.objects.filter(user = request.user, is_finish = True)
+    # we get user's research that are still running and in article's research step
+    variables['research_step_article'] = []
+    for r in  Research.objects.filter(user = request.user, is_running = True, step="article",is_finish = False):
+        variables['research_step_article'].append(r)
+    
+    # we get user's research that are still running and in preprocessing step. 
+    variables['research_step_processing'] = []
+    for r in  Research.objects.filter(user = request.user, is_running = True, step="processing",is_finish = False):
+        variables['research_step_processing'].append(r)
+
+    # we get user's research that are still running and in clustering step.
+    variables['research_step_clustering'] = []
+    for r in  Research.objects.filter(user = request.user, is_running = True, step="clustering",is_finish = False):
+        variables['research_step_clustering'].append(r)
+    
+    #we give the number of trials max
+    variables['number_trials'] = NUMBER_TRIALS
+
+
     a = TableChoice.objects.filter(user=request.user)
+    
     if a.exists():
         research_id = a[0].research.id
         variables['research_id'] = research_id

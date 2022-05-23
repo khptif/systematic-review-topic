@@ -1,23 +1,23 @@
+
 import numpy as np
+from BackEnd.models import Number_trial
 import pacmap
 import matplotlib.pyplot as plt
 import hdbscan
-from sklearn import metrics
+from sklearn import cluster, metrics
 
 set_seed = 5
-import os
+
 import optuna
-import functions.scatter_with_hover as scatter_with_hover
 import yake
 import joblib
-from multiprocessing import Process
 import pandas as pd
 from scipy import sparse
 
-#num_cores = multiprocessing.cpu_count()
+from DataBase.models import *
+from programmeDjango.settings import X_INTERVAL_LITTLE,X_INTERVAL_BIG,Y_INTERVAL_LITTLE,Y_INTERVAL_BIG
 
-
-def pacmap_default(tf_idf, save, path_data_folder, plot=True):
+def pacmap_default(tf_idf, plot=True):
 
     np.random.seed(set_seed)
 
@@ -29,8 +29,6 @@ def pacmap_default(tf_idf, save, path_data_folder, plot=True):
         fig, ax = plt.subplots(1, 1, figsize=(6, 6))
         ax.scatter(*embedding_2d.embedding_.T, s=0.6)
 
-    if save:
-        joblib.dump(embedding_2d, f"{path_data_folder}/embedding_2d.pkl")
 
     return embedding_2d
 
@@ -123,9 +121,10 @@ class pacmap_hdbscan:
 
 
 class Objective(object):
-    def __init__(self, tf_idf):
+    def __init__(self, tf_idf,research):
 
         self.tf_idf = tf_idf
+        self.research = research
 
     def __call__(self, trial):
 
@@ -153,18 +152,24 @@ class Objective(object):
             hdbscan_metric=hdbscan_metric,
         )
 
-        return study.evaluate()
+        return_data =study.evaluate()
+        # we increment the number of finish trial
+        Number_trial.objects.create(research=self.research)
+        return return_data 
 
 
-def optimization(tf_idf, name, save, path_data_folder, n_trials=100, n_core = 1):
+def optimization(research,tf_idf, name, n_trials=100, n_threads = 1):
 
-    
-    objective = Objective(tf_idf)
+    from programmeDjango.settings import DATABASES as db
+
+    db = db['default']
+    storage = 'postgresql://' + db['USER'] + ":" + db["PASSWORD"] + "@" + db['HOST'] + ":" + db["PORT"] + "/" + db["NAME"]   
+    objective = Objective(tf_idf,research)
+
     
     study = optuna.create_study(
         study_name=name,
-        storage='postgresql://db_user:1234@localhost/db_cluster',
-        #storage=f"sqlite:///{db_path}",
+        storage=storage,
         direction="maximize",
         load_if_exists=True,
     )
@@ -173,22 +178,17 @@ def optimization(tf_idf, name, save, path_data_folder, n_trials=100, n_core = 1)
             objective,
             n_trials=n_trials,
             gc_after_trial=True,
-            n_jobs=n_core,
+            n_jobs=n_threads,
             catch=(AttributeError, ValueError),
         )
    
-    print(study.best_trial)
-
-    if save:
-        joblib.dump(study, f"{path_data_folder}/study.pkl")
 
     return study
 
 
-def retrieve_best_study(tf_idf, study, save, path_data_folder):
+def retrieve_best_study(tf_idf, study):
 
-    print("Retrieving best study")
-
+   
     best_study = pacmap_hdbscan(
         tf_idf,
         pacmap_n_dims=study.best_trials[0].params["pacmap_n_dims"],
@@ -208,30 +208,13 @@ def retrieve_best_study(tf_idf, study, save, path_data_folder):
     best_study_embedding = best_study.embedding.embedding_
     best_study_clusterer = best_study.clusterer
 
-    if save:
-        joblib.dump(
-            best_study_embedding, f"{path_data_folder}/best_study_embedding.pkl"
-        )
-        pd.DataFrame(best_study_embedding).to_csv(
-            f"{path_data_folder}/best_study_embedding.csv", index=False
-        )
-        joblib.dump(
-            best_study_clusterer, f"{path_data_folder}/best_study_clusterer.pkl"
-        )
-
-    print("Best study retrieved")
 
     return best_study_clusterer
 
 
-def hover_with_keywords(
-    df, list_final, embedding_2d, best_study_clusterer, save, path_data_folder
-):
+def hover_with_keywords(research,list_id, list_final, embedding_2d, best_study_clusterer):
 
-    df_hover = df.copy()
-    df_hover = df_hover.fillna(np.nan)
-    df_hover["labels"] = ""
-    df_hover["text"] = [doc.split() for doc in list_final]
+    Texts = [doc.split() for doc in list_final]
     num_clusters = len(set(best_study_clusterer.labels_)) - (
         1 if -1 in best_study_clusterer.labels_ else 0
     )
@@ -241,28 +224,81 @@ def hover_with_keywords(
     )
 
     for cluster_num in range(num_clusters):
+        
+        # we get the position in list_final of the article from the same cluster
+        position_article = []
+        for i in range(len(best_study_clusterer.labels_)):
+            if best_study_clusterer.labels_[i] == cluster_num:
+                position_article.append(i)
+        
+        # we build a string with all words from all article from the current cluster
+        text_cluster = ""
+        for i in position_article:
+            text_cluster += "".join(list_final[i]) + " "
+        
+        if len(text_cluster)>20:
+            print("text"+text_cluster[0:20])
+        else:
+            print("text"+text_cluster)
 
-        w = np.where(best_study_clusterer.labels_ == cluster_num)[0]
-        text = " ".join([" ".join(doc) for doc in df_hover["text"][w]])
-
+        # we extract the keyword of this cluster
         try:
-            keywords = keywords_extractor.extract_keywords(text)
+            keywords = keywords_extractor.extract_keywords(text_cluster)
         except UnboundLocalError:
             keywords = []
+            print("keyword_error")
 
+        print("keywords" + str(keywords))
+        # we build a string with all the keywords
+        labels = ""
         if len(keywords) > 0:
             kws = []
             for kw in keywords:
                 kws.append(str(kw[1]))
-            df_hover["labels"][w] = ", ".join(kws)
+            labels = ", ".join(kws)
+        
+        
+        # we get the min and max for x and y so we can translate to
+        # [0,100]x[0,200] dimension i number of article < 10000, 1000x2000 if more 
+        x_min = 0
+        x_max = 0
+        y_min = 0
+        y_max = 0
+        for i in position_article:
+            pos_x = pd.DataFrame(embedding_2d.embedding_)[0][i]
+            pos_y = pd.DataFrame(embedding_2d.embedding_)[1][i]
 
-    labels, uniques = pd.factorize(df_hover["labels"])
-    df_hover["cluster"] = labels
-    df_hover["cluster"][np.where(df_hover["labels"] == "")[0]] = -1
-    df_hover["x"] = pd.DataFrame(embedding_2d.embedding_)[0]
-    df_hover["y"] = pd.DataFrame(embedding_2d.embedding_)[1]
+            if x_min > pos_x:
+                x_min = pos_x
+            if x_max < pos_x:
+                x_max = pos_x
+            if y_min > pos_y:
+                y_min = pos_y
+            if y_max < pos_y:
+                y_max = pos_y
+        if len(position_article) < 10000:
+            size_x = X_INTERVAL_LITTLE
+            size_y = Y_INTERVAL_LITTLE
+        else:
+            size_x = X_INTERVAL_BIG
+            size_y = Y_INTERVAL_BIG
+        # we write to database all cluster data
+        for i in position_article:
+            pos_x = pd.DataFrame(embedding_2d.embedding_)[0][i]
+            pos_x = ((size_x)/(x_max -x_min))*(pos_x - x_min)
 
-    if save:
-        joblib.dump(df_hover, f"{path_data_folder}/df_hover.pkl")
+            pos_y = pd.DataFrame(embedding_2d.embedding_)[1][i]
+            pos_y = ((size_y)/(y_max -y_min))*(pos_y - y_min)
 
-    return df_hover
+            article = Article.objects.filter(id=list_id[i])[0]
+            # we check if the article exist for the same research
+            c = Cluster.objects.filter(research = research,article=article)
+            if c.exists():
+                c = c[0]
+                c.topic = labels
+                c.pos_x = pos_x
+                c.pos_y = pos_y
+                c.save()
+            else:
+                Cluster.objects.create(research = research,article=article,topic=labels,pos_x=pos_x, pos_y=pos_y)
+        

@@ -7,8 +7,24 @@ import random
 
 
 from DataBase.models import *
+from BackEnd.models import *
 
 register = template.Library()
+
+@register.filter
+def number_trials(research):
+    number = Number_trial.objects.filter(research=research).count()
+    return str(number)
+
+@register.filter
+def total_article(research):
+    number = Research_Article.objects.filter(research=research).count()
+    return str(number)
+
+@register.filter
+def number_article_prepoc(research):
+    number = Number_preprocess.objects.filter(research=research).count()
+    return str(number)
 
 @register.filter
 def number_article(research):

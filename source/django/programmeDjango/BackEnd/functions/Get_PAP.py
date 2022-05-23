@@ -138,6 +138,7 @@ def get_article_parallel(begin_page,number_page,research,search_term):
                 bad_request = True
                 json_data = requests.get(query_base).json()
                 bad_request = False
+                break
             except:
                 time.sleep(1)
                 continue
@@ -166,8 +167,11 @@ def get_article_parallel(begin_page,number_page,research,search_term):
             if article.exists():
                 article = article[0]
             else:
-                full_text = pdf.extract_full_text(metadata['url'],"papetery_page_"+str(i)+ "_article_"+str(id)+"_research_"+str(research.id))
-                full_text = remove_references(full_text)
+                try:
+                    full_text = pdf.extract_full_text(metadata['url'],"papetery_page_"+str(i)+ "_article_"+str(id)+"_research_"+str(research.id))
+                    full_text = remove_references(full_text)
+                except:
+                    full_text = ""
                 title = metadata['title']
                 abstract = metadata['abstract']
                 url_file = metadata['url']

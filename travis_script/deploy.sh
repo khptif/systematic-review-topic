@@ -9,5 +9,14 @@ scripts=deploy_scripts
 # pour déployer un module, il faut lancer le script 'module_deploy.sh' et lui fournir en argument
 # le script avec les paramètres du module
 
-#module UI_FRONT
-./$scripts/module_deploy.sh $scripts/ui_front_param.sh
+# create and push docker image
+./$script/docker_image_push.sh $script/docker_image_param.sh
+
+#container UI_FRONT
+./$scripts/deploy_container.sh $scripts/ui_front_param.sh $script/docker_image_param.sh
+
+#container BackEnd
+./$scripts/deploy_container.sh $scripts/backend_param.sh $script/docker_image_param.sh
+
+#container Database
+./$scripts/deploy_container.sh $scripts/database_param.sh $script/docker_image_param.sh

@@ -10,4 +10,14 @@ class Preprocess_text(models.Model):
     id_article = models.IntegerField()
     text = models.TextField()
 
+class Number_trial(models.Model):
+    research = models.ForeignKey(Research,on_delete=models.CASCADE)
+
+class Number_preprocess(models.Model):
+    research = models.ForeignKey(Research,on_delete=models.CASCADE)
+
+class PID_Research(models.Model):
+    research = models.ForeignKey(Research,on_delete=models.CASCADE)
+    pid = models.IntegerField()
+
 # Create your models here.

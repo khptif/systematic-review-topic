@@ -49,7 +49,11 @@ def extract_id(search_term):
     metadata ={}
     
     first_page_query = query_base
-    text = requests.get(first_page_query).text
+    try:
+        text = requests.get(first_page_query).text
+    except:
+        return [],{}
+    
     soup = BeautifulSoup(text, 'html.parser')
     last_str = soup.select_one('li.pager-last.last.odd a').string
     num_pages = int(last_str)
@@ -57,7 +61,11 @@ def extract_id(search_term):
     for i in range(num_pages):
 
         query = query_base if i == 0 else query_base + '?page=' + str(i)
-        text = requests.get(query).text
+        try:
+            text = requests.get(query).text
+        except:
+            continue
+
         soup = BeautifulSoup(text, 'html.parser')
         entries = soup.select('div.highwire-article-citation')
 
@@ -111,14 +119,18 @@ def extract_article(entry_id_list,entry,research):
         except:
             abstract = ''
             
-        full_text = pdf.extract_full_text(url,"research_"+str(research.id) + "_id_" + str(entry_id))
-        full_text = remove_references(full_text)
+        
 
         #we write the article
         article = Article.objects.filter(doi = doi)
         if article.exists():
             article = article[0]
         else:
+            try:
+                full_text = pdf.extract_full_text(url,"research_"+str(research.id) + "_id_" + str(entry_id))
+                full_text = remove_references(full_text)
+            except:
+                full_text = ""
             article = Article.objects.create(title=title,doi=doi,abstract=abstract,full_text=full_text,publication=publication,url_file=url)
 
         # we bond the article to the research

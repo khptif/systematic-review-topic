@@ -1,157 +1,209 @@
-from concurrent.futures import thread
-from datetime import date
-from django.shortcuts import render
-from BackEnd.functions.Get_arXiV import get_article as arxiv,get_max_article as max_arxiv
-from BackEnd.functions.Get_biorXiv import get_article as biorxiv, get_max_article as max_biorxiv
-from BackEnd.functions.Get_medrXiv import get_article as medrxiv, get_max_article as max_medrxiv
-from BackEnd.functions.Get_PAP import get_article as pap, get_max_article as max_pap
+from django.http import HttpResponse
+
+from BackEnd.functions.view_functions import *
 
 import BackEnd.functions.text_processing as text_processing
 
 from DataBase.models import *
 from BackEnd.models import *
-from threading import Thread
-import time
+from UI_Front.models import *
 
-import joblib
+import os
+
+import json
 from sklearn.feature_extraction.text import TfidfVectorizer
+import signal
+from glob import glob
+
+
+from programmeDjango.settings import NUMBER_THREADS_ALLOWED
+from programmeDjango.settings import NUMBER_TRIALS
 
 # remove stopwords and one and two characters words
 list_stopwords = text_processing.create_stopwords()
 
 # Create your views here.
-
-def research (search,research,thread=1):
-
-    total = max_arxiv(search) + max_biorxiv(search) + max_medrxiv(search) + max_pap(search)
-    print("Total article: " + str(total))
-
-    arg = (search,research,thread)
-    thread_arxiv = Thread(target=arxiv,args=arg)
-    thread_biorxiv = Thread(target=biorxiv,args=arg)
-    thread_medrxiv = Thread(target=medrxiv,args=arg)
-    thread_pap = Thread(target=pap,args=arg)
-
-    thread_arxiv.start()
-    thread_biorxiv.start()
-    thread_medrxiv.start()
-    thread_pap.start()
-
-    temps = 0
-    max_time = 500
-    now = datetime.datetime.now()
-    while temps < max_time :
-        time.sleep(2)
-        article_total = Research_Article.objects.filter(research=research).count()
-        print("Total article: " + str(article_total) + " on " + str(total))
-
-        temps = datetime.datetime.now() - now
-        temps = temps.seconds
-    thread_arxiv.join()
-    thread_biorxiv.join()
-    thread_medrxiv.join()
-    thread_pap.join()
-
-
-def preprocessing_parallel(research,articles,numero):
-    """ 
-    The method get all the article from the research and preprocess the full text.
-    The format of the articles list is a QuerySet
-    It writes the result for each article in database in model "Preprocess_text"
-    This method will be parallelized
-    """
         
-    #list of the full_text from the article
-    full_text_list = articles.values_list('full_text', flat=True)
-    list_id = list(articles.values_list("id",flat=True))
+def get_max_article(request):
+    """Receive a http request with the search string in a json and return a json with the max article of the research"""
 
-    for i in range(len(list_id)):
-
-        print("\rarticle "+str(i)+" / "+str(len(list_id)) + " numero: " + str(numero)) 
-
-        id_article = list_id[i]
-        full_text = full_text_list[i]
-
-        # we check if this articles was already preprocessed for this research
-        if Preprocess_text.objects.filter(research = research, id_article=id_article).exists():
-            continue
-
-
-        # pre_processing
-        list_pre_processing = text_processing.pre_processing([full_text])
+    if not "search" in request.GET:
+        return HttpResponse(content="",status=400)
+    
+    search = request.GET["search"]
+    print(search)
+    if search == "":
+        return HttpResponse(json.dumps({"max_article":-1}))
+    else:
         
-        # define languages
-        list_languages,id_list = text_processing.define_languages(list_pre_processing,[id_article])
-
-        # sentences to words
-        list_words = list(text_processing.sent_to_words(list_languages))
-
-        # lemmatization keeping only noun, adj, vb, adv (only for english words)
-        list_lemmatized = text_processing.lemmatization(list_words,allowed_postags=["NOUN", "ADJ", "VERB", "ADV"],)
-
-        list_one_two = text_processing.remove_words(list_lemmatized, list_stopwords)
-
-        # remove misspelled words (only for english words)
-        list_misspelled = text_processing.remove_misspelled(list_one_two)
-
-        # create bigrams and trigrams
-        list_trigrams = text_processing.create_ngrams(list_misspelled)
-
-        # remove common words (>50% of articles) and unique words
-        list_common_and_unique = text_processing.remove_common_and_unique(list_trigrams)
-
-        # remove empty abstracts after text processing
-        list_id_final, list_final = text_processing.remove_empty([id_article], list_common_and_unique)
-
-        if list_id_final[0] == -1:
-            Preprocess_text.objects.create(research=research,id_article=id_article,text="")
-            continue
+        total = max_article(search)
+        return HttpResponse(json.dumps({"max_article" : total})) 
+            
+def launch_backend_process(request):
+    """ Receive a http request with the id of the research to make.
+        We check if all is good before launch the process.
+        We fork a new process where the back_process is launched and the parent send a httpresponse"""
         
-        Preprocess_text.objects.create(research=research,id_article=id_article,text=list_final[0])
+    #we check if there is the GET parameter for research id
+    research_id = -1
+    if not "research_id" in request.GET:
+        return HttpResponse(content="",status=400)
+    else:
+        research_id = request.GET["research_id"]
 
-def preprocessing(research,number_thread=1):
-    """ preprocessing of the articles of the research in parallel.
-    the output is the tfidf results"""
-
-    #we get the articles
-    articles = Article.objects.filter(research_article__research=research)
-
-    #we will ditribute the jobs among the threads
-    # the input is a list of article
-    list_jobs = []
-    number_article = articles.count()
-    number_job_by_thread = int(number_article / number_thread)
+    #we check if the id exists in database
+    research = Research.objects.filter(id=research_id)
+    if not research.exists():
+        return HttpResponse(content="This research doesn't exist",status=403)
+    else:
+        research = research[0]
     
-    for i in range(number_thread):
-        list_jobs.append(articles[i*number_job_by_thread : (i+1)*number_job_by_thread])
-    # the last jobs are given to the last thread. So there are one more thread.
-    list_jobs.append(articles[number_thread*number_job_by_thread :])
+    #we check if the research was already done
+    if research.is_finish:
+        return HttpResponse(content="This research was already done",status=403)
 
-    #We create the threads
-    list_threads = []
-    i=1
-    for articles in list_jobs:
+    #we check if the research is currently running
+    if research.is_running:
+        return HttpResponse(content="This research is already running",status=403)
 
-        list_threads.append(Thread(target=preprocessing_parallel,args=(research,articles,i)))
-        i +=1
+    #we check if the user is the owner of this research
+    #user = request.user
+    #if not user == research.user:
+    #    return HttpResponse(content="You don't own this research " + str(user.email) + " != " + str(research.user.email),status=403) 
     
-    #We start the threads and wait for their ending
-    for thread in list_threads:
-        thread.start()
-    for thread in list_threads:
-        thread.join()
-    
-    #we recuperate the results from preprocessing
-    preprocess = Preprocess_text.objects.filter(research=research).exclude(text="").order_by("id_article")
-    text_list = preprocess.values_list('text', flat=True)
-    id_list = preprocess.values_list('id_article',flat=True)
-    
-    tfidfVectorizer = TfidfVectorizer()
-    tf_idf = tfidfVectorizer.fit_transform(text_list)
+    # when we make some multiprocessing, in django, we have to close all connections to database before
+    from django import db
+    db.connections.close_all()
 
-    joblib.dump(tf_idf, f"BackEnd/data/tf_idf_research_{str(research.id)}.pkl")
-    joblib.dump(id_list,f"BackEnd/data/id_list_research_{str(research.id)}.pkl")
+    #we fork
+    pid = os.fork()
+    #parent process return httpresponse
+    if pid > 0:
+        pid = os.getpid()
+        PID_Research.objects.create(research=research,pid=pid)
+        back_process(research)
+    # child process
+    elif pid == 0:
+        return HttpResponse(content="the research is running",status = 200)
+    # if there is an error with forking, we return 500 error http
+    else:
+        return HttpResponse(content="Error with processing forking",status=500)
 
-    return tf_idf,id_list
+def check_process(request):
+    """we get the id of a research and return true or false if the process is running or not"""
+    #we check if there is the GET parameter for research id
+    research_id = -1
+    if not "research_id" in request.GET:
+        return HttpResponse(content="",status=400)
+    else:
+        research_id = request.GET["research_id"]
+
+    #we check if the id exists in database
+    research = Research.objects.filter(id=research_id)
+    if not research.exists():
+        return HttpResponse(content="This research desn't exist",status=403)
+    else:
+        research = research[0]
     
+    #we check if the research was already done
+    if research.is_finish:
+        return HttpResponse(content="This research was already done",status=403)
 
+    #we check if the research is currently running
+    if not research.is_running:
+        return HttpResponse(content="This research isn't running",status=403)
+
+    #we check if the user is the owner of this research
+    #user = request.user
+    #if not user == research.user:
+    #    return HttpResponse(content="You don't own this research",status=403)
+    
+    #we check if we have the pid of the research
+    pid = PID_Research.objects.filter(research=research)
+
+    if not pid.exists():
+        return HttpResponse(content="We don't have the pid of the process",status=500)
+    else:
+        pid = pid[0].pid
+    
+    #we check if the process is running
+    is_running = True
+    try:
+        os.kill(pid,0)
+        is_running = True
+    except:
+        is_running = False
+
+    return_data = json.dumps({"is_running":is_running})
+    return HttpResponse(content=return_data,status=200)
+
+
+def delete_process(request):
+    """We get the id of a research and we delete it"""
+    # the user can stop and delete the process who is running
+
+    #we check if there is the GET parameter for research id
+    research_id = -1
+    if not "research_id" in request.GET:
+        return HttpResponse(content="",status=400)
+    else:
+        research_id = request.GET["research_id"]
+
+    #we check if the id exists in database
+    research = Research.objects.filter(id=research_id)
+    if not research.exists():
+        return HttpResponse(content="This research desn't exist",status=403)
+    else:
+        research = research[0]
+    
+    #we check if the research was already done
+    if research.is_finish:
+        return HttpResponse(content="This research was already done",status=403)
+
+    #we check if the research is currently running
+    if not research.is_running:
+        return HttpResponse(content="This research isn't running",status=403)
+
+    #we check if the user is the owner of this research
+    #user = request.user
+    #if not user == research.user:
+    #    return HttpResponse(content="You don't own this research",status=403)
+    
+    #we check if we have the pid of the research
+    pid = PID_Research.objects.filter(research=research)
+
+    if not pid.exists():
+        return HttpResponse(content="We don't have the pid of the process",status=500)
+    else:
+        pid = pid[0].pid
+    
+    #we send the signal to the process
+    os.kill(int(pid), signal.SIGTERM)
+
+    #we delete in the database
+    Research.objects.filter(id=research_id).delete()
+
+    #we delete the pdf in "BackEnd/functions/download if exist "
+    for file in glob(f'BackEnd/functions/download/research_{research_id}*'):
+        os.remove(file)
+    
+    #we delete all intermediate file in "BackEnd/data"
+    for file in glob(f'BackEnd/data/*research_{research_id}*'):
+        os.remove(file)
+
+    return HttpResponse(contents='',status_code=200)
+
+#we launch a thread as daemon for the method "relaunch_if_fault" so if there are some research with fault,
+# it will automatically restart it and assign it a new pid
+# only if the role is Backend
+
+from programmeDjango.settings import IS_BACKEND
+
+if IS_BACKEND:
+    t = Thread(target=relaunch_if_fault,args={})
+    t.setDaemon(True)
+    t.start()
+
+    u = Thread(target=update_research,args={})
+    u.setDaemon(True)
+    u.start()

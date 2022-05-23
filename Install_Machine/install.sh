@@ -1,47 +1,47 @@
 #! /bin/sh
 
-# on définit l'environnement pour ce script
+# we build the options file
+. ./config_options.sh
+env_file=options.sh
 
-env_file=docker_environnment.env
-mv_env="sudo scp -i ${private_key_path} ./${env_file} ${user_name}@${host_adresse}:/home/${user_name}/${env_file}"
-
-# on construit le fichier environnement pour les containers dockers
-cd Machine_BD
-. ./parametres_machine.sh
-. ./parametres_BD.sh
-cd ..
-
-> $env_file
-echo DB_NAME=${db_name} >> $env_file
-echo DB_USER=${db_user_name} >> $env_file
-echo DB_PASSWORD=${password} >> $env_file
-echo DB_HOST=${host_adresse} >> $env_file
-
-# on configure la machine base de donnée
+# we configure DataBase Host
 cd Machine_BD
 . ./parametres_machine.sh
 . ./parametres_BD.sh
 ./install.sh
 cd ..
 
-sudo scp -i ${private_key_path} ./${env_file} ${user_name}@${host_adresse}:/home/${user_name}/${env_file}
 
-# on configure la machine front
+echo IS_DATABASE=${is_database} >> $env_file
+echo IS_BACKEND=${is_backend} >> $env_file
+echo IS_FRONTEND=${is_frontend} >> $env_file
+sudo scp -i ${private_key_path} ./${env_file} ${user_name}@${host_adresse}:/home/${user_name}/docker_volume/${env_file}
 
+
+# we configure FrontEnd Host
+. ./config_options.sh
 cd Machine_Front
 . ./parametres_machine.sh
 ./install.sh
 cd ..
 
-sudo scp -i ${private_key_path} ./${env_file} ${user_name}@${host_adresse}:/home/${user_name}/${env_file}
+echo IS_DATABASE=${is_database} >> $env_file
+echo IS_BACKEND=${is_backend} >> $env_file
+echo IS_FRONTEND=${is_frontend} >> $env_file
+sudo scp -i ${private_key_path} ./${env_file} ${user_name}@${host_adresse}:/home/${user_name}/docker_volume/${env_file}
 
-# on configure la machine back
 
+# we configure BackEnd Host
+. ./config_options.sh
 cd Machine_Back
 . ./parametres_machine.sh
 ./install.sh
 cd ..
 
-sudo scp -i ${private_key_path} ./${env_file} ${user_name}@${host_adresse}:/home/${user_name}/${env_file}
+echo IS_DATABASE=${is_database} >> $env_file
+echo IS_BACKEND=${is_backend} >> $env_file
+echo IS_FRONTEND=${is_frontend} >> $env_file
+sudo scp -i ${private_key_path} ./${env_file} ${user_name}@${host_adresse}:/home/${user_name}/docker_volume/${env_file}
+
 
 

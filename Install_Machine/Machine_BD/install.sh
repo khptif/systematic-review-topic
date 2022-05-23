@@ -13,7 +13,7 @@ echo $connect_ssh
 
 # on envoie le fichier script et on installe docker
 $connect_scp ../docker_install.sh ${adresse}:/home/${user_name}/docker_install.sh
-$connect_ssh "sudo ./docker_install.sh ; "
+$connect_ssh "./docker_install.sh ; "
 
 #on envoie le fichier script et on installe Postgresql et le configure
 $connect_scp ./sqlCommand.sh ${adresse}:/home/${user_name}/sqlCommand.sh
