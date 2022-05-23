@@ -8,7 +8,7 @@ settings_path=programmeDjango/settings.py
 
 # the data to access database
 sed -i "s/x_db_name_x/${DB_NAME}/g" $settings_path
-sed -i "s/x_db_user_name_x/${DB_USER_NAME}/g" $settings_path
+sed -i "s/x_db_user_name_x/${DB_USER}/g" $settings_path
 sed -i "s/x_db_password_x/${DB_PASSWORD}/g" $settings_path
 sed -i "s/x_db_host_x/${DB_HOST}/g" $settings_path
 
