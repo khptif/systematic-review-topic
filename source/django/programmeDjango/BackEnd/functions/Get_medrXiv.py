@@ -1,12 +1,6 @@
 
-import sys, os, time
-from urllib.request import urlopen
 
 import requests
-import json as JS
-import pandas as pd
-import numpy as np
-import unidecode as UN
 from bs4 import BeautifulSoup
 
 import BackEnd.functions.PDF_download as pdf 

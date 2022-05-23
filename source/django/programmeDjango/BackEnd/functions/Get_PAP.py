@@ -1,13 +1,6 @@
 
-from curses import meta
-import sys, os
-from unicodedata import name
-#urllib2 is used to simulate online files as local files
-from urllib.request import urlopen
+f
 import requests
-import json as JS
-#pandas is used for easy data analysis
-import pandas as pd
 #numpy is used for better arrays
 import numpy as np
 #Time for waiting

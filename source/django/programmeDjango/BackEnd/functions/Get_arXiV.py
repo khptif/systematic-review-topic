@@ -1,4 +1,4 @@
-import sys, os, time
+import time
 #urllib2 is used to simulate online files as local files
 from urllib.request import urlopen
 #ElementTree is used for xml parsing
@@ -6,7 +6,6 @@ from lxml import etree as ET
 
 #numpy is used for better arrays
 import numpy as np
-from requests import request
 #unidecoed is for removing accents
 import unidecode as UN
 
