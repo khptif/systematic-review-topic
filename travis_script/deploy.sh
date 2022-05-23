@@ -10,13 +10,13 @@ scripts=deploy_scripts
 # le script avec les paramètres du module
 
 # create and push docker image
-./$script/docker_image_push.sh $script/docker_image_param.sh
+./$script/docker_image_push.sh $scripts/docker_image_param.sh
 
 #container UI_FRONT
-./$scripts/deploy_container.sh $scripts/ui_front_param.sh $script/docker_image_param.sh
+./$scripts/deploy_container.sh $scripts/ui_front_param.sh $scripts/docker_image_param.sh
 
 #container BackEnd
-./$scripts/deploy_container.sh $scripts/backend_param.sh $script/docker_image_param.sh
+./$scripts/deploy_container.sh $scripts/backend_param.sh $scripts/docker_image_param.sh
 
 #container Database
-./$scripts/deploy_container.sh $scripts/database_param.sh $script/docker_image_param.sh
+./$scripts/deploy_container.sh $scripts/database_param.sh $scripts/docker_image_param.sh
