@@ -1,5 +1,4 @@
 
-f
 import requests
 #numpy is used for better arrays
 import numpy as np
