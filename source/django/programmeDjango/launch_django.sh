@@ -37,17 +37,20 @@ echo IS_FRONTEND=${IS_FRONTEND} >> $settings_path
 # give domaine name of the host in nginx conf file
 sed -i "s/x_domain_name_x/${HOST_DOMAIN}/g" /etc/nginx/sites-available/django_nginx.conf
 
-# according to the role assigned, we give the right urls.py file.
+# according to the role assigned, we give the right files
 if test ${IS_DATABASE} = True
 then
 	cp fichiers_settings/database/urls.py programmeDjango/urls.py
+	cp nginx_config/database/django_nginx.conf /etc/nginx/sites-available/django_nginx.conf
+	
 elif test ${IS_BACKEND} = True
 then
 	cp fichiers_settings/backend/urls.py programmeDjango/urls.py
+	cp nginx_config/backend/django_nginx.conf /etc/nginx/sites-available/django_nginx.conf
 elif test ${IS_FRONTEND} = True
 then
 	cp fichiers_settings/frontend/urls.py programmeDjango/urls.py
-	
+	cp nginx_config/frontend/django_nginx.conf /etc/nginx/sites-available/django_nginx.conf
 fi
 
 # start nginx

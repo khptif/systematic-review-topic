@@ -21,6 +21,7 @@ RUN python3 -m pip install -r programmeDjango/requirements.txt
 WORKDIR programmeDjango
 COPY fichiers_settings/settings.py programmeDjango/settings.py
 COPY fichiers_settings/ ./fichiers_settings/
+COPY nginx_config/ ./nginx_config/
 
 CMD ./launch_django.sh 
 
