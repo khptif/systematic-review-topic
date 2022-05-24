@@ -95,7 +95,7 @@ def page_accueil(request):
 
             #we send the request
             r = requests.get("http://" + BACKEND_HOST + ":" + BACKEND_PORT + "/research?research_id=" + str(research.id),allow_redirects=False, verify=False)
-            if r.status_code < 400:
+            if r.status_code < 300:
                 variables['research_created'] = "You research has been created and is running"
             else:
                 research.delete()
