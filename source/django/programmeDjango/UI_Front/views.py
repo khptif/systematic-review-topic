@@ -42,7 +42,7 @@ def page_accueil(request):
             if research_form.is_valid():
                 search = research_form.cleaned_data['search']
                 r = requests.get("http://" + BACKEND_HOST + ":" + BACKEND_PORT + "/max_article?search=" + search , allow_redirects=False, verify=False)
-                if r.status_code < 400:
+                if r.status_code < 300:
                     text = r.text
                     data = json.loads(r.text)
                     variables['number_article'] = data["max_article"]
