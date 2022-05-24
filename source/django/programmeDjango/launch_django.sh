@@ -53,6 +53,9 @@ then
 	cp nginx_config/frontend/django_nginx.conf /etc/nginx/sites-available/django_nginx.conf
 fi
 
+ln -s /etc/nginx/sites-available/django_nginx.conf /etc/nginx/sites-enabled/
+cat /etc/nginx/sites-available/django_nginx.conf
+
 # start nginx
 /etc/init.d/nginx start
 

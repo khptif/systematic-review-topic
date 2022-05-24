@@ -7,10 +7,6 @@ RUN apt-get -y install python3-psycopg2
 RUN apt-get -y install nginx
 
 
-COPY django_nginx.conf /etc/nginx/sites-available/django_nginx.conf
-RUN ln -s /etc/nginx/sites-available/django_nginx.conf /etc/nginx/sites-enabled/
-
-
 COPY programmeDjango/ ./programmeDjango/
 
 
