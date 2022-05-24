@@ -43,6 +43,7 @@ def page_accueil(request):
                 search = research_form.cleaned_data['search']
                 r = requests.get("http://" + BACKEND_HOST + ":" + BACKEND_PORT + "/max_article?search=" + search , allow_redirects=False, verify=False)
                 if r.status_code < 400:
+                    text = r.text
                     data = json.loads(r.text)
                     variables['number_article'] = data["max_article"]
                 else:
@@ -93,7 +94,7 @@ def page_accueil(request):
                 Keyword.objects.create(research=research,word=w)
 
             #we send the request
-            r = requests.get("http://" + BACKEND_HOST + ":" + BACKEND_PORT + "/research?research_id=" + str(research.id))
+            r = requests.get("http://" + BACKEND_HOST + ":" + BACKEND_PORT + "/research?research_id=" + str(research.id),allow_redirects=False, verify=False)
             if r.status_code < 400:
                 variables['research_created'] = "You research has been created and is running"
             else:
