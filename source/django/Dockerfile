@@ -8,6 +8,7 @@ RUN apt-get -y install nginx
 
 EXPOSE 443
 EXPOSE 80
+EXPOSE 8000
 
 COPY django_nginx.conf /etc/nginx/sites-available/django_nginx.conf
 RUN ln -s /etc/nginx/sites-available/django_nginx.conf /etc/nginx/sites-enabled/
