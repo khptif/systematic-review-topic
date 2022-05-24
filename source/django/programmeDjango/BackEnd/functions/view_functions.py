@@ -27,21 +27,30 @@ from programmeDjango.settings import NUMBER_TRIALS
 
 def max_article(search):
     article = 0
+    print("max_research")
     try:
         article += max_arxiv(search)
+        print("correct arxiv")
     except:
+        print("error arxiv")
         pass
     try:
         article += max_biorxiv(search)
+        print("correct bio")
     except:
+        print("error bio")
         pass
     try:
         article += max_medrxiv(search) 
+        print("correct med")
     except:
+        print("error med")
         pass
     try:
         article += max_pap(search) 
+        print("correct pap")
     except:
+        print("error pap")
         pass
 
     return  article
