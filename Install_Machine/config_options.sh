@@ -52,4 +52,5 @@ echo Y_INTERVAL_LITTLE=${Y_INTERVAL_LITTLE} >> $env_file
 echo X_INTERVAL_BIG=${X_INTERVAL_BIG} >> $env_file
 echo Y_INTERVAL_BIG=${Y_INTERVAL_BIG} >> $env_file
 echo UPDATE_INTERVAL=${UPDATE_INTERVAL} >> $env_file
+echo IS_MONOLITH=${IS_MONOLITH} >> $env_file
 

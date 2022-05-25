@@ -1,9 +1,11 @@
+
 from django.shortcuts import render , redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login , logout
 import random
 import requests
 import json
+from BackEnd.functions.Get_PAP import get_max_article
 from BackEnd.functions.view_functions import max_article
 
 from UI_Front.models import *
@@ -19,6 +21,11 @@ from UI_Front.functions.utils_functions import *
 
 from programmeDjango.settings import BACKEND_HOST,BACKEND_PORT
 from programmeDjango.settings import NUMBER_TRIALS
+from programmeDjango.settings import IS_MONOLITH
+
+if IS_MONOLITH:
+    from BackEnd.functions.view_functions import *
+
 
 @login_required(login_url='/login')
 def page_accueil(request):
@@ -41,13 +48,16 @@ def page_accueil(request):
             variables['research_form'] = research_form
             if research_form.is_valid():
                 search = research_form.cleaned_data['search']
-                r = requests.get("https://" + BACKEND_HOST + ":" + BACKEND_PORT + "/max_article?search=" + search )
-                if r.status_code < 300:
-                    text = r.text
-                    data = json.loads(r.text)
-                    variables['number_article'] = data["max_article"]
+                if IS_MONOLITH:
+                    variables['number_article'] = get_max_article(search)
                 else:
-                    variables['number_article'] = "error http status " + str(r.status_code)
+                    r = requests.get("https://" + BACKEND_HOST + ":" + BACKEND_PORT + "/max_article?search=" + search )
+                    if r.status_code < 300:
+                        text = r.text
+                        data = json.loads(r.text)
+                        variables['number_article'] = data["max_article"]
+                    else:
+                        variables['number_article'] = "error http status " + str(r.status_code)
 
         # if we give a new research
         elif submit == 'research':
@@ -94,12 +104,18 @@ def page_accueil(request):
                 Keyword.objects.create(research=research,word=w)
 
             #we send the request
-            r = requests.get("https://" + BACKEND_HOST + ":" + BACKEND_PORT + "/research?research_id=" + str(research.id))
-            if r.status_code < 300:
-                variables['research_created'] = "You research has been created and is running"
+            if IS_MONOLITH:
+                if monolith_launch_process(research):
+                    variables['research_created'] = "You research has been created and is running"
+                else:
+                    variables['research_created'] = "error in launchin research"
             else:
-                research.delete()
-                variables['research_created'] = "error http status " + str(r.status_code) + " " + str(r.text)
+                r = requests.get("https://" + BACKEND_HOST + ":" + BACKEND_PORT + "/research?research_id=" + str(research.id))
+                if r.status_code < 300:
+                    variables['research_created'] = "You research has been created and is running"
+                else:
+                    research.delete()
+                    variables['research_created'] = "error http status " + str(r.status_code) + " " + str(r.text)
 
 
         #if user search historical research

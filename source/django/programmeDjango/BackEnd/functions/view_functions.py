@@ -278,6 +278,33 @@ def back_process(research):
         PID_Research.objects.filter(research=research).delete()
         Number_preprocess.objects.filter(research = research).delete()
 
+def monolith_launch_process(research):
+    #we check if the research was already done
+    if research.is_finish:
+        return False
+
+    #we check if the research is currently running
+    if research.is_running:
+        return False
+
+    # when we make some multiprocessing, in django, we have to close all connections to database before
+    from django import db
+    db.connections.close_all()
+
+    #we fork
+    pid = os.fork()
+    #parent process return httpresponse
+    if pid > 0:
+        pid = os.getpid()
+        PID_Research.objects.create(research=research,pid=pid)
+        back_process(research)
+    # child process
+    elif pid == 0:
+        return True
+    # if there is an error with forking, we return 500 error http
+    else:
+        return False
+
 def relaunch_backprocess(research):
     """we define this method to run the method in another process and return with the child process.
         The goal is to not have the method running in a child process created by fork(). Otherwise,

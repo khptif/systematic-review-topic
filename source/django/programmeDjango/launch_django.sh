@@ -28,6 +28,7 @@ echo Y_INTERVAL_LITTLE=${Y_INTERVAL_LITTLE} >> $settings_path
 echo X_INTERVAL_BIG=${X_INTERVAL_BIG} >> $settings_path
 echo Y_INTERVAL_BIG=${Y_INTERVAL_BIG} >> $settings_path
 echo UPDATE_INTERVAL=${UPDATE_INTERVAL} >> $settings_path
+echo IS_MONOLITH=${IS_MONOLITH} >> $settings_path
 
 # parameters to know the role
 echo IS_DATABASE=${IS_DATABASE} >> $settings_path
