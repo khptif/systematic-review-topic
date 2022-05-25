@@ -7,11 +7,11 @@ export NUMBER_TRIALS=300
 
 #we define interval coordinate to display
 
-export X_INTERVAL_LITTLE=800
-export Y_INTERVAL_LITTLE=2000
+export X_INTERVAL_LITTLE=500
+export Y_INTERVAL_LITTLE=1000
 
 
-export X_INTERVAL_BIG=2000
+export X_INTERVAL_BIG=1000
 export Y_INTERVAL_BIG=4000
 
 #we define in seconds the interval between update research
