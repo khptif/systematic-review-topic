@@ -52,8 +52,8 @@ then
 	cp nginx_config/frontend/django_nginx.conf /etc/nginx/sites-available/django_nginx.conf
 fi
 
-ln -s /etc/nginx/sites-available/django_nginx.conf /etc/nginx/sites-enabled/
-cat /etc/nginx/sites-available/django_nginx.conf
+ln -s /etc/nginx/sites-available/django_nginx.conf /etc/nginx/sites-enabled/django_nginx.conf
+
 
 # give domaine name of the host in nginx conf file
 sed -i "s/x_domain_name_x/${HOST_DOMAIN}/g" /etc/nginx/sites-available/django_nginx.conf
@@ -65,16 +65,11 @@ sed -i "s/x_domain_name_x/${HOST_DOMAIN}/g" /etc/nginx/sites-available/django_ng
 python3 manage.py makemigrations
 python3 manage.py migrate
 
-if test ${IS_BACKEND} = True
-then
-	python3 manage.py runserver localhost:8000 >> ./docker_volume/test_runserv
-elif test ${IS_BACKEND} != True
-then
 #start django application
 uwsgi --socket django.sock --module programmeDjango.wsgi --daemonize=./docker_volume/log.log
 
 while true; do sleep 1000; done
 
-fi
+
 
 
