@@ -1,7 +1,7 @@
-UI_FRONT_HOST=195.15.243.118
+UI_FRONT_HOST=ui-front.systematic-review-topic-test.ch
 UI_FRONT_PORT=8000
 HOST_DOMAIN=ui-front.systematic-review-topic-test.ch
-BACKEND_HOST=195.15.241.83
+BACKEND_HOST=backend.systematic-review-topic-test.ch
 BACKEND_PORT=8000
 DB_NAME=test
 DB_USER=fatih
@@ -16,6 +16,7 @@ Y_INTERVAL_LITTLE=1000
 X_INTERVAL_BIG=1000
 Y_INTERVAL_BIG=4000
 UPDATE_INTERVAL=2700000
+IS_MONOLITH=False
 IS_DATABASE=False
 IS_BACKEND=True
 IS_FRONTEND=False
