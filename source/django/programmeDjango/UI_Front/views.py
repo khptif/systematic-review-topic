@@ -232,9 +232,10 @@ def page_select(request):
             research_id = int(request.POST.get("research_id"))
             research = Research.objects.get(id=research_id)
             # we transform the POST data
-            blocks_filters = filters_manager(request.POST)
+            blocks_filters = filters_manager(research,request.POST)
             # we get a list of id article who match all the filters
             id_article_list = get_Articles_Filtered(research=research,filters=blocks_filters)
+            print(len(id_article_list))
             # we save this list in session user
             request.session['id_article_list'] = id_article_list
             request.session['id_research'] = research_id

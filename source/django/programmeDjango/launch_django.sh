@@ -34,8 +34,7 @@ echo IS_DATABASE=${IS_DATABASE} >> $settings_path
 echo IS_BACKEND=${IS_BACKEND} >> $settings_path
 echo IS_FRONTEND=${IS_FRONTEND} >> $settings_path
 
-# give domaine name of the host in nginx conf file
-sed -i "s/x_domain_name_x/${HOST_DOMAIN}/g" /etc/nginx/sites-available/django_nginx.conf
+
 
 # according to the role assigned, we give the right files
 if test ${IS_DATABASE} = True
@@ -56,6 +55,9 @@ fi
 ln -s /etc/nginx/sites-available/django_nginx.conf /etc/nginx/sites-enabled/
 cat /etc/nginx/sites-available/django_nginx.conf
 
+# give domaine name of the host in nginx conf file
+sed -i "s/x_domain_name_x/${HOST_DOMAIN}/g" /etc/nginx/sites-available/django_nginx.conf
+
 # start nginx
 /etc/init.d/nginx start
 
@@ -63,9 +65,16 @@ cat /etc/nginx/sites-available/django_nginx.conf
 python3 manage.py makemigrations
 python3 manage.py migrate
 
+if test ${IS_BACKEND} = True
+then
+	python3 manage.py runserver localhost:8000 >> ./docker_volume/test_runserv
+elif test ${IS_BACKEND} != True
+then
 #start django application
 uwsgi --socket django.sock --module programmeDjango.wsgi --daemonize=./docker_volume/log.log
 
 while true; do sleep 1000; done
+
+fi
 
 

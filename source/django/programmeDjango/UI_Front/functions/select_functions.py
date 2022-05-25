@@ -3,17 +3,33 @@ from DataBase.models import *
 from UI_Front.functions.utils_functions import *
 
 
-def filters_manager(post_data):
-    """ We give the dictionnary with post data and return a dictionnary:
-        # filters[i] = one filter block
-        # filters[i]['topic'] = list of topic, 
-        # ['author'] = list of author, 
-        # ['neighbour'] = list of article we want neighbour article,
-        # ['keyword'] = list of keywords"""
+def filters_manager(research,post_data):
+    """
+    We first give the research object.
+    We secondly give the dictionnary with post data and return a dictionnary:
+    input:  dictionnary with key in format= "filter_X_Y" X is the numero of the filter and Y the numero of element in the filter
+            value is a string. The format of each string is
+            "Type:data_type;name_value:value;"
+            for data_type = topic -> "Type:topic;topic_name:name_of_topic" name of topic is in format [A-Za-z0-9_,\-\s]+ .
+            for data_type = author -> "Type:author;last_name:name;first_name:name;" name format is [A-Za-z0-9\-\s_]. It can be without name
+            for data_type = keyword -> "Type:keyword;keyword:value;" the value can be [A-Za-z0-9\-\s_]
+            for data_type = neighbour -> "Type:neighbour;DOI:value;"
+
+    output: dictionnary in this format
+            dict["filter_[0-9]+"] . The key represent the name of a filter and the value is a dictionnary in this format:
+                dict["type of value"] = list of these value.
+                type of value = 'topic', value = ["topic1","topic2",etc...], topic name
+                type of value = 'author', value = a queryset of the Author objects that last_name and/or first_name match
+                type of value = 'keyword', value = ["key1","key2",etc...]
+                type of value = 'neighbour' value = [article_object that has the same doi in input]
+    """
+    print(post_data)
     filters = dict()
     for key,value in post_data.items():
-        filter_name = re.findall("^filter_[0-9]+",key)
+
+        value = value[0]
         # if this is a filter post data
+        filter_name = re.findall("^filter_[0-9]+",key)
         if filter_name:
             filter_name = filter_name[0]
             # we check if this a filter we have already meet
@@ -22,12 +38,14 @@ def filters_manager(post_data):
             # we check the type of filter
             type = re.findall("^Type:[a-z]+",value)
             type = type[0].replace("Type:","")
+
             #we check all type
             if type=='topic':
-                topic_name = re.findall("topic_name:[A-Za-z0-9_\-\s]+",value)
+                topic_name = re.findall("topic_name:[A-Za-z0-9_,\-\s]+",value)
                 topic_name = topic_name[0].replace("topic_name:","")
                 if not 'topic' in filters[filter_name]:
                     filters[filter_name]['topic'] = []
+
                 filters[filter_name]['topic'].append(topic_name)
                 
             elif type=='author':
@@ -63,7 +81,8 @@ def filters_manager(post_data):
                 #if doesn't exist, we continue on next iteration
                 if not authors_list.exists():
                     continue
-
+                
+                #we check if we already have a subdictionnary with key "author"
                 if not 'author' in filters[filter_name]:
                     filters[filter_name]['author'] =[]
                 
@@ -84,8 +103,10 @@ def filters_manager(post_data):
 
                 if not 'neighbour' in filters[filter_name]:
                     filters[filter_name]['neighbour'] = []
-                filters[filter_name]['neighbour'].append(doi)
-            
+                #we check if the doi match with one of the article of the research
+                article = Article.objects.filter(doi=doi,research_article__research=research)
+                if article.exists():
+                    filters[filter_name]['neighbour'].append(article[0])
             else:
                 continue
 
@@ -104,7 +125,7 @@ def get_Articles_Filtered(research,filters):
     # we check in these order: topic,author,Doi and keyword
     # for all block filters. In a block, logical operation is AND
 
-
+    print(filters)
     for _ , filter in filters.items():
         
         #as the logical operation is AND, we define a first list of article
@@ -118,10 +139,12 @@ def get_Articles_Filtered(research,filters):
         #we check topic filters
         if 'topic' in filter:
             for topic in filter['topic']:
+                print("topic = " + topic )
                 # we get all cluster object with the topic
                 cluster_list = Cluster.objects.filter(topic=topic, research=research)
                 # if this is the first filter in this block filter, the initial set of article
                 # is the article where there is a match with the topic in cluster objects
+                print(cluster_list.count())
                 if first:
                     for cluster in cluster_list:
                         article_list.append(cluster.article)
