@@ -73,8 +73,8 @@ then
 #start django application
 uwsgi --socket django.sock --module programmeDjango.wsgi --daemonize=./docker_volume/log.log
 
-
+while true; do sleep 1000; done
 
 fi
-while true; do sleep 1000; done
+
 
