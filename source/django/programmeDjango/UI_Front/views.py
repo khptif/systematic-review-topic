@@ -194,19 +194,26 @@ def page_user(request):
     if request.method == "POST":
         if "submit" in request.POST:
             research_id = request.POST['research_id']
+            research = Research.objects.get(id=research_id)
             # if this is a request for check process
             if request.POST['submit'] == "check":
-                r = requests.get("http://" + BACKEND_HOST + ":" + BACKEND_PORT + "/check?research_id=" + str(research_id))
-                if r.status_code < 400:
-                    data_json = json.loads(r.text)
-                    variables["id_check"] = research_id
-                    if data_json["is_running"]:
-                        variables["is_running"] = "running"
-                    else:
-                        variables["is_running"] = "not running"
+                if IS_MONOLITH:
+                    variables["is_running"] = check_monolith(research)
+                else:
+                    r = requests.get("https://" + BACKEND_HOST + ":" + BACKEND_PORT + "/check?research_id=" + str(research_id))
+                    if r.status_code < 400:
+                        data_json = json.loads(r.text)
+                        variables["id_check"] = research_id
+                        if data_json["is_running"]:
+                            variables["is_running"] = "running"
+                        else:
+                            variables["is_running"] = "not running"
 
             if request.POST['submit'] == "delete":
-                requests.get("http://" + BACKEND_HOST + ":" + BACKEND_PORT + "/delete?research_id=" + str(research_id))
+                if IS_MONOLITH:
+                    delete_monolith(research)
+                else:
+                    requests.get("https://" + BACKEND_HOST + ":" + BACKEND_PORT + "/delete?research_id=" + str(research_id))
 
     #we get user's research that are finished
     variables['research_finished'] = Research.objects.filter(user = request.user, is_finish = True)

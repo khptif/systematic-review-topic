@@ -352,3 +352,57 @@ def update_research():
         for research in research_list:
             relaunch_backprocess(research)
             time.sleep(3600)
+
+def check_monolith(research):
+    """we get the id of a research and return true or false if the process is running or not"""
+    
+    #we check if the research was already done
+    if research.is_finish:
+        return False
+
+    #we check if the research is currently running
+    if not research.is_running:
+        return False
+ 
+    #we check if we have the pid of the research
+    pid = PID_Research.objects.filter(research=research)
+
+    if not pid.exists():
+        return False
+    else:
+        pid = pid[0].pid
+    
+    #we check if the process is running
+    is_running = True
+    try:
+        os.kill(pid,0)
+        return True
+    except:
+        return False
+
+def delete_monolith(research):
+     
+    import signal
+    #we check if we have the pid of the research
+    pid = PID_Research.objects.filter(research=research)
+
+    if not pid.exists():
+        return False
+    else:
+        pid = pid[0].pid
+    
+    #we send the signal to the process
+    os.kill(int(pid), signal.SIGTERM)
+
+    #we delete in the database
+    Research.objects.filter(id=research.id).delete()
+
+    #we delete the pdf in "BackEnd/functions/download if exist "
+    for file in glob(f'BackEnd/functions/download/research_{research.id}*'):
+        os.remove(file)
+    
+    #we delete all intermediate file in "BackEnd/data"
+    for file in glob(f'BackEnd/data/*research_{research.id}*'):
+        os.remove(file)
+
+    return True
