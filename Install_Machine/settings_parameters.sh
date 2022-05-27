@@ -18,5 +18,3 @@ export Y_INTERVAL_BIG=4000
 # we define 1 month
 export UPDATE_INTERVAL=2700000
 
-#is the app in one monolith block or on different module
-export IS_MONOLITH=False

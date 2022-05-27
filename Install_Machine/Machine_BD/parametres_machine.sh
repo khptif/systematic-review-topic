@@ -8,3 +8,4 @@ export host_port=8000
 export is_database=True
 export is_backend=False
 export is_frontend=False
+export is_monolith=False

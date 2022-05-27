@@ -10,3 +10,4 @@ export host_domain=backend.systematic-review-topic-test.ch
 export is_database=False
 export is_backend=True
 export is_frontend=False
+export is_monolith=False

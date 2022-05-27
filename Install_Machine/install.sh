@@ -11,7 +11,7 @@ cd Machine_BD
 ./install.sh
 cd ..
 
-
+echo IS_MONOLITH=${is_monolith} >> $env_file
 echo IS_DATABASE=${is_database} >> $env_file
 echo IS_BACKEND=${is_backend} >> $env_file
 echo IS_FRONTEND=${is_frontend} >> $env_file
@@ -25,6 +25,7 @@ cd Machine_Front
 ./install.sh
 cd ..
 
+echo IS_MONOLITH=${is_monolith} >> $env_file
 echo IS_DATABASE=${is_database} >> $env_file
 echo IS_BACKEND=${is_backend} >> $env_file
 echo IS_FRONTEND=${is_frontend} >> $env_file
@@ -38,6 +39,21 @@ cd Machine_Back
 ./install.sh
 cd ..
 
+echo IS_MONOLITH=${is_monolith} >> $env_file
+echo IS_DATABASE=${is_database} >> $env_file
+echo IS_BACKEND=${is_backend} >> $env_file
+echo IS_FRONTEND=${is_frontend} >> $env_file
+sudo scp -i ${private_key_path} ./${env_file} ${user_name}@${host_adresse}:/home/${user_name}/docker_volume/${env_file}
+
+
+# we configure Monolith Host
+. ./config_options.sh
+cd Machine_Mono
+. ./parametres_machine.sh
+./install.sh
+cd ..
+
+echo IS_MONOLITH=${is_monolith} >> $env_file
 echo IS_DATABASE=${is_database} >> $env_file
 echo IS_BACKEND=${is_backend} >> $env_file
 echo IS_FRONTEND=${is_frontend} >> $env_file
