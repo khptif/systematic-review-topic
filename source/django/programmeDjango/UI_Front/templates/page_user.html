@@ -62,7 +62,7 @@
                         <form action='' method='POST'>
                             {% csrf_token %}
                             <li> 
-                                &lt {{research.search}} &gt | step: "clustering" | progress: {{research | number_trials}} / {{number_trials}} trials
+                                &lt {{research.search}} &gt | step: "clustering" | progress: {{research | number_trials}} / {{number_trials}} trials | best dbcv: {{research.best_dbcv}}
                                 <input type=hidden name="research_id" value={{research.id}} >
                                 <input type=submit name=submit value="check">
                                 {%if id_check == research.id%}

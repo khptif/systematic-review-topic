@@ -206,16 +206,9 @@ def get_Articles_Filtered(research,filters):
         
         #we check neighbour filter
         if 'neighbour' in filter:
-            for doi in filter['neighbour']:
-                #we retrieve the article. If doesn't exist, it give us an empty set and we continue to next block filter
-                string_reg = r".*" + doi + r".*"
-                article_center = Article.objects.filter(doi__iregex=string_reg, research=research)
-                if not article_center.exists():
-                    empty = True
-                    break
-                # we get nearest neighbour. By default, the fonction neighbour_article get 5 article
+            for article_center in filter['neighbour']:
                 
-                article_center = article_center[0]
+                # we get nearest neighbour. By default, the fonction neighbour_article get 5 article
                 neighbour_articles_list = neighbour_article(article=article_center,research=research)
                 
                 # if first, the initial list is composed from the nearest neighbour of the first article
@@ -226,7 +219,7 @@ def get_Articles_Filtered(research,filters):
                     continue
                 next_list = []
 
-                # we check if there ar similar article
+                # we check if there are similar article
                 for article in neighbour_articles_list:
                     if article in article_list:
                         next_list.append(article)

@@ -75,3 +75,55 @@ class test_filters_manager(TestCase):
         article = Article.objects.create(doi=doi)
         input = {"filter_0_1": ["Type:neighbour;DOI:{doi};".format(doi=doi)]}
         output_expected = {"filter_0":{"neighbour":[article]}}
+        output_result = filters_manager(False,input)
+        self.assertEqual(output_expected,output_result)
+
+    def test_alltogether(self):
+        topic="topic_test"
+
+        last_name="test1"
+        first_name="test2"
+        author=Author.objects.create(last_name=last_name,first_name=first_name)
+
+        keyword = "key_test"
+
+        doi = "1234"
+        article = Article.objects.create(doi=doi)
+
+        input = {   "filter_0_1": ["Type:topic;topic_name:{topic}".format(topic=topic)],
+                    "filter_0_2":["Type:author;last_name:{last_name};first_name:{first_name};".format(last_name=last_name,first_name=first_name)],
+                    "filter_0_3":["Type:keyword;keyword:{key};".format(key=keyword)],
+                    "filter_0_4" :["Type:neighbour;DOI:{doi};".format(doi=doi)]}
+
+        output_expected = {"filter_0" : {"topic":[topic],"author":[author],"keyword":[keyword],"neighbour":[article]}}
+        output_result = filters_manager(False,input)
+        self.assertEqual(output_expected,output_result)
+
+    def test_alltogether_2_filter(self):
+        """ we add a supplementary filter and test the same way than "test_alltogether"""
+
+        topic="topic_test"
+
+        last_name="test1"
+        first_name="test2"
+        author=Author.objects.create(last_name=last_name,first_name=first_name)
+
+        keyword = "key_test"
+
+        doi = "1234"
+        article = Article.objects.create(doi=doi)
+
+        input = {   "filter_0_1": ["Type:topic;topic_name:{topic}".format(topic=topic)],
+                    "filter_0_2":["Type:author;last_name:{last_name};first_name:{first_name};".format(last_name=last_name,first_name=first_name)],
+                    "filter_0_3":["Type:keyword;keyword:{key};".format(key=keyword)],
+                    "filter_0_4" :["Type:neighbour;DOI:{doi};".format(doi=doi)],
+
+                    "filter_1_1": ["Type:topic;topic_name:{topic}".format(topic=topic)],
+                    "filter_1_2":["Type:author;last_name:{last_name};first_name:{first_name};".format(last_name=last_name,first_name=first_name)],
+                    "filter_1_3":["Type:keyword;keyword:{key};".format(key=keyword)],
+                    "filter_1_4" :["Type:neighbour;DOI:{doi};".format(doi=doi)]}
+
+        output_expected = { "filter_0" : {"topic":[topic],"author":[author],"keyword":[keyword],"neighbour":[article]},
+                            "filter_1" : {"topic":[topic],"author":[author],"keyword":[keyword],"neighbour":[article]}}
+        output_result = filters_manager(False,input)
+        self.assertEqual(output_expected,output_result)

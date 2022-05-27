@@ -159,6 +159,12 @@ class Objective(object):
 
         # we increment the number of finish trial
         Number_trial.objects.create(research=self.research)
+        # we write the score if it is greater
+        current_score = self.research.best_dbcv
+        new_score = study.score
+        if new_score > current_score:
+            self.research.best_dbcv = new_score
+            self.research.save()
         return return_data 
 
 
