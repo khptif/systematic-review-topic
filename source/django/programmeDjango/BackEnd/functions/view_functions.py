@@ -25,6 +25,12 @@ list_stopwords = text_processing.create_stopwords()
 from programmeDjango.settings import NUMBER_THREADS_ALLOWED
 from programmeDjango.settings import NUMBER_TRIALS
 
+# all research processing will be done in a new thread. We keep the thread object
+# to check if it is still alive
+# the key is the research id and the value is the thread object
+list_thread = dict()
+
+
 def max_article(search):
     article = 0
     print("max_research")
@@ -57,7 +63,9 @@ def max_article(search):
 
 def make_research (search,research,thread=1):
 
-    
+    # we delete all objects Research_Article
+    Research_Article.objects.filter(research=research).delete()
+
     arg = (search,research,thread)
     thread_arxiv = Thread(target=arxiv,args=arg)
     thread_biorxiv = Thread(target=biorxiv,args=arg)
@@ -70,9 +78,13 @@ def make_research (search,research,thread=1):
     thread_pap.start()
 
     thread_arxiv.join()
+    print("fin arxiv")
     thread_biorxiv.join()
+    print("fin biorxiv")
     thread_medrxiv.join()
+    print("fin med")
     thread_pap.join()
+    print("fin pap")
 
 
 def preprocessing_parallel(research,articles,corpus):
@@ -140,6 +152,9 @@ def make_preprocessing(research,corpus="abstract",number_thread=1):
     """ preprocessing of the articles of the research in parallel.
     the output is the tfidf results. We can use the abstract ="abstract" or the full_text="full_text" or the both = "both" """
 
+    #we clear the ancient number of preprocess article
+    Preprocess_text.objects.filter(research=research).delete()
+
     #we get the articles
     articles = Article.objects.filter(research_article__research=research)
 
@@ -201,6 +216,11 @@ def make_preprocessing(research,corpus="abstract",number_thread=1):
 
 def make_cluster(research,list_id,list_final,tf_idf,n_trials,n_threads):
     
+    #we check the number of trial alreadyaccomplished and give only the unaccomplished number of trials
+    trials_finished = Number_trial.objects.filter(research=research).count()
+    n_trials = n_trials - trials_finished
+    if n_trials <= 0:
+        return True
     # run 2d pacmap with default values
     embedding_2d = clustering.pacmap_default(tf_idf)
 
@@ -233,7 +253,6 @@ def back_process(research):
 
     research.is_running = True
     research.save()
-    #we check in which step is the research
     if research.step == "article":
 
         search = research.search
@@ -275,8 +294,8 @@ def back_process(research):
 
         Preprocess_text.objects.filter(research=research).delete()
         Number_preprocess.objects.filter(research=research).delete()
-        PID_Research.objects.filter(research=research).delete()
-        Number_preprocess.objects.filter(research = research).delete()
+        Number_trial.objects.filter(research=research).delete()
+        del list_thread[research.id]
 
 def monolith_launch_process(research):
     #we check if the research was already done
@@ -287,59 +306,46 @@ def monolith_launch_process(research):
     if research.is_running:
         return False
 
-    # when we make some multiprocessing, in django, we have to close all connections to database before
-    from django import db
-    db.connections.close_all()
+    research_id = research.id
+    list_thread[research_id] = Thread(target=back_process,args=[research])
+    list_thread[research_id].setDaemon(True)
+    list_thread[research_id].start()
 
-    #we fork
-    pid = os.fork()
-    #parent process return httpresponse
-    if pid > 0:
-        pid = os.getpid()
-        PID_Research.objects.create(research=research,pid=pid)
-        back_process(research)
-    # child process
-    elif pid == 0:
-        return True
-    # if there is an error with forking, we return 500 error http
-    else:
-        return False
-
-def relaunch_backprocess(research):
-    """we define this method to run the method in another process and return with the child process.
-        The goal is to not have the method running in a child process created by fork(). Otherwise,
-        the package optuna who use OpenMP get error."""
-    from django import db
-    db.connections.close_all()
-    #we fork
-    pid = os.fork()
-    #parent process return httpresponse
-    if pid > 0:
-        pid = os.getpid()
-        old_pid = PID_Research.objects.filter(research=research).delete()
-        PID_Research.objects.create(research=research,pid=pid)
-        back_process(research)
-    # child process
-    elif pid == 0:
-        return True
-    else:
-        return False
+    return True
+    
 
 def relaunch_if_fault():
-    """This is a infiny loop who check if there is a research who is running but there is no more process with his associated pid"""
+    """This is a infiny loop who check if there is a research who is running but there is no more thread alive."""
 
     while True:
         research_list = Research.objects.filter(is_running = True)
 
         for research in research_list:
-            pid = PID_Research.objects.filter(research=research)
-            try:
-                pid = pid[0].pid
-                os.kill(pid, 0)
-                time.sleep(5)
-            except OSError:
-                # the process doesn't exists anymore so we restart it
-                relaunch_backprocess(research)
+
+            #we check if the research has his own entry
+            if not research.id in list_thread:
+                list_thread[research.id] = Thread(target=back_process,args=[research])
+                list_thread[research.id].setDaemon(True)
+                list_thread[research.id].start()
+                continue
+
+            t = list_thread[research.id]
+            if not t.is_alive():
+                # if the thread is not alive, we check if the the research is already finished
+                r = Research.objects.filter(id=research.id)
+                # if the research exist no more, it means it was deleted and it's ok that the thread is not running
+                # and we pass to next iteration
+                if not r.exists():
+                    continue
+                else:
+                    r = r[0]
+                    if r.is_running:
+                        #if the research is_running is true, we recreate a new thread
+                        list_thread[research.id] = Thread(target=back_process,args=[research])
+                        list_thread[research.id].setDaemon(True)
+                        list_thread[research.id].start()
+                    else:
+                        continue
             
             
 def update_research():
@@ -350,11 +356,13 @@ def update_research():
         time.sleep(UPDATE_INTERVAL)
         research_list = Research.objects.filter(is_finish = True)
         for research in research_list:
-            relaunch_backprocess(research)
+            list_thread[research.id] = Thread(target=back_process,args=[research])
+            list_thread[research.id].setDaemon(True)
+            list_thread[research.id].start()
             time.sleep(3600)
 
 def check_monolith(research):
-    """we get the id of a research and return true or false if the process is running or not"""
+    """we check if the thread of the research is alive"""
     
     #we check if the research was already done
     if research.is_finish:
@@ -363,37 +371,20 @@ def check_monolith(research):
     #we check if the research is currently running
     if not research.is_running:
         return False
- 
-    #we check if we have the pid of the research
-    pid = PID_Research.objects.filter(research=research)
 
-    if not pid.exists():
+    # we check if there is a thread for the research
+    if not research.id in list_thread:
         return False
-    else:
-        pid = pid[0].pid
     
-    #we check if the process is running
-    is_running = True
-    try:
-        os.kill(pid,0)
+    #we check if the thread is running
+    if list_thread[research.id].is_alive():
         return True
-    except:
+    else:
         return False
 
 def delete_monolith(research):
      
-    import signal
-    #we check if we have the pid of the research
-    pid = PID_Research.objects.filter(research=research)
-
-    if not pid.exists():
-        return False
-    else:
-        pid = pid[0].pid
     
-    #we send the signal to the process
-    os.kill(int(pid), signal.SIGTERM)
-
     #we delete in the database
     Research.objects.filter(id=research.id).delete()
 

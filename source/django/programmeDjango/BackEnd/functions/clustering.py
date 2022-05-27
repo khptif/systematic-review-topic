@@ -17,6 +17,9 @@ from scipy import sparse
 from DataBase.models import *
 from programmeDjango.settings import X_INTERVAL_LITTLE,X_INTERVAL_BIG,Y_INTERVAL_LITTLE,Y_INTERVAL_BIG
 
+import os
+import signal
+
 def pacmap_default(tf_idf, plot=True):
 
     np.random.seed(set_seed)
@@ -153,6 +156,7 @@ class Objective(object):
         )
 
         return_data =study.evaluate()
+
         # we increment the number of finish trial
         Number_trial.objects.create(research=self.research)
         return return_data 
@@ -186,7 +190,7 @@ def optimization(research,tf_idf, name, n_trials=100, n_threads = 1):
     return study
 
 
-def retrieve_best_study(tf_idf, study):
+def retrieve_best_study(research, tf_idf, study):
 
    
     best_study = pacmap_hdbscan(
@@ -204,10 +208,11 @@ def retrieve_best_study(tf_idf, study):
     )
 
     __ = best_study.evaluate()
-
+    # we conserve best score in database with the research
+    research.best_dbcv = best_study.score
+    research.save()
     best_study_embedding = best_study.embedding.embedding_
     best_study_clusterer = best_study.clusterer
-
 
     return best_study_clusterer
 

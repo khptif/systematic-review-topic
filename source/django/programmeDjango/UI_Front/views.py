@@ -26,7 +26,7 @@ from programmeDjango.settings import IS_MONOLITH
 if IS_MONOLITH:
     from BackEnd.functions.view_functions import *
 
-
+#### Page Accueil #####
 @login_required(login_url='/login')
 def page_accueil(request):
 
@@ -39,6 +39,7 @@ def page_accueil(request):
     variables['host'] = request.get_host()
     variables['research_created'] = ""
 
+    ## POST REQUEST ##
     # if we receive POST form
     if request.method == 'POST':
         submit = request.POST['submit']
@@ -49,7 +50,7 @@ def page_accueil(request):
             if research_form.is_valid():
                 search = research_form.cleaned_data['search']
                 if IS_MONOLITH:
-                    variables['number_article'] = get_max_article(search)
+                    variables['number_article'] = max_article(search)
                 else:
                     r = requests.get("https://" + BACKEND_HOST + ":" + BACKEND_PORT + "/max_article?search=" + search )
                     if r.status_code < 300:
@@ -211,9 +212,11 @@ def page_user(request):
 
             if request.POST['submit'] == "delete":
                 if IS_MONOLITH:
-                    delete_monolith(research)
+                    #delete_monolith(research)
+                    pass
                 else:
-                    requests.get("https://" + BACKEND_HOST + ":" + BACKEND_PORT + "/delete?research_id=" + str(research_id))
+                    pass
+                    #requests.get("https://" + BACKEND_HOST + ":" + BACKEND_PORT + "/delete?research_id=" + str(research_id))
 
     #we get user's research that are finished
     variables['research_finished'] = Research.objects.filter(user = request.user, is_finish = True)

@@ -85,7 +85,7 @@
                 {% for research in research_finished%}
                     <ul>
                         
-                        <li> &lt {{research.search}} &gt | {{research | number_article}} articles | <a href="select?research_id={{research.id}}" > link </a></li> 
+                        <li> &lt {{research.search}} &gt | {{research | number_article}} articles | best_dbcv : {{research.best_dbcv}} |<a href="select?research_id={{research.id}}" > link </a></li> 
                         
                     </ul>
                 {% endfor %}

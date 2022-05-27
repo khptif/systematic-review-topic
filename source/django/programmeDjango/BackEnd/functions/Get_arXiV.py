@@ -97,6 +97,9 @@ def extract_article(id_list,research):
     api_fetch = 'http://export.arxiv.org/api/query?id_list='
     
     for ID in id_list:
+
+        # we check if research still exists
+        
         URL = 'http://arxiv.org/pdf/' + ID + '.pdf'
         fetch = api_fetch + ID 
         # Extracts data from xml   
@@ -117,6 +120,11 @@ def extract_article(id_list,research):
         doi = ''
         for tag in xml_doc.findall('.//'+ begin_sub + 'doi'):
             doi = tag.text
+        #we check if the article is already in database with the doi
+        a = Article.objects.filter(doi=doi)
+        if not doi == '' and a.exists():
+            Research_Article.objects.create(research=research,article=a[0])
+            continue
          
         #Extracts the date from the XML, always available
         date = ''
@@ -153,7 +161,7 @@ def extract_article(id_list,research):
         if abstract != '' and abstract != None:
             Abstract = UN.unidecode(" ".join(abstract.split()))
         else:
-            Abstract = np.nan
+            Abstract = ''
 
 
         # we write the article in database
@@ -209,6 +217,8 @@ def get_article(search, research, number_threads=1):
 
     # we create the threads
     list_threads = []
+
+    # we check if research still exists
     for i in range(number_threads):
         list_threads.append(Thread(target=extract_article,args=(list_job[i],research)))
     # we start the thread and wait it finish
@@ -216,4 +226,4 @@ def get_article(search, research, number_threads=1):
         thread.start()
     for thread in list_threads:
         thread.join()
-    
+    # we check if research still exists

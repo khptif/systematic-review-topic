@@ -13,9 +13,9 @@ class Article(models.Model):
     title = models.CharField(max_length=1024,default='')
     doi = models.CharField(max_length=1024, default='')
     author = models.ManyToManyField(Author, through='Article_Author')
-    abstract = models.TextField()
-    full_text = models.TextField()
-    publication = models.DateField()
+    abstract = models.TextField(default='')
+    full_text = models.TextField(default='')
+    publication = models.DateField(default=datetime.date(1900,1,1))
     url_file = models.URLField(null=True)
     is_file_get = models.BooleanField(default=False)
     pmcid = models.CharField(max_length=256, null=True)
@@ -40,6 +40,7 @@ class Research(models.Model):
     is_error = models.BooleanField(default=False)
     error = models.CharField(max_length=256,default='')
     max_article = models.IntegerField(default=0)
+    best_dbcv = models.FloatField(default=0.0)
 
 class Research_Article(models.Model):
     research = models.ForeignKey(Research,on_delete=models.CASCADE)

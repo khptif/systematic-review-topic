@@ -75,12 +75,16 @@ def extract_article(entry_id_list,entry,research):
     """ input: a list of entry_id, the dictionnary with all entry and the research.
         For each id, we write the article and all data in our database"""
     
-    size = len(entry_id_list)
-    current = 0
     for entry_id in entry_id_list:
-        current += 1
+
         doi_url = str(entry[entry_id].select_one(".highwire-cite-metadata-doi").contents[1]).strip()
         doi = doi_url.replace("https://doi.org/", "")
+
+        #we check if article exists already
+        a = Article.objects.filter(doi = doi)
+        if a.exists():
+            Research_Article.objects.create(research=research,article=a[0])
+            continue
 
         authors_list = []
         for author_html in entry[entry_id].select(".highwire-citation-author"):
@@ -113,8 +117,6 @@ def extract_article(entry_id_list,entry,research):
         except:
             abstract = ''
             
-        
-
         #we write the article
         article = Article.objects.filter(doi = doi)
         if article.exists():

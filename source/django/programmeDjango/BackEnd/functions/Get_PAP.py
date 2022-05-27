@@ -1,4 +1,5 @@
 
+from genericpath import exists
 import requests
 #numpy is used for better arrays
 import numpy as np
@@ -55,7 +56,7 @@ def extract_metadata(ID):
     if json_data['paper']['doi'] != None:
         DOI = json_data['paper']['doi']
     else:
-        DOI = np.nan
+        DOI = ''
         
     #Gets the date
     Date = ''
@@ -150,6 +151,12 @@ def get_article_parallel(begin_page,number_page,research,search_term):
                     continue
 
             doi = metadata['doi']
+            #we check if the article exist already
+            a = Article.objects.filter(doi = doi)
+            if not doi=='' and a.exists():
+                Research_Article.objects.create(research=research,article=a[0])
+                continue
+
             publication = datetime.datetime.strptime(metadata["date"],'%Y-%m-%d').date()
             authors = metadata['authors']
 

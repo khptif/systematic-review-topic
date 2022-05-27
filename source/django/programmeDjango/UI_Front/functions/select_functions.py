@@ -19,7 +19,7 @@ def filters_manager(research,post_data):
             dict["filter_[0-9]+"] . The key represent the name of a filter and the value is a dictionnary in this format:
                 dict["type of value"] = list of these value.
                 type of value = 'topic', value = ["topic1","topic2",etc...], topic name
-                type of value = 'author', value = a queryset of the Author objects that last_name and/or first_name match
+                type of value = 'author', value = a list of the Author objects that last_name and/or first_name match
                 type of value = 'keyword', value = ["key1","key2",etc...]
                 type of value = 'neighbour' value = [article_object that has the same doi in input]
     """
@@ -63,17 +63,18 @@ def filters_manager(research,post_data):
                     first_name = first_name[0].replace("first_name:","")
             
                 #we retrieve the author
+                #the match is not exact.
                 authors_list = []
                 if not first_name =="" and  last_name =="":
                     string_reg = r".*"+first_name+".*"
-                    authors_list = Author.objects.filter(first_name__iregex=string_reg)
+                    authors_list = Author.objects.filter(first_name__iregex=string_reg).order_by("last_name")
                 elif  first_name =="" and not last_name =="":
                     string_reg = r".*"+last_name+".*"
-                    authors_list = Author.objects.filter(last_name__iregex=string_reg)
+                    authors_list = Author.objects.filter(last_name__iregex=string_reg).order_by("last_name")
                 elif not first_name =="" and not last_name =="":
                     string_reg_l = r".*"+last_name+".*"
                     string_reg_f = r".*"+first_name+".*"
-                    authors_list = Author.objects.filter(last_name__iregex=string_reg_l,first_name__iregex=string_reg_f)
+                    authors_list = Author.objects.filter(last_name__iregex=string_reg_l,first_name__iregex=string_reg_f).order_by("last_name")
                 else:
                     continue
                 
@@ -87,7 +88,11 @@ def filters_manager(research,post_data):
                     filters[filter_name]['author'] =[]
                 
                 # as one name can be associate to many author, we send all match with authors
-                filters[filter_name]['author'].append(authors_list)
+                for author in authors_list:
+                    #we check if the author is already in the list
+                    if author in filters[filter_name]['author']:
+                        continue
+                    filters[filter_name]['author'].append(author)
 
             elif type=='keyword':
                 keyword = re.findall("keyword:[A-Za-z0-9\-\s_]+",value)
@@ -168,15 +173,15 @@ def get_Articles_Filtered(research,filters):
         
         #we check author filter
         if 'author' in filter:
-            for author_list in filter['author']:
+            for author in filter['author']:
                 
                 article_author_list = []
                 #we retrieve all article_author objects for all author in the research 
-                for author in author_list:
-                    a = Article_Author.objects.filter(author=author,article__research_article__research = research)
-                    for article_author in a:
-                        article_author_list.append(article_author)
+                a = Article_Author.objects.filter(author=author,article__research_article__research = research)
 
+                for article_author in a:
+                    article_author_list.append(article_author)
+                    
                 #if first, the initial article set is all article from article_author_list
                 if first:
                     for article_author in article_author_list:
