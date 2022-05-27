@@ -154,8 +154,8 @@ DATABASE_PORT = "8002"
 
 #we define interval coordinate to display
 # LITTLE if < 10 000 articles
-X_INTERVAL_LITTLE = 800
-Y_INTERVAL_LITTLE = 2000
+X_INTERVAL_LITTLE = 250
+Y_INTERVAL_LITTLE = 1000
 
 # BIG if > 10 000 articles
 X_INTERVAL_BIG = 2000
