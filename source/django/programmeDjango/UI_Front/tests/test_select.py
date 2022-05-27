@@ -73,3 +73,5 @@ class test_filters_manager(TestCase):
         """ we create an article with the doi and check if we obtain this article"""
         doi = "1234"
         article = Article.objects.create(doi=doi)
+        input = {"filter_0_1": ["Type:neighbour;DOI:{doi};".format(doi=doi)]}
+        output_expected = {"filter_0":{"neighbour":[article]}}

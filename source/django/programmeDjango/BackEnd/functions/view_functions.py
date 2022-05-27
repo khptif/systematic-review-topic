@@ -220,7 +220,7 @@ def make_cluster(research,list_id,list_final,tf_idf,n_trials,n_threads):
     trials_finished = Number_trial.objects.filter(research=research).count()
     n_trials = n_trials - trials_finished
     if n_trials <= 0:
-        return True
+        n_trials = 0
     # run 2d pacmap with default values
     embedding_2d = clustering.pacmap_default(tf_idf)
 
@@ -231,7 +231,7 @@ def make_cluster(research,list_id,list_final,tf_idf,n_trials,n_threads):
     
     # extract best study
     best_study_clusterer = clustering.retrieve_best_study(
-        tf_idf, study
+        research,tf_idf, study
     )
     
     # create hover matrix
