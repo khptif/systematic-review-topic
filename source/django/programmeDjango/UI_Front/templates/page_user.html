@@ -12,6 +12,10 @@
         <div class='col-2'>
             <p> last filtering research : <a href="table_choice?research_id={{research_id}}"> link </a> </p>
         </div>
+        <form action="" method="POST">
+            {%csrf_token%}
+            <input type="submit" name="submit" value="delete_all"> 
+        </form>
     </div>
     <div>
         {{id_check}} id_check {{is_running}}

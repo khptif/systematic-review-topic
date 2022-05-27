@@ -5,6 +5,8 @@ from django.contrib.auth import authenticate, login , logout
 import random
 import requests
 import json
+
+from urllib3 import HTTPResponse
 from BackEnd.functions.Get_PAP import get_max_article
 from BackEnd.functions.view_functions import max_article
 
@@ -117,6 +119,7 @@ def page_accueil(request):
                 else:
                     research.delete()
                     variables['research_created'] = "error http status " + str(r.status_code) + " " + str(r.text)
+                    return HTTPResponse(content=r.text,status=r.status_code)
 
 
         #if user search historical research
@@ -218,6 +221,10 @@ def page_user(request):
                     pass
                     #requests.get("https://" + BACKEND_HOST + ":" + BACKEND_PORT + "/delete?research_id=" + str(research_id))
 
+            if request.POST["submit"] == "delete_all":
+                # we delete all research 
+                Research.objects.all().delete()
+                
     #we get user's research that are finished
     variables['research_finished'] = Research.objects.filter(user = request.user, is_finish = True)
     # we get user's research that are still running and in article's research step
