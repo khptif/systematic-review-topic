@@ -1,5 +1,6 @@
 from ast import keyword
 from django.test import TestCase
+from matplotlib.pyplot import title
 from UI_Front.functions.select_functions import *
 
 
@@ -127,3 +128,113 @@ class test_filters_manager(TestCase):
                             "filter_1" : {"topic":[topic],"author":[author],"keyword":[keyword],"neighbour":[article]}}
         output_result = filters_manager(False,input)
         self.assertEqual(output_expected,output_result)
+
+class test_get_Articles_Filtered(TestCase):
+
+    def test_topic(self):
+        """We test if we get the article of a topic and if the article are from the right topic"""
+        research = Research.objects.create()
+        topic = "topic1"
+        topic_other = ["topic2","topic3","topic4"]
+        article_in_topic = []
+        article_not_in_topic = []
+        for i in range(5):
+            article_in_topic.append(Article.objects.create())
+            article_not_in_topic.append(Article.objects.create())
+        #we create the cluster for the topic
+        for article in article_in_topic:
+            Cluster.objects.create(article=article,pos_x=0,pos_y=0,topic=topic,research=research)
+        #we create the cluster for other topic
+        import random
+        n_other_topic = len(topic_other)
+        for article in article_not_in_topic:
+            Cluster.objects.create(article=article,pos_x=0,pos_y=0,topic=topic_other[random.randint(0,n_other_topic-1)],research=research)
+        
+        # we define input
+        input = {"filter_0":{"topic":[topic]}}
+        output_result = get_Articles_Filtered(research,input)
+
+        #we check if we have the good article
+        for article in article_in_topic:
+            self.assertIn(article,output_result)
+        for article in article_not_in_topic:
+            self.assertNotIn(article,output_result)
+        
+    def test_author(self):
+        """We test if get the article written by authors."""
+        import random
+        research = Research.objects.create()
+        
+        #we create a list of author that are in input
+        author_list = []
+        for i in range(3):
+            author_list.append(Author.objects.create())
+        
+        #we create a list of author that aren't in input
+        author_not_list = []
+        for i in range(3):
+            author_not_list.append(Author.objects.create())
+
+        # input test
+        input = {"filter_0":{"author":author_list}}
+
+        # we create a number of article with all the author + an author who is not in the list
+        article_list_expected = []
+        for i in range(5):
+            article = Article.objects.create()
+            for author in author_list:
+                Article_Author.objects.create(author=author,research=research)
+            n = len(author_not_list)
+            Article_Author.objects.create(author=author_not_list[random.randint(0,n-1)],research=research)
+        
+        # we create a number of article with some author not in the list and one author in the list
+        article_list_not_expected = []
+        for i in range(10):
+            article = Article.objects.create()
+            for i in range(random.randint(0,len(author_not_list))):
+                Article_Author.objects.create(author=author_not_list[random.randint(0,len(author_not_list) - 1)],research=research)
+            n = len(author_list)
+            Article_Author.objects.create(author=author_list[random.randint(0,n-1)],research=research)
+        
+        # we create the output result
+        output_result = get_Articles_Filtered(research,input)
+
+        #we check if we have the good article and not bad article
+        for article in article_list_expected:
+            self.assertIn(article,output_result)
+        for article in article_list_not_expected:
+            self.assertNotIn(article,output_result)
+        
+    
+    def test_neighbour(self):
+        """we check if we have the 5 articles nearest from one article"""
+        research = Research.objects.create()
+        position_list = [(1,1),(2,2),(1,0),(3,3),(2,3)]
+
+        position = (1.0,2.0)
+        article_center = Article.objects.create(research=research,article=article,pos_x=1,pos_y=2,topic='')
+
+        article_in_list = []
+        for i in range(5):
+            article = Article.objects.create()
+            Cluster.objects.create(research=research,article=article,pos_x=position_list[i][0],pos_y=position_list[i][1],topic='')
+            article_in_list.append(article)
+
+        article_not_in_list = []
+        for i in range(5):
+            article = Article.objects.create()
+            Cluster.objects.create(research=research,article=article,pos_x=20,pos_y=20,topic='')
+            article_not_in_list.append(article)
+        
+        input = {"filter_0":{"author":[article_center]}}
+
+        output_result= get_Articles_Filtered(research,input)
+
+        #we check if the result is what we expect
+        for article in article_in_list:
+            self.assertIn(article,output_result)
+        for article in article_not_in_list:
+            self.assertNotIn(article,output_result)
+        
+    def test_keyword(self):
+        pass

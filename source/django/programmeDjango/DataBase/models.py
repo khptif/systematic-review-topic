@@ -6,8 +6,8 @@ from django.utils import timezone
 
 
 class Author(models.Model):
-    last_name = models.CharField(max_length=128)
-    first_name = models.CharField(max_length=128)
+    last_name = models.CharField(max_length=128,null=True)
+    first_name = models.CharField(max_length=128,null=True)
 
 class Article(models.Model):
     title = models.CharField(max_length=1024,default='')

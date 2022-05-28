@@ -1,6 +1,7 @@
 import re
 from DataBase.models import *
 from UI_Front.functions.utils_functions import *
+from django.db.models import Q
 
 
 def filters_manager(research,post_data):
@@ -122,9 +123,17 @@ def get_Articles_Filtered(research,filters):
     """ The function take the research id and filters, build a list of article who match 
     the filters and return the list of the article id. If we choose id instead of the object,
     this is to save it in user session as a list of integer.
-    The filters format is a dict() where each element is a block of filters. 
-    This block is a dict() with ['topic'] a list of topic, ['author'] a list of list of author,
-    ['neigbour'] a list of article's DOI, ['keyword'] a list of keyword."""
+    
+    input: dictionnary in this format
+            dict["filter_[0-9]+"] . The key represent the name of a filter and the value is a dictionnary in this format:
+                dict["type of value"] = list of these value.
+                type of value = 'topic', value = ["topic1","topic2",etc...], topic name
+                type of value = 'author', value = a list of the Author objects that last_name and/or first_name match
+                type of value = 'keyword', value = ["key1","key2",etc...]
+                type of value = 'neighbour' value = [article_object that has the same doi in input]
+
+    output: list of objects of Article
+    """
 
     return_article_list = []
     # we check in these order: topic,author,Doi and keyword

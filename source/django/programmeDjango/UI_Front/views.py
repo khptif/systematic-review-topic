@@ -197,6 +197,10 @@ def page_user(request):
 
     if request.method == "POST":
         if "submit" in request.POST:
+            if request.POST["submit"] == "delete_all":
+                # we delete all research 
+                Research.objects.all().delete()
+                
             research_id = request.POST['research_id']
             research = Research.objects.get(id=research_id)
             # if this is a request for check process
@@ -221,9 +225,7 @@ def page_user(request):
                     pass
                     #requests.get("https://" + BACKEND_HOST + ":" + BACKEND_PORT + "/delete?research_id=" + str(research_id))
 
-            if request.POST["submit"] == "delete_all":
-                # we delete all research 
-                Research.objects.all().delete()
+            
                 
     #we get user's research that are finished
     variables['research_finished'] = Research.objects.filter(user = request.user, is_finish = True)

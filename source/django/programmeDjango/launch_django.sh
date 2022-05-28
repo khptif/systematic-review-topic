@@ -59,7 +59,9 @@ fi
 
 ln -s /etc/nginx/sites-available/django_nginx.conf /etc/nginx/sites-enabled/django_nginx.conf
 
-
+cat /etc/nginx/sites-available/django_nginx.conf
+cat programmeDjango/urls.py
+cat programmeDjango/settings.py
 # give domaine name of the host in nginx conf file
 sed -i "s/x_domain_name_x/${HOST_DOMAIN}/g" /etc/nginx/sites-available/django_nginx.conf
 

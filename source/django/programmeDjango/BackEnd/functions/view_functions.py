@@ -153,7 +153,7 @@ def make_preprocessing(research,corpus="abstract",number_thread=1):
     the output is the tfidf results. We can use the abstract ="abstract" or the full_text="full_text" or the both = "both" """
 
     #we clear the ancient number of preprocess article
-    Preprocess_text.objects.filter(research=research).delete()
+    Number_preprocess.objects.filter(research=research).delete()
 
     #we get the articles
     articles = Article.objects.filter(research_article__research=research)
