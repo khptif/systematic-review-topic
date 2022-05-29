@@ -19,7 +19,7 @@ COPY fichiers_settings/settings.py programmeDjango/settings.py
 COPY fichiers_settings/ ./fichiers_settings/
 COPY nginx_config/ ./nginx_config/
 
-RUN ./launch_django.sh 
+CMD ./launch_django.sh 
 
-CMD python3 manage.py runserver 127.0.0.1:8000
+
 
