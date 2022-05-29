@@ -32,7 +32,7 @@
                         <form action='' method='POST'>
                             {% csrf_token %}
                             <li> 
-                                &lt {{research.search}} &gt | step: "article" | progress: {{research | number_article }} / {{research.max_article}} articles 
+                                &lt {{research.search}} &gt | step: "article: {{research.current_article_db}}" | progress: {{research | number_article }} / {{research.max_article}} articles 
                                 <input type=hidden name="research_id" value={{research.id}} >
                                 <input type=submit name=submit value="check"> 
                                 {%if id_check == research.id%}
