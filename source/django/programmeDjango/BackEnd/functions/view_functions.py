@@ -24,6 +24,7 @@ list_stopwords = text_processing.create_stopwords()
 
 from programmeDjango.settings import NUMBER_THREADS_ALLOWED
 from programmeDjango.settings import NUMBER_TRIALS
+from programmeDjango.settings import TEMPORARY_DATA
 
 # all research processing will be done in a new thread. We keep the thread object
 # to check if it is still alive
@@ -206,9 +207,9 @@ def make_preprocessing(research,corpus="abstract",number_thread=1):
     tfidfVectorizer = TfidfVectorizer()
     tf_idf = tfidfVectorizer.fit_transform(list_final)
 
-    joblib.dump(list_final,f"BackEnd/data/final_list_research_{str(research.id)}.pkl")
-    joblib.dump(tf_idf, f"BackEnd/data/tf_idf_research_{str(research.id)}.pkl")
-    joblib.dump(list_id_final,f"BackEnd/data/id_list_research_{str(research.id)}.pkl")
+    joblib.dump(list_final,f"{TEMPORARY_DATA}/final_list_research_{str(research.id)}.pkl")
+    joblib.dump(tf_idf, f"{TEMPORARY_DATA}/tf_idf_research_{str(research.id)}.pkl")
+    joblib.dump(list_id_final,f"{TEMPORARY_DATA}/id_list_research_{str(research.id)}.pkl")
 
     return tf_idf,list_id_return,list_final
     
@@ -250,6 +251,7 @@ def back_process(research):
     id_list = []
     final_list = []
 
+    time_start = datetime.datetime.now()
     research.is_running = True
     research.save()
     if research.step == "article":
@@ -270,13 +272,17 @@ def back_process(research):
     if research.step == "clustering":
         # if the tf_idf and other data are null, we charge them from save files
         if tf_idf == []:
-            tf_idf = joblib.load(f"BackEnd/data/tf_idf_research_{str(research.id)}.pkl")
+            tf_idf = joblib.load(f"{TEMPORARY_DATA}/tf_idf_research_{str(research.id)}.pkl")
         if id_list == []:
-            id_list = joblib.load(f"BackEnd/data/id_list_research_{str(research.id)}.pkl")
+            id_list = joblib.load(f"{TEMPORARY_DATA}/id_list_research_{str(research.id)}.pkl")
         if final_list == []:
-            final_list = joblib.load(f"BackEnd/data/final_list_research_{str(research.id)}.pkl")
+            final_list = joblib.load(f"{TEMPORARY_DATA}/final_list_research_{str(research.id)}.pkl")
     
         make_cluster(research,id_list,final_list,tf_idf,NUMBER_TRIALS,NUMBER_THREADS_ALLOWED)
+
+        time_end = datetime.datetime.now()
+        numbers_seconds = (time_end - time_start).seconds
+        research.process_time = numbers_seconds
         # we reset the step to "article" and mark the research as "finished"
         research.is_running = False
         research.is_finish = True
@@ -284,12 +290,12 @@ def back_process(research):
         research.save()
 
         # clear all useless data
-        if os.path.exists(f"BackEnd/data/tf_idf_research_{str(research.id)}.pkl"):
-            os.remove(f"BackEnd/data/tf_idf_research_{str(research.id)}.pkl")
-        if os.path.exists(f"BackEnd/data/id_list_research_{str(research.id)}.pkl"):
-            os.remove(f"BackEnd/data/id_list_research_{str(research.id)}.pkl")
-        if os.path.exists(f"BackEnd/data/final_list_research_{str(research.id)}.pkl"):
-            os.remove(f"BackEnd/data/final_list_research_{str(research.id)}.pkl")
+        if os.path.exists(f"{TEMPORARY_DATA}/tf_idf_research_{str(research.id)}.pkl"):
+            os.remove(f"{TEMPORARY_DATA}/tf_idf_research_{str(research.id)}.pkl")
+        if os.path.exists(f"{TEMPORARY_DATA}/id_list_research_{str(research.id)}.pkl"):
+            os.remove(f"{TEMPORARY_DATA}/id_list_research_{str(research.id)}.pkl")
+        if os.path.exists(f"{TEMPORARY_DATA}/final_list_research_{str(research.id)}.pkl"):
+            os.remove(f"{TEMPORARY_DATA}/final_list_research_{str(research.id)}.pkl")
 
         Preprocess_text.objects.filter(research=research).delete()
         Number_preprocess.objects.filter(research=research).delete()
@@ -388,11 +394,11 @@ def delete(research):
     Research.objects.filter(id=research.id).delete()
 
     #we delete the pdf in "BackEnd/functions/download if exist "
-    for file in glob(f'BackEnd/functions/download/research_{research.id}*'):
+    for file in glob(f'{TEMPORARY_DATA}/download/research_{research.id}*'):
         os.remove(file)
     
     #we delete all intermediate file in "BackEnd/data"
-    for file in glob(f'BackEnd/data/*research_{research.id}*'):
+    for file in glob(f'{TEMPORARY_DATA}/*research_{research.id}*'):
         os.remove(file)
 
     return True

@@ -154,3 +154,6 @@ Y_INTERVAL_BIG = 4000
 #we define in seconds the interval between update research
 # we define 1 month
 UPDATE_INTERVAL = 2700000
+
+# we define the repertory where there is all temporary data
+TEMPORARY_DATA = os.path.join(BASE_DIR,'docker_volume/data')

@@ -13,6 +13,7 @@ import urllib.parse
 
 import PyPDF2
 import urllib.request
+from programmeDjango.settings import TEMPORARY_DATA
 
 #session = FuturesSession()
 
@@ -126,7 +127,7 @@ def extract_full_text(url_PDF,name):
     """Extracts the full text. downloading cooresponding PDF from url and
        extracting the text. Return full_text pdf or nan if problem occurs"""
     
-    path_pdf = "BackEnd/functions/download/" + str(name) +".pdf"
+    path_pdf = TEMPORARY_DATA+ "/" + str(name) +".pdf"
 
     if download_from_URL(url_PDF,path_pdf) :
         

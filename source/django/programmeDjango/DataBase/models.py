@@ -42,6 +42,8 @@ class Research(models.Model):
     max_article = models.IntegerField(default=0)
     best_dbcv = models.FloatField(default=0.0)
 
+    process_time = models.IntegerField(default=0)
+
 class Research_Article(models.Model):
     research = models.ForeignKey(Research,on_delete=models.CASCADE)
     article = models.ForeignKey(Article, on_delete=models.CASCADE)

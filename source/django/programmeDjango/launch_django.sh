@@ -21,22 +21,22 @@ echo X_INTERVAL_BIG=${X_INTERVAL_BIG} >> $settings_path
 echo Y_INTERVAL_BIG=${Y_INTERVAL_BIG} >> $settings_path
 echo UPDATE_INTERVAL=${UPDATE_INTERVAL} >> $settings_path
 
-
-#ln -s /etc/nginx/sites-available/django_nginx.conf /etc/nginx/sites-enabled/django_nginx.conf
+cp nginx_config/django_nginx.conf /etc/nginx/sites-available/django_nginx.conf
+ln -s /etc/nginx/sites-available/django_nginx.conf /etc/nginx/sites-enabled/django_nginx.conf
 
 # give domaine name of the host in nginx conf file
 #sed -i "s/x_domain_name_x/${HOST_DOMAIN}/g" /etc/nginx/sites-available/django_nginx.conf
 
 # start nginx
-#/etc/init.d/nginx start
+/etc/init.d/nginx start
 
 #update the database if table changed
 python3 manage.py makemigrations
 python3 manage.py migrate
 
 #start django application
-#uwsgi --socket django.sock --module programmeDjango.wsgi --daemonize=./docker_volume/log.log
-python3 manage.py runserver 0.0.0.0:8000
+uwsgi --socket django.sock --module programmeDjango.wsgi --daemonize=./docker_volume/log.log
+
 while true; do sleep 1000; done
 
 

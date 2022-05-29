@@ -18,6 +18,7 @@ sudo apt-get -y install docker-ce docker-ce-cli containerd.io
 # we create a repertory who will be a docker volume
 path_to_docker_volume=$(pwd)/docker_volume
 mkdir $path_to_docker_volume
+mkdir $path_to_docker_volume/data
 
 sudo docker volume create --name docker_volume --opt type=none --opt device=$path_to_docker_volume --opt o=bind
 
