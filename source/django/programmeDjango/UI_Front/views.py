@@ -2,13 +2,9 @@
 from django.shortcuts import render , redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login , logout
-import random
-import requests
-import json
+
 
 from urllib3 import HTTPResponse
-from BackEnd.functions.Get_PAP import get_max_article
-from BackEnd.functions.view_functions import max_article
 
 from UI_Front.models import *
 from DataBase.models import *
@@ -21,12 +17,11 @@ from UI_Front.functions.login_functions import *
 from UI_Front.functions.user_page_functions import *
 from UI_Front.functions.utils_functions import *
 
-from programmeDjango.settings import BACKEND_HOST,BACKEND_PORT
-from programmeDjango.settings import NUMBER_TRIALS
-from programmeDjango.settings import IS_MONOLITH
 
-if IS_MONOLITH:
-    from BackEnd.functions.view_functions import *
+from programmeDjango.settings import NUMBER_TRIALS
+
+
+from BackEnd.functions.view_functions import *
 
 #### Page Accueil #####
 @login_required(login_url='/login')
@@ -100,7 +95,7 @@ def page_accueil(request):
 
             #we send the request
             
-            if monolith_launch_process(research):
+            if launch_process(research):
                 variables['research_created'] = "You research has been created and is running"
             else:
                 variables['research_created'] = "error in launchin research"
@@ -189,7 +184,7 @@ def page_user(request):
             research = Research.objects.get(id=research_id)
             # if this is a request for check process
             if request.POST['submit'] == "check":
-                variables["is_running"] = check_monolith(research)
+                variables["is_running"] = check(research)
             
             if request.POST['submit'] == "delete":
                 pass

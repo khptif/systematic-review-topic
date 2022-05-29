@@ -259,7 +259,7 @@ def hover_with_keywords(research,list_id, list_final, embedding_2d, best_study_c
             keywords = []
             print("keyword_error")
 
-        print("keywords" + str(keywords))
+        
         # we build a string with all the keywords
         labels = ""
         if len(keywords) > 0:

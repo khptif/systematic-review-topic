@@ -142,16 +142,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 NUMBER_THREADS_ALLOWED = 4
 NUMBER_TRIALS = 300
 
-# we define adresse of each host
-UI_FRONT_HOST = "localhost"
-UI_FRONT_PORT = "8002"
-
-BACKEND_HOST = "localhost"
-BACKEND_PORT = "8002"
-
-DATABASE_HOST = "localhost"
-DATABASE_PORT = "8002"
-
 #we define interval coordinate to display
 # LITTLE if < 10 000 articles
 X_INTERVAL_LITTLE = 490
@@ -164,9 +154,3 @@ Y_INTERVAL_BIG = 4000
 #we define in seconds the interval between update research
 # we define 1 month
 UPDATE_INTERVAL = 2700000
-
-IS_DATABASE=True
-IS_BACKEND=True
-IS_FRONTEND=True
-
-IS_MONOLITH = True

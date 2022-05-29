@@ -73,18 +73,17 @@ def make_research (search,research,thread=1):
     thread_pap = Thread(target=pap,args=arg)
 
     thread_arxiv.start()
-    thread_biorxiv.start()
-    thread_medrxiv.start()
-    thread_pap.start()
-
     thread_arxiv.join()
-    print("fin arxiv")
+
+    thread_biorxiv.start()
     thread_biorxiv.join()
-    print("fin biorxiv")
+
+    thread_medrxiv.start()
     thread_medrxiv.join()
-    print("fin med")
+
+    thread_pap.start()
     thread_pap.join()
-    print("fin pap")
+    
 
 
 def preprocessing_parallel(research,articles,corpus):
@@ -297,7 +296,7 @@ def back_process(research):
         Number_trial.objects.filter(research=research).delete()
         del list_thread[research.id]
 
-def monolith_launch_process(research):
+def launch_process(research):
     #we check if the research was already done
     if research.is_finish:
         return False
@@ -361,7 +360,7 @@ def update_research():
             list_thread[research.id].start()
             time.sleep(3600)
 
-def check_monolith(research):
+def check(research):
     """we check if the thread of the research is alive"""
     
     #we check if the research was already done
@@ -382,7 +381,7 @@ def check_monolith(research):
     else:
         return False
 
-def delete_monolith(research):
+def delete(research):
      
     
     #we delete in the database

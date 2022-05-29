@@ -28,8 +28,4 @@ urlpatterns = [
     path('user',page_user),
     path('select',page_select),
     path('table_choice',page_table_choice),
-    path('max_article',get_max_article),
-    path('research',launch_backend_process),
-    path('check',check_process),
-    path('delete',delete_process),
 ]
