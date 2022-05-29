@@ -133,7 +133,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL='UI_Front.CustomUser'
 
-STATICFILES_DIRS = [('images',os.path.join(BASE_DIR,'static/images')),
+STATICFILES_DIRS = [
 ('css',os.path.join(BASE_DIR,'static/css')),
 ('script',os.path.join(BASE_DIR,'static/script'))]
 STATIC_ROOT = os.path.join(BASE_DIR, "static/")
