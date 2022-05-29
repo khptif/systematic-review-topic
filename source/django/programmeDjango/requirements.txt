@@ -1,6 +1,6 @@
 
 psycopg2_binary==2.9.3
-uWSGI==2.0.20
+#uWSGI==2.0.20
 pytest==7.0.0
 coverage==6.3
 django_oauth_toolkit==1.7.0
