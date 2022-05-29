@@ -40,5 +40,4 @@ python3 manage.py migrate
 #while true; do sleep 1000; done
 #python3 manage.py runserver 127.0.0.1:8000
 
-
-
+cat settings_path
