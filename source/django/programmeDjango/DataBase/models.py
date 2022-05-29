@@ -27,14 +27,13 @@ class Article_Author(models.Model):
 
 class Research(models.Model):
 
-    step_type = [('article','Article'),('processing','Processing'),('clustering','Clustering')]
-
+    
     user = models.ForeignKey(CustomUser,on_delete=models.SET_NULL,null=True)
     articles = models.ManyToManyField(Article, through='Research_Article')
     search = models.CharField(max_length=256)
     year_begin = models.DateField(default=datetime.date(1900,1,1))
     year_end = models.DateField(default=datetime.date(1900,1,1))
-    step = models.CharField(max_length=64,choices=step_type,default='article')
+    step = models.CharField(max_length=256,default='article')
     is_finish = models.BooleanField(default=False)
     is_running = models.BooleanField(default=False)
     is_error = models.BooleanField(default=False)
@@ -43,6 +42,7 @@ class Research(models.Model):
     best_dbcv = models.FloatField(default=0.0)
 
     process_time = models.IntegerField(default=0)
+    current_article_db = models.CharField(max_length=128,default='')
 
 class Research_Article(models.Model):
     research = models.ForeignKey(Research,on_delete=models.CASCADE)

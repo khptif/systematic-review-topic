@@ -12,6 +12,15 @@ from BackEnd.models import *
 register = template.Library()
 
 @register.filter
+def time_research(research):
+    time = research.process_time
+    seconds = time % 60
+    minutes = int(time / 60) % 60
+    hours = int(time/3600)
+
+    return "{hour}h:{minute}m:{second}s".format(hour=hours,minute=minutes,second=seconds)
+
+@register.filter
 def number_trials(research):
     number = Number_trial.objects.filter(research=research).count()
     return str(number)

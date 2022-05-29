@@ -73,15 +73,23 @@ def make_research (search,research,thread=1):
     thread_medrxiv = Thread(target=medrxiv,args=arg)
     thread_pap = Thread(target=pap,args=arg)
 
+    research.current_article_db = "arxiv"
+    research.save()
     thread_arxiv.start()
     thread_arxiv.join()
 
+    research.current_article_db = "biorxiv"
+    research.save()
     thread_biorxiv.start()
     thread_biorxiv.join()
 
+    research.current_article_db = "medrxiv"
+    research.save()
     thread_medrxiv.start()
     thread_medrxiv.join()
 
+    research.current_article_db = "paperity"
+    research.save()
     thread_pap.start()
     thread_pap.join()
     
