@@ -36,7 +36,7 @@ python3 manage.py migrate
 
 #start django application
 #uwsgi --socket django.sock --module programmeDjango.wsgi --daemonize=./docker_volume/log.log
-python3 manage.py runserver
+python3 manage.py runserver 0.0.0.0:8000
 while true; do sleep 1000; done
 
 
