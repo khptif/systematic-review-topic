@@ -1,63 +1,39 @@
 #! /bin/sh
 
-# we build the options file
-. ./config_options.sh
-env_file=options.sh
+# we create the parameters
 
-# we configure DataBase Host
-cd Machine_BD
+# we import variables
+. ./config_options.sh
 . ./parametres_machine.sh
 . ./parametres_BD.sh
-./install.sh
-cd ..
 
-echo IS_MONOLITH=${is_monolith} >> $env_file
-echo IS_DATABASE=${is_database} >> $env_file
-echo IS_BACKEND=${is_backend} >> $env_file
-echo IS_FRONTEND=${is_frontend} >> $env_file
+# we configure the command
+adresse=${user_name}@${host_adresse}
+connect_scp="sudo scp -i ${private_key_path}"
+connect_ssh="sudo ssh -i ${private_key_path} ${adresse}"
+
+# we send the script of docker installation and install docker in host machine
+$connect_scp ./docker_install.sh ${adresse}:/home/${user_name}/docker_install.sh
+$connect_ssh "./docker_install.sh ; "
+
+# we send script for installation of Postgresql database and install it
+$connect_scp ./sqlCommand.sh ${adresse}:/home/${user_name}/sqlCommand.sh
+$connect_scp ./install_PostGreSQL.sh ${adresse}:/home/${user_name}/install_PostGreSQL.sh
+$connect_ssh " ./install_PostGreSQL.sh ${db_name} ${db_user_name} ${password}"
+
+# we configure to let connection to the database
+
+$connect_scp ./pg_hba.conf ${adresse}:/home/${user_name}/pg_hba.conf
+
+$connect_ssh " sudo mv /home/${user_name}/pg_hba.conf /etc/postgresql/12/main/pg_hba.conf"
+$connect_ssh " sudo chgrp postgres /etc/postgresql/12/main/pg_hba.conf"
+$connect_ssh " sudo chown postgres /etc/postgresql/12/main/pg_hba.conf"
+
+$connect_ssh "sudo service postgresql restart"
+
+# we send the option.sh to the host
 sudo scp -i ${private_key_path} ./${env_file} ${user_name}@${host_adresse}:/home/${user_name}/docker_volume/${env_file}
 
-
-# we configure FrontEnd Host
-. ./config_options.sh
-cd Machine_Front
-. ./parametres_machine.sh
-./install.sh
-cd ..
-
-echo IS_MONOLITH=${is_monolith} >> $env_file
-echo IS_DATABASE=${is_database} >> $env_file
-echo IS_BACKEND=${is_backend} >> $env_file
-echo IS_FRONTEND=${is_frontend} >> $env_file
-sudo scp -i ${private_key_path} ./${env_file} ${user_name}@${host_adresse}:/home/${user_name}/docker_volume/${env_file}
-
-
-# we configure BackEnd Host
-. ./config_options.sh
-cd Machine_Back
-. ./parametres_machine.sh
-./install.sh
-cd ..
-
-echo IS_MONOLITH=${is_monolith} >> $env_file
-echo IS_DATABASE=${is_database} >> $env_file
-echo IS_BACKEND=${is_backend} >> $env_file
-echo IS_FRONTEND=${is_frontend} >> $env_file
-sudo scp -i ${private_key_path} ./${env_file} ${user_name}@${host_adresse}:/home/${user_name}/docker_volume/${env_file}
-
-
-# we configure Monolith Host
-. ./config_options.sh
-cd Machine_Mono
-. ./parametres_machine.sh
-./install.sh
-cd ..
-
-echo IS_MONOLITH=${is_monolith} >> $env_file
-echo IS_DATABASE=${is_database} >> $env_file
-echo IS_BACKEND=${is_backend} >> $env_file
-echo IS_FRONTEND=${is_frontend} >> $env_file
-sudo scp -i ${private_key_path} ./${env_file} ${user_name}@${host_adresse}:/home/${user_name}/docker_volume/${env_file}
 
 
 

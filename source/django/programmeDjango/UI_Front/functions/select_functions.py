@@ -28,7 +28,6 @@ def filters_manager(research,post_data):
     filters = dict()
     for key,value in post_data.items():
 
-        value = value[0]
         # if this is a filter post data
         filter_name = re.findall("^filter_[0-9]+",key)
         if filter_name:
@@ -37,6 +36,7 @@ def filters_manager(research,post_data):
             if not filter_name in filters:
                 filters[filter_name]= dict()
             # we check the type of filter
+            
             type = re.findall("^Type:[a-z]+",value)
             type = type[0].replace("Type:","")
 

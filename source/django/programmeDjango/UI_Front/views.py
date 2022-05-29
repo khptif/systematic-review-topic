@@ -51,16 +51,8 @@ def page_accueil(request):
             variables['research_form'] = research_form
             if research_form.is_valid():
                 search = research_form.cleaned_data['search']
-                if IS_MONOLITH:
-                    variables['number_article'] = max_article(search)
-                else:
-                    r = requests.get("https://" + BACKEND_HOST + ":" + BACKEND_PORT + "/max_article?search=" + search )
-                    if r.status_code < 300:
-                        text = r.text
-                        data = json.loads(r.text)
-                        variables['number_article'] = data["max_article"]
-                    else:
-                        variables['number_article'] = "error http status " + str(r.status_code)
+                variables['number_article'] = max_article(search)
+                
 
         # if we give a new research
         elif submit == 'research':
@@ -107,21 +99,12 @@ def page_accueil(request):
                 Keyword.objects.create(research=research,word=w)
 
             #we send the request
-            if IS_MONOLITH:
-                if monolith_launch_process(research):
-                    variables['research_created'] = "You research has been created and is running"
-                else:
-                    variables['research_created'] = "error in launchin research"
+            
+            if monolith_launch_process(research):
+                variables['research_created'] = "You research has been created and is running"
             else:
-                r = requests.get("https://" + BACKEND_HOST + ":" + BACKEND_PORT + "/research?research_id=" + str(research.id))
-                if r.status_code < 300:
-                    variables['research_created'] = "You research has been created and is running"
-                else:
-                    research.delete()
-                    variables['research_created'] = "error http status " + str(r.status_code) + " " + str(r.text)
-                    return HTTPResponse(content=r.text,status=r.status_code)
-
-
+                variables['research_created'] = "error in launchin research"
+            
         #if user search historical research
         if submit == 'historical':
             historical_form = Historical_form(request.POST)
@@ -200,30 +183,16 @@ def page_user(request):
             if request.POST["submit"] == "delete_all":
                 # we delete all research 
                 Research.objects.all().delete()
+                return render(request,'page_user.html',variables)
                 
             research_id = request.POST['research_id']
             research = Research.objects.get(id=research_id)
             # if this is a request for check process
             if request.POST['submit'] == "check":
-                if IS_MONOLITH:
-                    variables["is_running"] = check_monolith(research)
-                else:
-                    r = requests.get("https://" + BACKEND_HOST + ":" + BACKEND_PORT + "/check?research_id=" + str(research_id))
-                    if r.status_code < 400:
-                        data_json = json.loads(r.text)
-                        variables["id_check"] = research_id
-                        if data_json["is_running"]:
-                            variables["is_running"] = "running"
-                        else:
-                            variables["is_running"] = "not running"
-
+                variables["is_running"] = check_monolith(research)
+            
             if request.POST['submit'] == "delete":
-                if IS_MONOLITH:
-                    #delete_monolith(research)
-                    pass
-                else:
-                    pass
-                    #requests.get("https://" + BACKEND_HOST + ":" + BACKEND_PORT + "/delete?research_id=" + str(research_id))
+                pass
 
             
                 

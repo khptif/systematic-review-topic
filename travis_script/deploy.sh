@@ -12,14 +12,7 @@ scripts=deploy_scripts
 # create and push docker image
 ./$scripts/docker_image_push.sh $scripts/docker_image_param.sh
 
-#container UI_FRONT
-./$scripts/deploy_container.sh $scripts/ui_front_param.sh $scripts/docker_image_param.sh
+# run the container
+./$scripts/deploy_container.sh $scripts/machine_param.sh $scripts/docker_image_param.sh
 
-#container BackEnd
-./$scripts/deploy_container.sh $scripts/backend_param.sh $scripts/docker_image_param.sh
 
-#container Database
-./$scripts/deploy_container.sh $scripts/database_param.sh $scripts/docker_image_param.sh
-
-#container Monoblock
-./$scripts/deploy_container.sh $scripts/monolith_param.sh $scripts/docker_image_param.sh
