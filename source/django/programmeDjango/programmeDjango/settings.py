@@ -139,7 +139,7 @@ STATICFILES_DIRS = [
 ('script',os.path.join(BASE_DIR,'static/script'))]
 STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 
-NUMBER_THREADS_ALLOWED = 4
+NUMBER_THREADS_ALLOWED = 2
 NUMBER_TRIALS = 300
 
 #we define interval coordinate to display

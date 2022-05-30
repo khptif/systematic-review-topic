@@ -1,4 +1,5 @@
 
+from tempfile import TemporaryFile
 from BackEnd.functions.Get_arXiV import get_article as arxiv,get_max_article as max_arxiv
 from BackEnd.functions.Get_biorXiv import get_article as biorxiv, get_max_article as max_biorxiv
 from BackEnd.functions.Get_medrXiv import get_article as medrxiv, get_max_article as max_medrxiv
@@ -31,41 +32,54 @@ from programmeDjango.settings import TEMPORARY_DATA
 # the key is the research id and the value is the thread object
 list_thread = dict()
 
+# we redirect stderror to a file
+import sys
+sys.stderr = open(TEMPORARY_DATA + "/error.log","a")
+
+def print_research(output_text,research_id):
+    """ we print in the file log of the research"""
+    a = open(TEMPORARY_DATA + "/research_" + str(research_id) + ".log","a")
+    try:
+        print(output_text,file=a)
+    finally:
+        a.close()
+
 
 def max_article(search):
     article = 0
-    print("max_research")
     try:
         article += max_arxiv(search)
-        print("correct arxiv")
     except:
-        print("error arxiv")
+        print("error arxiv",file=sys.stderr)
         pass
     try:
         article += max_biorxiv(search)
-        print("correct bio")
+        
     except:
-        print("error bio")
+        print("error bio",file=sys.stderr)
         pass
     try:
         article += max_medrxiv(search) 
-        print("correct med")
+
     except:
-        print("error med")
+        print("error med",file=sys.stderr)
         pass
     try:
         article += max_pap(search) 
-        print("correct pap")
+
     except:
-        print("error pap")
+        print("error pap",file=sys.stderr)
         pass
 
     return  article
 
 def make_research (search,research,thread=1):
 
+    
     # we delete all objects Research_Article
     Research_Article.objects.filter(research=research).delete()
+
+    print_research("old Research_Article objects cleaned",research.id)
 
     arg = (search,research,thread)
     thread_arxiv = Thread(target=arxiv,args=arg)
@@ -73,26 +87,38 @@ def make_research (search,research,thread=1):
     thread_medrxiv = Thread(target=medrxiv,args=arg)
     thread_pap = Thread(target=pap,args=arg)
 
+    print_research("Research thread created",research.id)
+
+
     research.current_article_db = "arxiv"
     research.save()
     thread_arxiv.start()
+    print_research("Research in arxiv begin",research.id)
     thread_arxiv.join()
+    print_research("Research in arxiv end",research.id)
 
     research.current_article_db = "biorxiv"
     research.save()
     thread_biorxiv.start()
+    print_research("Research in biorxiv begin",research.id)
     thread_biorxiv.join()
+    print_research("Research in biorxiv end",research.id)
 
     research.current_article_db = "medrxiv"
     research.save()
     thread_medrxiv.start()
+    print_research("Research in medrxiv begin",research.id)
     thread_medrxiv.join()
+    print_research("Research in medrxiv end",research.id)
 
     research.current_article_db = "paperity"
     research.save()
     thread_pap.start()
+    print_research("Research in paperity begin",research.id)
     thread_pap.join()
-    
+    print_research("Research in paperity end",research.id)
+
+
 
 
 def preprocessing_parallel(research,articles,corpus):
@@ -160,13 +186,18 @@ def make_preprocessing(research,corpus="abstract",number_thread=1):
     """ preprocessing of the articles of the research in parallel.
     the output is the tfidf results. We can use the abstract ="abstract" or the full_text="full_text" or the both = "both" """
 
+
     #we clear the ancient number of preprocess article
     Number_preprocess.objects.filter(research=research).delete()
 
+    print_research("Number_preprocess objects cleaned",research.id)
+
     #we get the articles
     articles = Article.objects.filter(research_article__research=research)
+    print_research("Articles fetched",research.id)
 
-    #we will ditribute the jobs among the threads
+    print_research("Distribution of the article to each thread",research.id)
+    #we will distribute the jobs among the threads
     # the input is a list of article
     list_jobs = []
     number_article = articles.count()
@@ -182,14 +213,18 @@ def make_preprocessing(research,corpus="abstract",number_thread=1):
     for articles in list_jobs:
         list_threads.append(Thread(target=preprocessing_parallel,args=(research,articles,corpus)))
         
-    
+    print_research("Starting the threads")
     #We start the threads and wait for their ending
     for thread in list_threads:
         thread.start()
+        print_research("Thread " + str(thread.get_native_id()) + " started")
+    
     for thread in list_threads:
         thread.join()
+        print_research("Thread " + str(thread.get_native_id()) + " ended")
     
 
+    print_research("Building tf-idf file",research.id)
     #we recuperate the results from preprocessing
     preprocess = Preprocess_text.objects.filter(research=research)
     id_article_list = preprocess.values_list('id_article',flat=True).distinct().order_by()
@@ -215,6 +250,7 @@ def make_preprocessing(research,corpus="abstract",number_thread=1):
     tfidfVectorizer = TfidfVectorizer()
     tf_idf = tfidfVectorizer.fit_transform(list_final)
 
+    print_research("Save temporary file",research.id)
     joblib.dump(list_final,f"{TEMPORARY_DATA}/final_list_research_{str(research.id)}.pkl")
     joblib.dump(tf_idf, f"{TEMPORARY_DATA}/tf_idf_research_{str(research.id)}.pkl")
     joblib.dump(list_id_final,f"{TEMPORARY_DATA}/id_list_research_{str(research.id)}.pkl")
@@ -224,24 +260,28 @@ def make_preprocessing(research,corpus="abstract",number_thread=1):
 
 def make_cluster(research,list_id,list_final,tf_idf,n_trials,n_threads):
     
-    #we check the number of trial alreadyaccomplished and give only the unaccomplished number of trials
+    #we check the number of trial already accomplished and give only the unaccomplished number of trials
     trials_finished = Number_trial.objects.filter(research=research).count()
     n_trials = n_trials - trials_finished
     if n_trials <= 0:
         n_trials = 0
+
+    print_research("2d pacmap run " ,research.id)
     # run 2d pacmap with default values
     embedding_2d = clustering.pacmap_default(tf_idf)
 
+    print_research("Optimization begin" ,research.id)
     # run optimization
     study = clustering.optimization(
        research, tf_idf, "study_research_"+str(research.id), n_trials, n_threads
     )
-    
+    print_research("Optimization end" ,research.id)
     # extract best study
     best_study_clusterer = clustering.retrieve_best_study(
         research,tf_idf, study
     )
     
+    print_research("writing cluster dat in database",research.id)
     # create hover matrix
     clustering.hover_with_keywords(
         research,
@@ -262,22 +302,37 @@ def back_process(research):
     time_start = datetime.datetime.now()
     research.is_running = True
     research.save()
+
+    print_research("\n\n ################ RESEARCH BEGINNING ################# \nsearch_terme = " + research.search + "\n",research.id)
+
     if research.step == "article":
 
+        print_research("Article Step begin",research.id)
         search = research.search
         # we give the max article possible to get so we can see the progression
+        print_research("Get number max of article",research.id)
         research.max_article = max_article(search)
+        print_research("Number of max article done",research.id)
+        print_research("Article research start",research.id)
         make_research(search,research,NUMBER_THREADS_ALLOWED)
+        print_research("Article research done",research.id)
         # when it's done, we change the current step
         research.step = "processing"
         research.save()
+        print_research("Article Step end",research.id)
 
     if research.step == "processing":
+        print_research("Preprocessing Step begin",research.id)
+        print_research("Preprocessing article begin",research.id)
         tf_idf,id_list,final_list = make_preprocessing(research=research,corpus="abstract",number_thread=NUMBER_THREADS_ALLOWED)
+        print_research("Preprocessin article end",research.id)
         research.step = "clustering"
         research.save()
+        print_research("Article Step end",research.id)
 
     if research.step == "clustering":
+        print_research("Clustering Step begin",research.id)
+        print_research("Recuperate temporary file if don't exist",research.id)
         # if the tf_idf and other data are null, we charge them from save files
         if tf_idf == []:
             tf_idf = joblib.load(f"{TEMPORARY_DATA}/tf_idf_research_{str(research.id)}.pkl")
@@ -285,18 +340,18 @@ def back_process(research):
             id_list = joblib.load(f"{TEMPORARY_DATA}/id_list_research_{str(research.id)}.pkl")
         if final_list == []:
             final_list = joblib.load(f"{TEMPORARY_DATA}/final_list_research_{str(research.id)}.pkl")
-    
-        make_cluster(research,id_list,final_list,tf_idf,NUMBER_TRIALS,NUMBER_THREADS_ALLOWED)
 
-        time_end = datetime.datetime.now()
-        numbers_seconds = (time_end - time_start).seconds
-        research.process_time = numbers_seconds
+        print_research("Clusterin begin",research.id)
+        make_cluster(research,id_list,final_list,tf_idf,NUMBER_TRIALS,NUMBER_THREADS_ALLOWED)
+        print_research("Clusterin end",research.id)
+        
         # we reset the step to "article" and mark the research as "finished"
         research.is_running = False
         research.is_finish = True
         research.step = "article"
         research.save()
 
+        print_research("Delete temporary file",research.id)
         # clear all useless data
         if os.path.exists(f"{TEMPORARY_DATA}/tf_idf_research_{str(research.id)}.pkl"):
             os.remove(f"{TEMPORARY_DATA}/tf_idf_research_{str(research.id)}.pkl")
@@ -308,7 +363,16 @@ def back_process(research):
         Preprocess_text.objects.filter(research=research).delete()
         Number_preprocess.objects.filter(research=research).delete()
         Number_trial.objects.filter(research=research).delete()
-        del list_thread[research.id]
+        print_research("Clustering Step end",research.id)
+        
+
+    time_end = datetime.datetime.now()
+    numbers_seconds = (time_end - time_start).seconds
+    research.process_time = numbers_seconds
+    research.save()
+
+    print_research("\n\n ################ RESEARCH END ################# \n\n",research.id)
+    del list_thread[research.id]
 
 def launch_process(research):
     #we check if the research was already done
@@ -410,3 +474,14 @@ def delete(research):
         os.remove(file)
 
     return True
+
+#we launch a thread as daemon for the method "relaunch_if_fault" so if there are some research with fault,
+# it will automatically restart it 
+
+#t = Thread(target=relaunch_if_fault,args={})
+#t.setDaemon(True)
+#t.start()
+
+#u = Thread(target=update_research,args={})
+#u.setDaemon(True)
+#u.start()

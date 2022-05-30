@@ -114,7 +114,7 @@ def extract_article(id_list,research):
                         begin_sub = subchild.tag.split('}')[0]+ '}'
                         break
         except:
-            xml_doc = ET.fromstring("<root>blabla</root>")
+            continue
 
         #Extracts the DOI, not always available
         doi = ''
