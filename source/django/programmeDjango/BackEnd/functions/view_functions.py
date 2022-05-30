@@ -217,11 +217,11 @@ def make_preprocessing(research,corpus="abstract",number_thread=1):
     #We start the threads and wait for their ending
     for thread in list_threads:
         thread.start()
-        print_research("Thread " + str(thread.get_native_id()) + " started",research.id)
+        print_research("Thread " + " started",research.id)
     
     for thread in list_threads:
         thread.join()
-        print_research("Thread " + str(thread.get_native_id()) + " ended",research.id)
+        print_research("Thread " + " ended",research.id)
     
 
     print_research("Building tf-idf file",research.id)
