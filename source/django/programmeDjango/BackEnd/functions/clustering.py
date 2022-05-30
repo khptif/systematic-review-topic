@@ -22,17 +22,20 @@ import signal
 
 def pacmap_default(tf_idf, plot=True):
 
+    print("Random seed")
     np.random.seed(set_seed)
-
+    print("pacmap PaCMAP")
     embedding_2d = pacmap.PaCMAP(random_state=set_seed, apply_pca=True).fit(
         tf_idf, init="pca"
     )
-
+    print("if plot")
     if plot:
+        print("plt subplot")
         fig, ax = plt.subplots(1, 1, figsize=(6, 6))
+        print("scatter")
         ax.scatter(*embedding_2d.embedding_.T, s=0.6)
 
-
+    print("return data")
     return embedding_2d
 
 

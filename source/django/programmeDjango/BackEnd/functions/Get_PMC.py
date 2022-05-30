@@ -70,27 +70,14 @@ def get_ID(search):
 
 def extract_data(id):
     
-    url = 'https://www.ncbi.nlm.nih.gov/pmc/utils/idconv/v1.0/idconv.fcgi?ids=' +\
-              id +'&idtype=pmcid&format=json&versions=no&showaiid=no'
-    #Gets the JSON response
-    doi=''
-    try:
-        json_data = requests.get(url).json()
-        #Extracts PMID and DOI for each entry
-        for ID in json_data['records']:
-            if 'doi' in ID:
-                doi = ID['doi']
-    except:
-        pass
-    
     #Gets the xml with all meta-data
     api_fetch = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?'
-    fetch = api_fetch + db + '&id=' + ID 
+    fetch = api_fetch + db + '&id=' + id 
     
     try:
         xml_doc = ET.parse(urlopen(fetch)).getroot()
     except:
-        xml_doc = ET.fromstring("<root>blabla</root>")
+        return False
 
 
     #Removes all unnecessary data (Tables, captions and figure related tags)
@@ -103,157 +90,61 @@ def extract_data(id):
         doi = list_doi[0].text
 
     date = ''
-    for tag in xml_doc.iter('year'):
-        date = tag.text
-        break
-    for tag in xml_doc.iter('month'):
-        try:
-            if len(tag.text) < 2:
-                date = date + '-0' + tag.text
-            else:
-                date = date + '-' + tag.text
-        except: #AttributeError:
-            date = date + '-01'
-        break
-    if date != '':
-        Date.append(date)
-    else:
-        Date.append(np.nan)
-        #Extracts the journal name, always available
-        journ = ''
-        for tag in xml_doc.iter('journal-title'):
-            journ = tag.text
-        if journ != '' and journ != None:
-            Journal.append(UN.unidecode(journ))
-        else:
-            Journal.append(np.nan)
-        #Extracts the title of the paper, always available
-        title = ''
-        for tag in xml_doc.iter('title-group'):
-            title = tag.find('article-title').text
-        if title != '' and title != None:
-            Title.append(UN.unidecode(title))
-        else:
-            Title.append(np.nan)
-        #Extract the names of the Authors, always available
-        author = []
-        for tags in xml_doc.iter('contrib'):
-                for tag in tags.iter('name'):
-                    try:
-                        full_name = tag.find('surname').text
-                    except AttributeError:
-                        pass
-                    #Sometimes only the surname is given, nit the names
-                    try:
-                        full_name = full_name + ' ' + tag.find('given-names').text
-                    except AttributeError:
-                        pass
-                    except TypeError:
-                        pass
-                    try:
-                        author.append(UN.unidecode(full_name))
-                    except AttributeError:
-                        pass
-        if len(author) != 0:
-            Authors.append(";".join(author))
-        else:
-            Authors.append(np.nan)
-        #Extracts the corresponding affiliations (itertext takes all text between the aff tags
-        #   so we need to remove the first character which is number), not always available
-        affiliation = []
-        for tag in xml_doc.iter('aff'):
+    year = 0
+    month = 0
+    day = 0
+
+    try:
+        for tag in xml_doc.iter('year'):
+            date = int(tag.text)
+            break
+        for tag in xml_doc.iter('month'):
+            month = int(tag.text)
+            break
+        for tag in xml_doc.iter('day'):
+            day = int(tag.text)
+    except:
+        date = datetime.date(1900,1,1)
+    
+    #Extracts the title of the paper, always available
+    title = ''
+    for tag in xml_doc.iter('title-group'):
+        title = tag.find('article-title').text
+    
+    #Extract the names of the Authors, always available
+    # we return a list in the format (last name, first name)
+
+    author = []
+    for tags in xml_doc.iter('contrib'):
+        for tag in tags.iter('name'):
+            last_name=''
+            first_name=''
             try:
-                affiliation.append(UN.unidecode("".join(tag.itertext())[0:]))
+                last_name = tag.find('surname').text
             except AttributeError:
                 pass
-        if len(affiliation) !=0:
-            Aff.append(";".join(affiliation))
-        else:
-            Aff.append(np.nan)
-        #Extracts the full abstract (itertext takes all text between the abstract tags, so we
-        #   remove all \n characters and all superfluous spaces), not always available
-        abstract = ''
-        for tag in xml_doc.iter('abstract'):
-            abstract= "".join(tag.itertext()).replace('\n','')
-        if abstract != '' and abstract != None:
-            Abs.append(UN.unidecode(" ".join(abstract.split())))
-        else:
-            Abs.append(np.nan)
-        #Extracts the MeshKeywords, not always available
-        keywords=[]
-        for tag in xml_doc.iter('kwd'):
+            #Sometimes only the surname is given, nit the names
             try:
-                keywords.append(UN.unidecode(tag.text))
+                first_name = tag.find('given-names').text
             except AttributeError:
                 pass
-        if len(keywords) != 0:
-            MesH.append(";".join(keywords))
-        else:
-            MesH.append(np.nan)
-        #Extracts the full text, not always available
-        full_text = ''
-        for tag in xml_doc.iter('body'):           
-            full_text = "".join(tag.itertext()).replace('\n','')
-        if full_text != '' and full_text != None:
-            FullT.append(UN.unidecode(" ".join(full_text.split())))
-            URL.append(np.nan)
-        else:
-            #Extracts the full text, not available by default (PubMed)
-            #   so fetching URL from DOI, then downloading cooresponding PDF and
-            #   extracting the text
-            doi_missing = DOI[PMC_ID.index(ID)]
-            if not pd.isnull(doi_missing):
-                #Creating file name for PDF
-                file_name = doi_missing.replace('.', '_').replace('/', '_').replace('-', '_')
-                #Getting the URL from the DOI
-                url_PDF = get_URL_from_DOI(doi_missing)
-                #If the URL is present
-                if not pd.isnull(url_PDF):
-                    URL.append(url_PDF)
-                    status, file_size = download_from_URL(url_PDF, './DownloadedPDF/' + name + '/', file_name)
-                    #We have an actual file, so we store it, otherwise, do nothing
-                    if (file_size > 0):
-                        FullT.append(convert_PDF(file_name, name))
-                    else:
-                        FullT.append(np.nan)
-                #Else we didn't find the PDF, no full text
-                else:
-                    URL.append(np.nan)
-                    FullT.append(np.nan)
-            #No DOI, no URL => no full text
-            else:
-                URL.append(np.nan)
-                FullT.append(np.nan)
+            except TypeError:
+                pass
+            author.append((last_name,first_name))
 
-#            FullT.append(np.nan)
-
-        if dump_in >= int(50):
-            print ("Dumping some data")
-            #DUmps some data to not have to start at beginning if a problem occurs
-            dict = {'Date':Date, 'DOI':DOI_Fetched, 'PMCID':Fetched, 'PMID':PMID_Fetched, 'Journal':Journal, \
-                'Title':Title, 'Authors':Authors, 'Affiliation':Aff, \
-                'Abstract':Abs, 'Keywords': MesH, 'Full text':FullT, 'URL':URL}
-
-            dataFrame = pd.DataFrame(dict)
-            #Exports to DB for later use
-            dataFrame.to_sql(db, engine, if_exists='append', chunksize = 50)
-            #Resets entries
-            Date, Journal, Title, Authors, Aff, Abs, MesH,FullT = [],[], [], [], [], [], [], []
-            Fetched, DOI_Fetched, PMID_Fetched = [], [], []
-            URL = []
-            dump_in = 0
-
-    #creates a dictionnary and forms a pandas DataFrame for easier data
-    #   analysis later
-    dict = {'Date':Date, 'DOI':DOI_Fetched, 'PMCID':Fetched, 'PMID':PMID_Fetched, 'Journal':Journal, \
-            'Title':Title, 'Authors':Authors, 'Affiliation':Aff, \
-            'Abstract':Abs, 'Keywords': MesH, 'Full text':FullT, 'URL': URL}
-
-    #creates or append to the previous dataFrame
-    dataFrame = pd.DataFrame(dict)
-    #Exports to DB for later use
-    dataFrame.to_sql(db, engine, if_exists='append', chunksize = 50)
-    print ('Data acquired from the database')
+    
+    #Extracts the full abstract (itertext takes all text between the abstract tags, so we
+    #   remove all \n characters and all superfluous spaces), not always available
+    abstract = ''
+    for tag in xml_doc.iter('abstract'):
+        a = "".join(tag.itertext()).replace('\n','')
+        if a != '' and a != None:
+            abstract += UN.unidecode(" ".join(a.split())) + " "
+   
+    #Extracts the url of the full text
+    url = ''
+            
+    return 
 
     
 

@@ -34,7 +34,7 @@ list_thread = dict()
 
 # we redirect stderror to a file
 import sys
-sys.stderr = open(TEMPORARY_DATA + "/error.log","a")
+#sys.stderr = open(TEMPORARY_DATA + "/error.log","a")
 
 def print_research(output_text,research_id):
     """ we print in the file log of the research"""
