@@ -28,14 +28,15 @@ ln -s /etc/nginx/sites-available/django_nginx.conf /etc/nginx/sites-enabled/djan
 #sed -i "s/x_domain_name_x/${HOST_DOMAIN}/g" /etc/nginx/sites-available/django_nginx.conf
 
 # start nginx
-/etc/init.d/nginx start
+#/etc/init.d/nginx start
 
 #update the database if table changed
 python3 manage.py makemigrations
 python3 manage.py migrate
 
 #start django application
-uwsgi --socket django.sock --module programmeDjango.wsgi --daemonize=./docker_volume/log.log
+#uwsgi --socket django.sock --module programmeDjango.wsgi --daemonize=./docker_volume/log.log
+python3 manage.py runserver 0.0.0.0:8000
 
 while true; do sleep 1000; done
 
