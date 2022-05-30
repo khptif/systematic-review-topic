@@ -25,9 +25,12 @@ def pacmap_default(tf_idf, plot=True):
     print("Random seed")
     np.random.seed(set_seed)
     print("pacmap PaCMAP")
-    embedding_2d = pacmap.PaCMAP(random_state=set_seed, apply_pca=True).fit(
+    try:
+        embedding_2d = pacmap.PaCMAP(random_state=set_seed, apply_pca=True).fit(
         tf_idf, init="pca"
     )
+    except:
+        pass
     print("if plot")
     if plot:
         print("plt subplot")
