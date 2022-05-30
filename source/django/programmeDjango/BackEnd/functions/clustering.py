@@ -20,6 +20,10 @@ from programmeDjango.settings import X_INTERVAL_LITTLE,X_INTERVAL_BIG,Y_INTERVAL
 import os
 import signal
 
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
+warnings.filterwarnings("ignore")
+
 def pacmap_default(tf_idf, plot=True):
 
     print("Random seed")
