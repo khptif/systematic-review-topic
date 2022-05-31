@@ -1,7 +1,7 @@
 FROM ubuntu:20.04
 
 RUN apt-get -y update
-RUN apt-get -y install python3.9
+RUN apt-get -y install python3.8
 RUN apt-get -y install python3-pip
 RUN apt-get -y install python3-psycopg2
 RUN apt-get -y install nginx

@@ -1,4 +1,5 @@
 
+from tabnanny import verbose
 import numpy as np
 from BackEnd.models import Number_trial
 import pacmap
@@ -20,9 +21,7 @@ from programmeDjango.settings import X_INTERVAL_LITTLE,X_INTERVAL_BIG,Y_INTERVAL
 import os
 import signal
 
-import warnings
-warnings.simplefilter(action='ignore', category=FutureWarning)
-warnings.filterwarnings("ignore")
+
 
 def pacmap_default(tf_idf, plot=True):
 
@@ -30,7 +29,7 @@ def pacmap_default(tf_idf, plot=True):
     np.random.seed(set_seed)
     print("pacmap PaCMAP")
     try:
-        embedding_2d = pacmap.PaCMAP(random_state=set_seed, apply_pca=True).fit(
+        embedding_2d = pacmap.PaCMAP(random_state=set_seed, apply_pca=True,verbose=True).fit(
         tf_idf, init="pca"
     )
     except:
