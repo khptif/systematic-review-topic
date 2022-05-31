@@ -30,6 +30,10 @@ ln -s /etc/nginx/sites-available/django_nginx.conf /etc/nginx/sites-enabled/djan
 # start nginx
 #/etc/init.d/nginx start
 
+#install all modules required
+
+python3 -m pip install -r requirements.txt
+
 #update the database if table changed
 python3 manage.py makemigrations
 python3 manage.py migrate
