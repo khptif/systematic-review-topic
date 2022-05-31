@@ -268,7 +268,7 @@ def make_cluster(research,list_id,list_final,tf_idf,n_trials,n_threads):
 
     print_research("2d pacmap run " ,research.id)
     # run 2d pacmap with default values
-    embedding_2d = clustering.pacmap_default(tf_idf)
+    #embedding_2d = clustering.pacmap_default(tf_idf)
 
     print_research("Optimization begin" ,research.id)
     # run optimization
