@@ -34,7 +34,7 @@ list_thread = dict()
 
 # we redirect stderror to a file
 import sys
-#sys.stderr = open(TEMPORARY_DATA + "/error.log","a")
+sys.stderr = open(TEMPORARY_DATA + "/error.log","a")
 
 def print_research(output_text,research_id):
     """ we print in the file log of the research"""
@@ -268,7 +268,7 @@ def make_cluster(research,list_id,list_final,tf_idf,n_trials,n_threads):
 
     print_research("2d pacmap run " ,research.id)
     # run 2d pacmap with default values
-    #embedding_2d = clustering.pacmap_default(tf_idf)
+    embedding_2d = clustering.pacmap_default(tf_idf)
 
     print_research("Optimization begin" ,research.id)
     # run optimization

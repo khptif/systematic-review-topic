@@ -18,30 +18,24 @@ from scipy import sparse
 from DataBase.models import *
 from programmeDjango.settings import X_INTERVAL_LITTLE,X_INTERVAL_BIG,Y_INTERVAL_LITTLE,Y_INTERVAL_BIG
 
-import os
-import signal
-
 import numpy as np
 
 def pacmap_default(tf_idf, plot=True):
 
-    print("Random seed")
+    
     np.random.seed(set_seed)
-    print("pacmap PaCMAP")
     try:
         embedding_2d = pacmap.PaCMAP(random_state=set_seed, apply_pca=True,verbose=True).fit(
         tf_idf, init="pca"
     )
     except:
         pass
-    print("if plot")
+    
     if plot:
-        print("plt subplot")
+        
         fig, ax = plt.subplots(1, 1, figsize=(6, 6))
-        print("scatter")
         ax.scatter(*embedding_2d.embedding_.T, s=0.6)
 
-    print("return data")
     return embedding_2d
 
 
@@ -141,24 +135,19 @@ class Objective(object):
     def __call__(self, trial):
 
         tf_idf = self.tf_idf
-        print("test1")
+        
         pacmap_n_dims = trial.suggest_int("pacmap_n_dims", 2, 400)
-        print("test2")
         pacmap_n_neighbors = trial.suggest_int("pacmap_n_neighbors", 4, 400)
-        print("test3")
+       
 
         hdbscan_min_cluster_size = trial.suggest_int("hdbscan_min_cluster_size", 2, 400)
-        print("test4")
         hdbscan_min_samples = trial.suggest_int("hdbscan_min_samples", 2, 400)
-        print("test5")
         hdbscan_cluster_selection_method = trial.suggest_categorical(
             "hdbscan_cluster_selection_method", ["eom", "leaf"]
         )
-        print("test6")
         hdbscan_metric = trial.suggest_categorical(
             "hdbscan_metric", ["euclidean", "cosine"]
         )
-        print("test7")
 
         study = pacmap_hdbscan(
             tf_idf,
@@ -169,9 +158,9 @@ class Objective(object):
             hdbscan_cluster_selection_method=hdbscan_cluster_selection_method,
             hdbscan_metric=hdbscan_metric,
         )
-        print("test8")
+        
         return_data =study.evaluate()
-        print("test9")
+        
 
         # we increment the number of finish trial
         Number_trial.objects.create(research=self.research)
@@ -181,7 +170,7 @@ class Objective(object):
         if new_score > current_score:
             self.research.best_dbcv = new_score
             self.research.save()
-        print("test10")
+        
         return return_data 
 
 
