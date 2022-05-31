@@ -382,7 +382,7 @@ def launch_process(research):
     if research.is_running:
         return False
 
-    research_id = research.id
+    #research_id = research.id
     list_thread[research_id] = Thread(target=back_process,args=[research])
     list_thread[research_id].setDaemon(True)
     list_thread[research_id].start()
