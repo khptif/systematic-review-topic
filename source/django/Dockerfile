@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:21.04
 
 RUN apt-get -y update
 RUN apt-get -y install python3.8

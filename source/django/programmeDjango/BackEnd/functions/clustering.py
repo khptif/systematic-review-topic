@@ -1,6 +1,6 @@
 
 from tabnanny import verbose
-import numpy as np
+
 from BackEnd.models import Number_trial
 import pacmap
 import matplotlib.pyplot as plt
@@ -21,7 +21,7 @@ from programmeDjango.settings import X_INTERVAL_LITTLE,X_INTERVAL_BIG,Y_INTERVAL
 import os
 import signal
 
-
+import numpy as np
 
 def pacmap_default(tf_idf, plot=True):
 
