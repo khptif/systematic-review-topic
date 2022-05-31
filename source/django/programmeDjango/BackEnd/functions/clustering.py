@@ -1,4 +1,3 @@
-
 from tabnanny import verbose
 
 from BackEnd.models import Number_trial
