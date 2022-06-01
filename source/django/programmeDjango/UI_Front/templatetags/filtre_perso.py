@@ -198,13 +198,26 @@ def article_display(article_list):
                 </div>
                     """
     for article in article_list:
-        title = html.escape(article.title)
+        title = ""
+        if isinstance(title,str) :
+            title = html.escape(article.title)
+        
         article_id = "article_" + str(article.id)
         authors_list = Author.objects.filter(article_author__article = article)
         authors =""
         for author in authors_list:
-            authors += html.escape(author.last_name) + " " + html.escape(author.first_name) + ";<br> "
-        abstract = html.escape(article.abstract)
+            last_name = ""
+            first_name = ""
+            if isinstance(author.last_name,str):
+                last_name = html.escape(author.last_name)
+            if isinstance(author.first_name,str):
+                first_name = html.escape(author.first_name)
+
+            authors += last_name + " " + first_name + ";<br> "
+        abstract=''
+        if isinstance(article.abstract,str):
+            abstract = html.escape(article.abstract)
+       
         html_code = template.format(article_id=article_id,title=title,authors=authors, abstract=abstract)
         return_html += html_code
     return return_html
@@ -216,6 +229,12 @@ def authors_display(row):
     authors = Author.objects.filter(article_author__article =article)
     html_code = ""
     for author in authors:
-        html_code += html.escape(author.last_name) + " " + html.escape(author.first_name) + " <br>"
+        last_name = ""
+        first_name = ""
+        if isinstance(author.last_name,str) :
+            last_name = html.escape(author.last_name)
+        if isinstance(author.first_name,str):
+            first_name = html.escape(author.first_name)
+        html_code += last_name + " " + first_name + " <br>"
     return html_code
     

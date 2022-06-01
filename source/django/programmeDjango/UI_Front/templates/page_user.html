@@ -16,6 +16,10 @@
             {%csrf_token%}
             <input type="submit" name="submit" value="delete_all"> 
         </form>
+        <form action="" method="POST">
+            {%csrf_token%}
+            <input type="submit" name="submit" value="restart_fault"> 
+        </form>
     </div>
     <div>
         {{id_check}} id_check {{is_running}}

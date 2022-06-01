@@ -177,17 +177,21 @@ def page_user(request):
         if "submit" in request.POST:
             if request.POST["submit"] == "delete_all":
                 # we delete all research 
-                Research.objects.all().delete()
-                return render(request,'page_user.html',variables)
-                
-            research_id = request.POST['research_id']
-            research = Research.objects.get(id=research_id)
-            # if this is a request for check process
-            if request.POST['submit'] == "check":
-                variables["is_running"] = check(research)
+                Research.objects.all().delete()   
             
-            if request.POST['submit'] == "delete":
-                pass
+            elif request.POST["submit"] == "restart_fault":
+                #we restart all research with fault
+                relaunch_if_fault()
+
+            else:    
+                research_id = request.POST['research_id']
+                research = Research.objects.get(id=research_id)
+                # if this is a request for check process
+                if request.POST['submit'] == "check":
+                    variables["is_running"] = check(research)
+            
+                if request.POST['submit'] == "delete":
+                    pass
 
             
                 
