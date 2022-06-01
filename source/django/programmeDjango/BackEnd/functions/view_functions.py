@@ -463,12 +463,8 @@ def delete(research):
     
     #we delete in the database
     Research.objects.filter(id=research.id).delete()
-
-    #we delete the pdf in "BackEnd/functions/download if exist "
-    for file in glob(f'{TEMPORARY_DATA}/download/research_{research.id}*'):
-        os.remove(file)
     
-    #we delete all intermediate file in "BackEnd/data"
+    #we delete all intermediate file 
     for file in glob(f'{TEMPORARY_DATA}/*research_{research.id}*'):
         os.remove(file)
 

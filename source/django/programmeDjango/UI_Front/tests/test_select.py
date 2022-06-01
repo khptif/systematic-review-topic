@@ -1,6 +1,5 @@
-from ast import keyword
+
 from django.test import TestCase
-from matplotlib.pyplot import title
 from UI_Front.functions.select_functions import *
 
 
