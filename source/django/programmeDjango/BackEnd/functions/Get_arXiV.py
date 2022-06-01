@@ -201,7 +201,7 @@ def get_article(search, research, number_threads=1):
     
     ID_list = Get_ID(search_term)
     if ID_list == False:
-        time.sleep(5)
+        time.sleep(1)
         ID_list = Get_ID(search_term)
         if ID_list == False:
             return False

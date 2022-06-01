@@ -174,9 +174,9 @@ def get_article_parallel(begin_page,number_page,research,search_term):
                 title = metadata['title']
                 abstract = metadata['abstract']
                 url_file = metadata['url']
-                article = Article(title=title,doi=doi,abstract=abstract,full_text=full_text,publication=publication,url_file=url_file)
+                article = Article.objects.create(title=title,doi=doi,abstract=abstract,full_text=full_text,publication=publication,url_file=url_file)
 
-            article.save()
+           
             Research_Article.objects.create(research=research,article=article)
 
             author_list = []
