@@ -1,11 +1,15 @@
-def scatter_with_hover(df, x, y,
-                       fig=None, cols=None, name=None, marker='x',
-                       fig_width=800, fig_height=800, **kwargs):
+from DataBase.models import *
+
+
+def scatter_with_hover(research,path,fig=None, cols=None, name=None, marker='circle',
+                       fig_width=1750, fig_height=900 ):
     
     
     # bokeh for interactive display
+    from bokeh.palettes import d3
+
     from bokeh.plotting import figure, ColumnDataSource
-    from bokeh.models import HoverTool
+    from bokeh.models import HoverTool, CategoricalColorMapper
     from bokeh.models.callbacks import CustomJS
     from bokeh.io import show, output_notebook, output_file, save
     from bokeh.transform import linear_cmap
@@ -52,6 +56,24 @@ def scatter_with_hover(df, x, y,
     if fig is None:
         fig = figure(width=fig_width, height=fig_height, tools=['box_zoom', 'reset', 'save', 'tap'])
 
+    df = dict()
+    df["x"]=[]
+    df["y"]=[]
+    df["title"]=[]
+    df["abstract"]=[]
+    df["topic"] = []
+
+    clusters_point = Cluster.objects.filter(research=research)
+    for points in clusters_point:
+        df['x'].append(points.pos_x)
+        df['y'].append(points.pos_y)
+        df['topic'].append(points.topic)
+        df['title'].append(points.article.title)
+        df['abstract'].append(points.article.abstract)
+
+    unique_topic = list(set(df['topic']))
+    palette = d3['Category10'][len(unique_topic)]
+    color_map = CategoricalColorMapper(factors=unique_topic,palette=palette)
     # We're getting data from the given dataframe
     source = ColumnDataSource(data=df)
 
@@ -64,7 +86,8 @@ def scatter_with_hover(df, x, y,
 
     # Actually do the scatter plot - the easy bit
     # (other keyword arguments will be passed to this function)
-    fig.scatter(x, y, source=source, name=name, marker=marker, **kwargs)
+    fig.scatter('x','y', source=source, name=name, marker=marker, color={'field': 'topic', 'transform': color_map},
+          legend='topic') 
 
     # Now we create the hover tool, and make sure it is only active with
     # the series we plotted in the previous line
@@ -72,7 +95,7 @@ def scatter_with_hover(df, x, y,
 
     if cols is None:
         # Display *all* columns in the tooltips
-        hover.tooltips = [(c, '@' + c) for c in df.columns]
+        hover.tooltips = [(c, '@' + c) for c in df.keys()]
     else:
         # Display just the given columns in the tooltips
         hover.tooltips = [(c, '@' + c) for c in cols]
@@ -82,4 +105,4 @@ def scatter_with_hover(df, x, y,
     # Finally add/enable the tool
     fig.add_tools(hover)
 
-    return fig
+    save(fig,path)

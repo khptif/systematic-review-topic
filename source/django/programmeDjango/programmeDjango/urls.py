@@ -28,4 +28,5 @@ urlpatterns = [
     path('user',page_user),
     path('select',page_select),
     path('table_choice',page_table_choice),
+    path('plot',render_plot),
 ]

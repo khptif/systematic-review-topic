@@ -81,7 +81,7 @@ function add_filter()
     let close_function = `close_div('${id}')`;
     let close_button = `<button type="button" onclick="${close_function}" style='width:50px;height:50px; margin:10px;'> X </button>`;
     var bloc = document.getElementById("filters");
-    bloc.innerHTML =`${bloc.innerHTML}  <div id="${id}" style='width:100%; background-color:yellow; display:flex; flex-wrap: wrap; margin-bottom:10px;' onclick="select_filter('${id}')"> ${close_button} </div> `;
+    bloc.innerHTML =`${bloc.innerHTML}  <div id="${id}" style='width:90%; background-color:yellow; display:flex; flex-wrap: wrap; margin:10px;' onclick="select_filter('${id}')"> ${close_button} </div> `;
 
     // we put the add button
     bloc.innerHTML += `<div id='add_filter'> ${add_button}</div>`;
@@ -152,21 +152,18 @@ function add_data_post(type, ...args)
         post_data = escapeHtml(post_data);
 
         //display the data
-        display_data = escapeHtml(`topic: ${topic}`);
-         
+        display_data = escapeHtml(`topic: ${topic}`);   
     }
     // if we submit last name and first name of a author
     else if(type=="author")
     {
-       
         //data to send
-        let last_name = args[0];
-        let first_name = args[1];
-        post_data = `Type:author;last_name:${last_name};first_name:${first_name};`;
+        let name = args[0];
+        post_data = `Type:author;name:${name}`;
         post_data = escapeHtml(post_data);
         
         //data to display
-        display_data = `Author: ${last_name} ${first_name}`
+        display_data = `Author: ${name} `
         display_data = escapeHtml(display_data)
     }
 
@@ -182,7 +179,7 @@ function add_data_post(type, ...args)
         display_data = escapeHtml(display_data);
     }
 
-    else if(type=="neighbour")
+    else if(type=="doi")
     {
         //data to send
         let doi_article = args[0];
@@ -190,7 +187,7 @@ function add_data_post(type, ...args)
         post_data = escapeHtml(post_data);
 
         //data to display
-        display_data = `Neighbour: ${doi_article}`;
+        display_data = `DOI: ${doi_article}`;
         display_data = escapeHtml(display_data);
     }
 
@@ -200,9 +197,11 @@ function add_data_post(type, ...args)
         return "";
     }
 
+    // the data hidden used by a POST request when the button generate is used
     let html_input_code = `<input id='${id_input_html}' type='text' name='${name_input}' value='${post_data}' hidden>`;
     document.getElementById("data_filter").innerHTML += html_input_code;
 
+    // the data display in web page
     let display_filter_html_code = `<div id="${id_div_html}" style="margin-right:5px;background-color:rgba(255,255,255,0.5)">${button_close} ${display_data} </div>`;
     document.getElementById(current_filter).innerHTML += display_filter_html_code;
 }
@@ -236,3 +235,75 @@ function toggle(source) {
       checkboxes[i].checked = source.checked;
     }
   }
+
+
+let current_type_filter = {"type":"Topic","id_input":"topic_input"}
+
+// when we change the type of filter
+function change_type_filter()
+{
+    
+    //we get the value of the selection
+    let type = document.getElementById("type_filter").value;
+    let id_input = "";
+
+    if (type == "Topic")
+    {
+        id_input="topic_input";
+        
+    }
+    else if (type == "Author")
+    {
+        id_input="author_input";
+       
+    }
+    else if (type == "Keyword")
+    {
+        id_input="keyword_input";
+        
+    }
+    else if (type == "DOI")
+    {
+        id_input="doi_input";
+        
+    }
+    else
+    {
+        return false;
+    }
+
+    //we hide current input 
+    document.getElementById(current_type_filter.id_input).style.visibility = "hidden";
+
+    //we display new input 
+    document.getElementById(id_input).style.visibility = "visible";
+
+    //we save the current type data
+    current_type_filter.type = type;
+    current_type_filter.id_input = id_input;
+
+}
+
+function add_topic()
+{
+    topic_value = document.getElementById("topic_input_value").value
+    add_data_post("topic", topic_value)
+}
+
+function add_author()
+{
+    author_name = document.getElementById("author_input_value").value
+    add_data_post("author", author_name)
+}
+
+function add_keyword()
+{
+    keyword = document.getElementById("keyword_input_value").value
+    add_data_post("keyword",keyword)
+}
+
+function add_doi()
+{
+    doi = document.getElementById("doi_input_value").value
+    add_data_post("doi",doi)
+}

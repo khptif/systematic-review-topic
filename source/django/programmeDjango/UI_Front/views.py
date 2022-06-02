@@ -283,8 +283,16 @@ def page_select(request):
 
     #id of the research
     variables['research_id'] = id
-    
 
+    #we give the plot html
+    data=""
+    with open("UI_Front/templates/research_{id}_plot.html".format(id=id), 'r') as file:
+        data = file.read()
+    variables["plot_html"] = data
+
+    #we give a list of all topics
+    variables["list_topics"] = list(set(Cluster.objects.filter(research=research).values_list("topic",flat=True)))
+        
     return render(request, 'page_select.html', variables)
 
 
@@ -326,5 +334,20 @@ def page_table_choice(request):
     
         
     return render(request,"page_table_choice.html",variables)
+
+
+@login_required(login_url='/login')
+def render_plot(request):
+    """it render the html file that represent the plot of a research."""
+    #we check if there are GET parameter "research"
+    if not "research" in request.GET:
+        return redirect("/accueil")
+    #we check if the plot file exist
+    id = request.GET["research"]
+    if not os.path.exists("UI_Front/templates/research_{id}_plot.html".format(id=str(id))):
+        return redirect("/accueil")
+    
+    #we render the html plot
+    return render(request,"research_{id}_plot.html".format(id=str(id)))
 
 # Create your views here.

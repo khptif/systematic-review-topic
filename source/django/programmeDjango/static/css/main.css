@@ -12,3 +12,5 @@ div.first_block div {position: absolute; border: black 2px solid; padding: 50px;
 div.header a {position: absolute; top:-70px; }
 
 div.header {position: absolute; width:75%;}
+
+div.filtres div {margin:20px;}

@@ -3,6 +3,7 @@ from BackEnd.functions.Get_arXiV import get_article as arxiv,get_max_article as 
 from BackEnd.functions.Get_biorXiv import get_article as biorxiv, get_max_article as max_biorxiv
 from BackEnd.functions.Get_medrXiv import get_article as medrxiv, get_max_article as max_medrxiv
 from BackEnd.functions.Get_PAP import get_article as pap, get_max_article as max_pap
+from BackEnd.functions.scatter_with_hover import scatter_with_hover
 
 import BackEnd.functions.text_processing as text_processing
 import BackEnd.functions.clustering as clustering
@@ -344,6 +345,9 @@ def back_process(research):
         make_cluster(research,id_list,final_list,tf_idf,NUMBER_TRIALS,NUMBER_THREADS_ALLOWED)
         print_research("Clusterin end",research.id)
         
+        # we create the plot html of clusters
+        scatter_with_hover(research, "UI_Front/templates/research_{id}_plot.html".format(id=research.id))
+
         # we reset the step to "article" and mark the research as "finished"
         research.is_running = False
         research.is_finish = True
@@ -460,12 +464,15 @@ def check(research):
 
 def delete(research):
      
-    
     #we delete in the database
     Research.objects.filter(id=research.id).delete()
     
     #we delete all intermediate file 
     for file in glob(f'{TEMPORARY_DATA}/*research_{research.id}*'):
+        os.remove(file)
+
+    #we delete html plot of the research
+    for file in glob(f'UI_Front/templates/*research_{research.id}*'):
         os.remove(file)
 
     return True
