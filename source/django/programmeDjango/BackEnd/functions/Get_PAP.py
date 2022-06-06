@@ -1,5 +1,6 @@
 
 from genericpath import exists
+from imp import acquire_lock
 import requests
 #numpy is used for better arrays
 import numpy as np
@@ -15,9 +16,13 @@ from DataBase.models import *
 #Downloading PDF
 import BackEnd.functions.PDF_download as pdf
 
-from threading import Thread
+from threading import Thread,Lock
 
 from BackEnd.functions.Remove_references import remove_references
+
+paperity_mutex = Lock()
+seconds_between_request = 1
+previous_request_datetime = datetime.datetime.now()
 
 def get_search_term(search):
     """we translate the search to a readable string search for the api"""
@@ -41,15 +46,27 @@ def get_max_article(search_term):
 def extract_metadata(ID):
     api_fetch = 'http://paperity.org/api/1.0/p/'
     url_fetch = api_fetch + str(ID)
-
+    
+    global paperity_mutex 
+    paperity_mutex.acquire()
     try:
+        current_time = datetime.datetime.now()
+        global previous_request_datetime
+        global seconds_between_request
+        # if this too soon, we wait the number of seconds
+        if not (current_time-previous_request_datetime).seconds > seconds_between_request :
+            time.sleep((current_time-previous_request_datetime).seconds + 1)
         json_data = requests.get(url_fetch).json()
+        
     except:
-        try:
-            time.sleep(1)
-            json_data = requests.get(url_fetch).json()
-        except:
-            return False
+        previous_request_datetime = datetime.datetime.now()
+        print(previous_request_datetime)
+        paperity_mutex.release()
+        return False
+
+    previous_request_datetime = datetime.datetime.now()
+    print(previous_request_datetime)
+    paperity_mutex.release()
           
     #Gets the DOI
     DOI = ''
@@ -126,29 +143,35 @@ def get_article_parallel(begin_page,number_page,research,search_term):
         query_base = api_query + str(i) + '?text=' + search_term
         json_data = ''
         bad_request = False
-        for i in range(3):
-            try:
-                bad_request = True
-                json_data = requests.get(query_base).json()
-                bad_request = False
-                break
-            except:
-                time.sleep(1)
-                continue
+        
+        # between each
+        global paperity_mutex 
+        paperity_mutex.acquire()
+        try:
+            current_time = datetime.datetime.now()
+            global previous_request_datetime
+            global seconds_between_request
+            # if this too soon, we wait the number of seconds
+            if not (current_time-previous_request_datetime).seconds > seconds_between_request :
+                time.sleep((current_time-previous_request_datetime).seconds + 1)
+            
+            json_data = requests.get(query_base).json()
 
-        if bad_request :
+        except:
+            previous_request_datetime = datetime.datetime.now()
+            paperity_mutex.release()
             continue
 
+        previous_request_datetime = datetime.datetime.now()
+        paperity_mutex.release()
+        
         for paper in json_data['papers']:
             #we save the metadata in our database
             id = paper['pid']
             metadata = extract_metadata(id)
 
             if metadata == False:
-                time.sleep(1)
-                metadata = extract_metadata(id)
-                if metadata == False:
-                    continue
+                continue
 
             doi = metadata['doi']
             #we check if the article exist already
@@ -160,25 +183,19 @@ def get_article_parallel(begin_page,number_page,research,search_term):
             publication = datetime.datetime.strptime(metadata["date"],'%Y-%m-%d').date()
             authors = metadata['authors']
 
-            #we create the article we check if exist already by doi
-            article = Article.objects.filter(doi=doi)
-
-            if article.exists():
-                article = article[0]
-            else:
-                try:
-                    full_text = pdf.extract_full_text(metadata['url'],"papetery_page_"+str(i)+ "_article_"+str(id)+"_research_"+str(research.id))
-                    full_text = remove_references(full_text)
-                except:
-                    full_text = ""
-                title = metadata['title']
-                abstract = metadata['abstract']
-                url_file = metadata['url']
-                article = Article.objects.create(title=title,doi=doi,abstract=abstract,full_text=full_text,publication=publication,url_file=url_file)
+            try:
+                full_text = pdf.extract_full_text(metadata['url'],"papetery_page_"+str(i)+ "_article_"+str(id)+"_research_"+str(research.id))
+                full_text = remove_references(full_text)
+            except:
+                full_text = ""
+                
+            title = metadata['title']
+            abstract = metadata['abstract']
+            url_file = metadata['url']
+            article = Article.objects.create(title=title,doi=doi,abstract=abstract,full_text=full_text,publication=publication,url_file=url_file)
 
            
             Research_Article.objects.create(research=research,article=article)
-
             author_list = []
             # we create the authors and associate to the article
             for a in authors:

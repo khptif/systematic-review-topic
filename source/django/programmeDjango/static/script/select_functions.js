@@ -81,12 +81,14 @@ function add_filter()
     let close_function = `close_div('${id}')`;
     let close_button = `<button type="button" onclick="${close_function}" style='width:50px;height:50px; margin:10px;'> X </button>`;
     var bloc = document.getElementById("filters");
-    bloc.innerHTML =`${bloc.innerHTML}  <div id="${id}" style='width:90%; background-color:yellow; display:flex; flex-wrap: wrap; margin:10px;' onclick="select_filter('${id}')"> ${close_button} </div> `;
+    bloc.innerHTML =`${bloc.innerHTML}  <div id="${id}" style='width:90%; background-color:"yellow"; display:flex; flex-wrap: wrap; margin:10px;' onclick="select_filter('${id}')"> ${close_button} </div> `;
 
     // we put the add button
     bloc.innerHTML += `<div id='add_filter'> ${add_button}</div>`;
     //we increment filters id
     number_filter++;
+    // the current filter is the new one
+    select_filter(id)
 }
 
 // get a list of id and remove the associate html element

@@ -120,3 +120,22 @@ class test_get_article_parallel(TestCase):
             doi = article.doi
             self.assertTrue(parallel_Article.filter(doi=doi).exists(),"error: doi " + str(doi) + " is not in parallel result")
         
+
+class test_get_article(TestCase):
+    #we test if we can get atmost the half of max article
+
+    def setUp(self):
+        self.research = Research.objects.create()
+        print("research created")
+
+    def test_method(self):
+
+        input= '"vitamine c"'
+        number_article_expect = get_max_article(input)
+        print("max article: " + str(number_article_expect))
+
+        get_article(input,self.research,4)
+        number_article_result = Research_Article.objects.filter(research=self.research).count()
+        print("result article: " + str(number_article_expect))
+
+        self.assertGreater(number_article_result,number_article_expect/2)

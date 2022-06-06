@@ -142,6 +142,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 NUMBER_THREADS_ALLOWED = 2
 NUMBER_TRIALS = 300
 
+NUMBER_ARTICLE_BY_PAGE = 30
+
 #we define interval coordinate to display
 # LITTLE if < 10 000 articles
 X_INTERVAL_LITTLE = 490

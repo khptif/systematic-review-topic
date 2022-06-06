@@ -16,6 +16,15 @@ from sqlalchemy import create_engine
 from PDF_download import *
 import concurrent.futures
 
+def get_search_term(search):
+    pass
+
+def get_max_article(search):
+    pass
+
+def get_ID(search):
+    pass
+
 # sets the location of the API for the query
 api_query = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?'
 # sets the location of the API for the fetching. Careful not responding with XML or JSON

@@ -238,3 +238,17 @@ def authors_display(row):
         html_code += last_name + " " + first_name + " <br>"
     return html_code
     
+@register.filter
+def write_filter(filter_data):
+    """we write all javascript function so we have all user filter if user cancel"""
+    script=""
+    for _ , filters in filter_data.items():
+        # we generate a new block filter
+        script += "add_filter(); "
+
+        #we add all filter in this block
+        for type,list_filter in filters.items(): 
+            for filter in list_filter:
+                script += "add_data_post('{type}','{filter}'); ".format(type=type,filter=html.escape(filter))
+    
+    return script

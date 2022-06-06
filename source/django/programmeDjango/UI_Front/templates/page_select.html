@@ -153,6 +153,11 @@
 
 <script src={%static "script/select_functions.js"%}> </script>
 
+{% if cancel%}
+    {% autoescape off%}
+    <script> {{filter_data | write_filter}} </script>
+    {% endautoescape%}
+{% endif%}
 {%endif%}
 
 {%endblock%}

@@ -16,7 +16,7 @@ class Article(models.Model):
     abstract = models.TextField(default='')
     full_text = models.TextField(default='')
     publication = models.DateField(default=datetime.date(1900,1,1))
-    url_file = models.URLField(null=True)
+    url_file = models.URLField(max_length=4096,null=True)
     is_file_get = models.BooleanField(default=False)
     pmcid = models.CharField(max_length=256, null=True)
 
@@ -71,13 +71,4 @@ class TableChoice(models.Model):
     article = models.ForeignKey(Article,on_delete=models.CASCADE)
     to_display = models.BooleanField(default=True)
     is_initial = models.BooleanField(default=True)
-
-class article_temporary(models.Model):
-    research = models.ForeignKey(Research,on_delete=models.CASCADE)
-    database_article = models.CharField(max_length=256)
-    title = models.CharField(max_length=1024,default='')
-    date = models.CharField(max_length=256,default='')
-    DOI = models.CharField(max_length=256,default='')
-    URL = models.CharField(max_length=1024,default='')
-    authors = models.CharField(max_length=1024,default='')
-    abstract = models.CharField(max_length=4096,default='')
+    is_check = models.BooleanField(default=False)

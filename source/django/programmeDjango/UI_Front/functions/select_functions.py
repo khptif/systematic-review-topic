@@ -4,27 +4,19 @@ from UI_Front.functions.utils_functions import *
 from django.db.models import Q
 
 
-def filters_manager(research,post_data):
-    """
-    We first give the research object.
-    We secondly give the dictionnary with post data and return a dictionnary:
-    input:  dictionnary with key in format= "filter_X_Y" X is the numero of the filter and Y the numero of element in the filter
+def filter_recover_data(post_data):
+    """ if we cancel and return to the page of selection with all filter.We recuperate data so we can write them in the html page
+        input : dictionnary with key in format= "filter_X_Y" X is the numero of the filter and Y the numero of element in the filter
             value is a string. The format of each string is
             "Type:data_type;name_value:value;"
             for data_type = topic -> "Type:topic;topic_name:name_of_topic" name of topic is in format [A-Za-z0-9_,\-\s]+ .
-            for data_type = author -> "Type:author;last_name:name;first_name:name;" name format is [A-Za-z0-9\-\s_]. It can be without name
+            for data_type = author -> "Type:author;name:name;" name format is [A-Za-z0-9\-\s_]. It can be without name
             for data_type = keyword -> "Type:keyword;keyword:value;" the value can be [A-Za-z0-9\-\s_]
-            for data_type = neighbour -> "Type:neighbour;DOI:value;"
-
-    output: dictionnary in this format
-            dict["filter_[0-9]+"] . The key represent the name of a filter and the value is a dictionnary in this format:
-                dict["type of value"] = list of these value.
-                type of value = 'topic', value = ["topic1","topic2",etc...], topic name
-                type of value = 'author', value = a list of the Author objects that last_name and/or first_name match
-                type of value = 'keyword', value = ["key1","key2",etc...]
-                type of value = 'neighbour' value = [article_object that has the same doi in input]
-    """
-    print(post_data)
+            for data_type = neighbour -> "Type:neighbour;DOI:value;
+            
+        output : dictionnary of dictionnary. each dictionnary is a filter block and have the keys: 
+                topic,author,keyword and doi. each of them is a list of value"""
+    
     filters = dict()
     for key,value in post_data.items():
 
@@ -51,35 +43,100 @@ def filters_manager(research,post_data):
                 
             elif type=='author':
                 #we retrive last name and first name and check if they are correct or exist
-                last_name = re.findall("last_name:[A-Za-z0-9\-\s_]+",value)
-                if not last_name:
-                    last_name = ""
+                name = re.findall("name:[A-Za-z0-9\-\s_]+",value)
+                if not name:
+                    name = ""
                 else:
-                    last_name = last_name[0].replace("last_name:","")
+                    name = name[0].replace("name:","")
 
-                first_name = re.findall("first_name:[A-Za-z0-9\-\s_]+",value)
-                if not first_name:
-                    first_name =""
-                else:
-                    first_name = first_name[0].replace("first_name:","")
+                if not 'author' in filters[filter_name]:
+                    filters[filter_name]['author'] =[]
+
+                filters[filter_name]['author'].append(name)
+
+            elif type=='keyword':
+                keyword = re.findall("keyword:[A-Za-z0-9\-\s_]+",value)
+                keyword = keyword[0].replace("keyword:","")
+
+                if not 'keyword' in filters[filter_name]:
+                    filters[filter_name]['keyword'] = []
+                filters[filter_name]['keyword'].append(keyword)
+
+            elif type=='neighbour':
+                doi = re.findall("DOI:[A-Za-z0-9\-\s_\.\/]+",value)
+                doi = doi[0].replace("DOI:","")
+
+                if not 'doi' in filters[filter_name]:
+                    filters[filter_name]['doi'] = []
+                
+                filters[filter_name]['doi'].append(doi)
+            else:
+                continue
+
+    return filters
+
+
+
+def filters_manager(research,post_data):
+    """
+    We first give the research object.
+    We secondly give the dictionnary with post data and return a dictionnary:
+    input:  dictionnary with key in format= "filter_X_Y" X is the numero of the filter and Y the numero of element in the filter
+            value is a string. The format of each string is
+            "Type:data_type;name_value:value;"
+            for data_type = topic -> "Type:topic;topic_name:name_of_topic" name of topic is in format [A-Za-z0-9_,\-\s]+ .
+            for data_type = author -> "Type:author;name:name;" name format is [A-Za-z0-9\-\s_]. It can be without name
+            for data_type = keyword -> "Type:keyword;keyword:value;" the value can be [A-Za-z0-9\-\s_]
+            for data_type = neighbour -> "Type:neighbour;DOI:value;"
+
+    output: dictionnary in this format
+            dict["filter_[0-9]+"] . The key represent the name of a filter and the value is a dictionnary in this format:
+                dict["type of value"] = list of these value.
+                type of value = 'topic', value = ["topic1","topic2",etc...], topic name
+                type of value = 'author', value = a list of the Author objects that name match with last_name and/or first_name match
+                type of value = 'keyword', value = ["key1","key2",etc...]
+                type of value = 'neighbour' value = [article_object that has the same doi in input]
+    """
+
+    filters = dict()
+    for key,value in post_data.items():
+
+        # if this is a filter post data
+        filter_name = re.findall("^filter_[0-9]+",key)
+        if filter_name:
+            filter_name = filter_name[0]
+            # we check if this a filter we have already meet
+            if not filter_name in filters:
+                filters[filter_name]= dict()
+            # we check the type of filter
             
-                #we retrieve the author
+            type = re.findall("^Type:[a-z]+",value)
+            type = type[0].replace("Type:","")
+
+            #we check all type
+            if type=='topic':
+                topic_name = re.findall("topic_name:[A-Za-z0-9_,\-\s]+",value)
+                topic_name = topic_name[0].replace("topic_name:","")
+                if not 'topic' in filters[filter_name]:
+                    filters[filter_name]['topic'] = []
+
+                filters[filter_name]['topic'].append(topic_name)
+                
+            elif type=='author':
+                #we retrive name input
+                name = re.findall("name:[A-Za-z0-9\-\s_]+",value)
+                if not name:
+                    name = ""
+                else:
+                    name = name[0].replace("name:","")
+
+                #we retrieve the author we check for last name and after the first_name
                 #the match is not exact.
                 authors_list = []
-                if not first_name =="" and  last_name =="":
-                    string_reg = r".*"+first_name+".*"
-                    authors_list = Author.objects.filter(first_name__iregex=string_reg).order_by("last_name")
-                elif  first_name =="" and not last_name =="":
-                    string_reg = r".*"+last_name+".*"
-                    authors_list = Author.objects.filter(last_name__iregex=string_reg).order_by("last_name")
-                elif not first_name =="" and not last_name =="":
-                    string_reg_l = r".*"+last_name+".*"
-                    string_reg_f = r".*"+first_name+".*"
-                    authors_list = Author.objects.filter(last_name__iregex=string_reg_l,first_name__iregex=string_reg_f).order_by("last_name")
-                else:
-                    continue
                 
-
+                string_reg = r".*"+name+".*"
+                authors_list = Author.objects.filter(Q(last_name__iregex=string_reg) | Q(first_name__iregex=string_reg)).order_by("last_name")
+                
                 #if doesn't exist, we continue on next iteration
                 if not authors_list.exists():
                     continue
@@ -104,7 +161,7 @@ def filters_manager(research,post_data):
                 filters[filter_name]['keyword'].append(keyword)
 
             elif type=='neighbour':
-                doi = re.findall("DOI:[A-Za-z0-9\-\s_]+",value)
+                doi = re.findall("DOI:[A-Za-z0-9\-\s_\/]+",value)
                 doi = doi[0].replace("DOI:","")
 
                 if not 'neighbour' in filters[filter_name]:

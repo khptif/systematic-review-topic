@@ -36,11 +36,29 @@ def update_article_to_display_TableChoice(user,research,list_id):
     #we update the boolean 'to_display'
     tablechoice = TableChoice.objects.filter(user=user,research=research,to_display=True)
     for row in tablechoice:
+        # if the article is not in the check list, not to display
         if not str(row.id) in list_id:
             row.to_display = False
             row.save()
     
+def update_article_is_check_TableChoice(user,research,list_id):
+    """The function take a list of id object of TableChoice row and user. All row who is in list_id,
+    the boolean 'is_check' will be put to True. The function take user id by security. We check if all id
+    in 'list_id' is owned by user because, the list of id come from the front-end by the user """
 
+    # we check the ownership of the user for row in TableChoice
+    for id in list_id:
+        test = TableChoice.objects.get(id=id)
+        if not test.user == user:
+            return False
+
+    #we update the boolean 'to_display' and the boolean "is_checked"
+    tablechoice = TableChoice.objects.filter(user=user,research=research,to_display=True)
+    for row in tablechoice:
+        # if the article is  in the check list, keep the checkbox checked
+        if str(row.id) in list_id:
+            row.is_check = True
+            row.save()
 
 def all_display_TableChoice(user,research):
     """ Reset all article so we can display all article"""    
@@ -51,8 +69,9 @@ def all_display_TableChoice(user,research):
 def reset_TableChoice(user,research):
     """ To reset, we delete all row who have been added and put to_display to true """
     TableChoice.objects.filter(user=user,research=research,is_initial=False).delete()
-    for tablechoice in TableChoice.objects.filter(user=user,research=research,to_display=False):
+    for tablechoice in TableChoice.objects.filter(user=user,research=research):
         tablechoice.to_display=True
+        tablechoice.is_check=False
         tablechoice.save()
 
 def test_download_finalzip(request,user,research):

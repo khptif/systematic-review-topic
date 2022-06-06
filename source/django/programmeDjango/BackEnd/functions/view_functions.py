@@ -3,6 +3,7 @@ from BackEnd.functions.Get_arXiV import get_article as arxiv,get_max_article as 
 from BackEnd.functions.Get_biorXiv import get_article as biorxiv, get_max_article as max_biorxiv
 from BackEnd.functions.Get_medrXiv import get_article as medrxiv, get_max_article as max_medrxiv
 from BackEnd.functions.Get_PAP import get_article as pap, get_max_article as max_pap
+from BackEnd.functions.Get_PMC import get_article as pmc, get_max_article as max_pmc
 from BackEnd.functions.scatter_with_hover import scatter_with_hover
 
 import BackEnd.functions.text_processing as text_processing
@@ -34,7 +35,7 @@ list_thread = dict()
 
 # we redirect stderror to a file
 import sys
-sys.stderr = open(TEMPORARY_DATA + "/error.log","a")
+#sys.stderr = open(TEMPORARY_DATA + "/error.log","a")
 
 def print_research(output_text,research_id):
     """ we print in the file log of the research"""
@@ -52,21 +53,27 @@ def max_article(search):
     except:
         print("error arxiv",file=sys.stderr)
         pass
+
     try:
         article += max_biorxiv(search)
-        
     except:
         print("error bio",file=sys.stderr)
         pass
+
     try:
         article += max_medrxiv(search) 
-
     except:
         print("error med",file=sys.stderr)
         pass
+
     try:
         article += max_pap(search) 
+    except:
+        print("error pap",file=sys.stderr)
+        pass
 
+    try:
+        article += max_pmc(search) 
     except:
         print("error pap",file=sys.stderr)
         pass
@@ -86,6 +93,7 @@ def make_research (search,research,thread=1):
     thread_biorxiv = Thread(target=biorxiv,args=arg)
     thread_medrxiv = Thread(target=medrxiv,args=arg)
     thread_pap = Thread(target=pap,args=arg)
+    thread_pmc = Thread(target=pmc,args=arg)
 
     print_research("Research thread created",research.id)
 
@@ -118,6 +126,12 @@ def make_research (search,research,thread=1):
     thread_pap.join()
     print_research("Research in paperity end",research.id)
 
+    research.current_article_db = "pubmed"
+    research.save()
+    thread_pmc.start()
+    print_research("Research in paperity begin",research.id)
+    thread_pmc.join()
+    print_research("Research in paperity end",research.id)
 
 
 

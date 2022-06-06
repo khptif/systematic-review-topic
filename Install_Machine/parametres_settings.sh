@@ -18,3 +18,5 @@ export Y_INTERVAL_BIG=4000
 # we define 1 month
 export UPDATE_INTERVAL=2700000
 
+export NUMBER_ARTICLE_BY_PAGE=30
+

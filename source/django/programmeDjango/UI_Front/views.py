@@ -245,6 +245,9 @@ def page_select(request):
             request.session['id_research'] = research_id
             variables['number_article'] = len(id_article_list)
             variables['AreYouSure'] = True
+            #we save data filters if the user cancel and return to select page
+            request.session["filter_data"] = filter_recover_data(request.POST)
+
             return render(request,'page_select.html',variables)
         
         elif submit == 'continue':
@@ -252,14 +255,18 @@ def page_select(request):
             research_id = request.session['id_research']
             research = Research.objects.get(id=research_id)
 
+            #we update the new table choice with the article selected without their neighbour
             update_new_TableChoice(user=user,research=research,article_id_list =request.session['id_article_list'])
-            update_neighbour_TableChoice(user=user,research=research)
             
             request.session['id_article_list'] = []
             request.session['id_research'] = 0
             return redirect("/table_choice?research_id="+str(research_id))
 
         elif submit == 'cancel':
+            if "filter_data" in request.session:
+                variables["filter_data"] = request.session["filter_data"]
+                variables["cancel"]=True
+
             request.session['id_article_list'] = []
             pass
 
@@ -299,6 +306,8 @@ def page_select(request):
 @login_required(login_url='/login')
 def page_table_choice(request):
     variables = dict()
+    current_page = 1
+    from programmeDjango.settings import NUMBER_ARTICLE_BY_PAGE
     #we check if the GET parameter is there and if the id match with one of the existant research
     if not 'research_id' in request.GET:
         return redirect("/accueil")
@@ -307,8 +316,19 @@ def page_table_choice(request):
         return redirect("/accueil")
     elif not Research.objects.filter(id=request.GET.get('research_id')).exists():
         return redirect('/accueil')
+    elif "page" in request.GET:
+        current_page = int(request.GET["page"])
+        # we check if the page is good.
+        # if too low, we redirect to first page
+        if current_page < 1:
+            current_page = 1
+        # if too high, we redirect to last page
+        research = Research.objects.get(id=int(request.GET.get('research_id')))
+        number_Article = TableChoice.objects.filter(research=research).count()
+        if int(request.GET["page"]) > int(number_Article/NUMBER_ARTICLE_BY_PAGE) + 1:
+            current_page = int(number_Article/NUMBER_ARTICLE_BY_PAGE) + 1
 
-    
+    #if we receive a POST request
     if request.method =='POST':
         check_list = []
         if 'check_row' in request.POST:
@@ -317,21 +337,59 @@ def page_table_choice(request):
         
         user = request.user
         research = Research.objects.get(id=int(request.GET.get('research_id')))
-        if submit == 'iterate':        
+        number_Article = TableChoice.objects.filter(research=research).count()
+        if submit == 'iterate':
+            update_article_is_check_TableChoice(user=request.user,research=research,list_id=check_list)
             update_article_to_display_TableChoice(user=request.user,research=research,list_id=check_list)
             update_neighbour_TableChoice(user=user,research=research)
+            return redirect("/table_choice?research_id={id}".format(id=str(research.id)))
         elif submit == 'reset':
             reset_TableChoice(user=user,research=research)
+            return redirect("/table_choice?research_id={id}".format(id=str(research.id)))
         elif submit == 'finish':
+            update_article_is_check_TableChoice(user=request.user,research=research,list_id=check_list)
             update_article_to_display_TableChoice(user=request.user,research=research,list_id=check_list)
             return test_download_finalzip(request=request,user=user,research=research)
+        elif submit == 'previous':
+            if current_page == 1:
+                pass
+            else:
+                update_article_is_check_TableChoice(user=request.user,research=research,list_id=check_list)
+                return redirect("/table_choice?research_id={id}&page={page}".format(id=str(research.id),page=str(current_page - 1)))
+        elif submit == 'next':
+            if current_page == int(number_Article/NUMBER_ARTICLE_BY_PAGE) + 1:
+                pass
+            else:
+                update_article_is_check_TableChoice(user=request.user,research=research,list_id=check_list)
+                return redirect("/table_choice?research_id={id}&page={page}".format(id=str(research.id),page=str(current_page + 1)))
 
     user = request.user
     research = Research.objects.get(id=request.GET.get('research_id'))
-    tablechoice_list = TableChoice.objects.filter(user=user,research=research,to_display=True)
+    tablechoice_list = TableChoice.objects.filter(user=user,research=research,to_display=True).order_by("id")
+
+    #we define variable about number of articles
+    variables['number_Article_initial'] = TableChoice.objects.filter(user=user,research=research,is_initial=True).count()
+    variables['number_Article_neighbour'] = TableChoice.objects.filter(user=user,research=research,is_initial=False,to_display=True,is_check=False).count()
+    variables['number_Article_chosen'] = TableChoice.objects.filter(user=user,research=research,is_check=True).count()
+
+    #we define the interval of article for the current page
+    first_article = (current_page - 1)*NUMBER_ARTICLE_BY_PAGE
+    last_article = current_page * NUMBER_ARTICLE_BY_PAGE
     
-    variables['row_list'] = tablechoice_list
+    #we check if last_article is not greater than the size of the list
+    if last_article < tablechoice_list.count():
+        variables['row_list'] = tablechoice_list[first_article:last_article]
+        variables["last_page"] = False
+    else:
+        variables['row_list'] = tablechoice_list[first_article:]
+        variables["last_page"] = True
+    if current_page == 1:
+        variables["first_page"] = True
+    else:
+        variables["first_page"] = False
     
+    variables["current_page"] = current_page
+    variables["total_page"] = int(tablechoice_list.count()/NUMBER_ARTICLE_BY_PAGE) + 1
         
     return render(request,"page_table_choice.html",variables)
 
