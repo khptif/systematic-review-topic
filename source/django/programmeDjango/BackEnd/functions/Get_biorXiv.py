@@ -159,7 +159,7 @@ def extract_article(entry_id_list,entry,research):
                 is_file_get = True
             except:
                 full_text = ""
-            article.full_text = full_text.decode("utf-8", errors="replace").replace("\x00", "\uFFFD")
+            article.full_text = full_text.replace("\x00", "\uFFFD")
             article.is_file_get = is_file_get
             article.save()
 
