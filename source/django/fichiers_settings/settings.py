@@ -140,3 +140,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 1000000
+
+TEMPORARY_DATA = os.path.join(BASE_DIR,'docker_volume/data')
+ARTICLE_DATA = os.path.join(BASE_DIR,'docker_volume/articles')
