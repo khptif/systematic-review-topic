@@ -34,16 +34,26 @@ def get_search_term(search):
     
     return search_term
 
-def get_max_article(search_term):
+def get_max_article(search_term,begin,end):
+
+    year_begin = str(begin.year)
+    month_begin = str(begin.month)
+    day_begin = str(begin.day)
+
+    year_end = str(end.year)
+    month_end = str(end.month)
+    day_end = str(end.day)
+
     api_query = 'http://paperity.org/api/1.0/search/'
 
     
-    query_base = api_query + '?text=' + search_term
+    query_base = api_query + '?text=' + search_term + f"&f_date_start={year_begin}&f_date_end={year_end}"
     json_data = requests.get(query_base).json() 
     total = json_data['total']
     return total
 
 def extract_metadata(ID):
+    
     api_fetch = 'http://paperity.org/api/1.0/p/'
     url_fetch = api_fetch + str(ID)
     
@@ -129,7 +139,7 @@ def extract_metadata(ID):
     #time.sleep(1.1)
     return {"title": Title,"date": Date,"doi": DOI, "authors": Authors, "abstract": Abstract,"url": URL}
 
-def get_article_parallel(begin_page,number_page,research,search_term):
+def get_article_parallel(begin_page,number_page,research,search_term,begin,end):
     """ the method to parallelize in order to extract all article metadata
         begin_page: where to start, 
         number_page: how many page to process,
@@ -137,10 +147,18 @@ def get_article_parallel(begin_page,number_page,research,search_term):
         search_term: the string to send to api,
         api_query: the url for the api"""
 
+    year_begin = str(begin.year)
+    month_begin = str(begin.month)
+    day_begin = str(begin.day)
+
+    year_end = str(end.year)
+    month_end = str(end.month)
+    day_end = str(end.day)
+
     api_query='http://paperity.org/api/1.0/search/'
     for i in range(begin_page, begin_page + number_page):
         
-        query_base = api_query + str(i) + '?text=' + search_term
+        query_base = api_query + str(i) + '?text=' + search_term + f"&f_date_start={year_begin}&f_date_end={year_end}"
         json_data = ''
         bad_request = False
         
@@ -227,7 +245,7 @@ def get_article_parallel(begin_page,number_page,research,search_term):
         #Wait 1s before making anothe request, as demanded by paperity staff
         #time.sleep(1.1)
 
-def get_article(search,research,number_threads = 1,test_number_page=0,test=False):
+def get_article(search,research,begin,end,number_threads = 1,test_number_page=0,test=False):
     #sets the location of the API for the query
     api_query = 'http://paperity.org/api/1.0/search/'
     #sets the location of the API for the fetching
@@ -256,12 +274,12 @@ def get_article(search,research,number_threads = 1,test_number_page=0,test=False
     # we build the threads
     for thread in range(number_threads):
         begin = current_page
-        Thread_id.append(Thread(target=get_article_parallel,args=(begin,number_page_by_thread,research,search_term)))
+        Thread_id.append(Thread(target=get_article_parallel,args=(begin,number_page_by_thread,research,search_term,begin,end)))
         current_page += number_page_by_thread
     # we build the last thread with the last pages
     begin = current_page
     last_pages = max_page - current_page
-    Thread_id.append(Thread(target=get_article_parallel,args=(begin,last_pages,research,search_term)))
+    Thread_id.append(Thread(target=get_article_parallel,args=(begin,last_pages,research,search_term,begin,end)))
 
     # we start the threads
 

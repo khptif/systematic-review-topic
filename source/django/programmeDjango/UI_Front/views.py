@@ -28,7 +28,7 @@ from BackEnd.functions.view_functions import *
 def page_accueil(request):
 
     variables = dict()
-    research_form = Research_form()
+    research_form = Research_form(initial={"From":datetime.datetime(1800,1,1).date(),"To":datetime.datetime.now().date()})
     historical_form = Historical_form()
 
     variables['research_form'] = research_form
@@ -46,7 +46,9 @@ def page_accueil(request):
             variables['research_form'] = research_form
             if research_form.is_valid():
                 search = research_form.cleaned_data['search']
-                variables['number_article'] = max_article(search)
+                begin = research_form.cleaned_data['From']
+                end = research_form.cleaned_data['To']
+                variables['number_article'] = max_article(search,begin,end)
                 
 
         # if we give a new research
@@ -55,11 +57,11 @@ def page_accueil(request):
             variables['research_form'] = research_form
             if research_form.is_valid():
                 search = research_form.cleaned_data['search']
-                year_begin = research_form.cleaned_data['year_begin']
-                year_end = research_form.cleaned_data['year_end']
+                year_begin = research_form.cleaned_data['From']
+                year_end = research_form.cleaned_data['To']
 
                 keywords = word_list(search)
-                keys_values = [('search',search),('year_begin',year_begin),('year_end',year_end),('keywords',keywords)]
+                keys_values = [('search',search),('year_begin',year_begin.strftime("%Y/%m/%d")),('year_end',year_end.strftime("%Y/%m/%d"))]
                 # we keep the variables in the session
                 # we give theses variables to the template and display a "are you sure" window before accept the research
                 for k in keys_values:
@@ -72,20 +74,20 @@ def page_accueil(request):
         #if user cancel the research
         elif submit == 'cancel':
             search = request.session['search']
-            year_begin = request.session['year_begin']
-            year_end = request.session['year_end']
-            research_form = Research_form(initial = {'search': search ,'year_begin':year_begin,'year_end':year_end})
+            year_begin = datetime.datetime.strptime(request.session['year_begin'],"%Y/%m/%d").date()
+            year_end = datetime.datetime.strptime(request.session['year_end'],"%Y/%m/%d").date()
+            research_form = Research_form(initial = {'search': search ,'From':year_begin,'To':year_end})
 
             variables['research_form'] = research_form
 
         #if user commit the research
         elif submit == 'continue':
             user = request.user
-            year_begin = datetime.date(request.session['year_begin'],1,1)
-            year_end = datetime.date(request.session['year_end'],1,1)
+            year_begin = datetime.datetime.strptime(request.session['year_begin'],"%Y/%m/%d").date()
+            year_end = datetime.datetime.strptime(request.session['year_end'],"%Y/%m/%d").date()
             search = request.session['search']
 
-            total_article = max_article(search)
+            total_article = max_article(search,year_begin,year_end)
             research = Research.objects.create(user=user,search=search,year_begin=year_begin,year_end=year_end,max_article=total_article)
 
             # set the keywords of the research
@@ -113,7 +115,8 @@ def page_accueil(request):
                 research_list = dict()
                 for k in keywords:
                     # we take only research there are finish
-                    keyword_list = Keyword.objects.all().filter(word=k,research__is_finish=True)
+                    key_regex = r".*" + k + r".*"
+                    keyword_list = Keyword.objects.all().filter(word__iregex=key_regex,research__is_finish=True)
                     for key in keyword_list:
                         if not key.research.id in research_list:
                             research_list[key.research.id] = []

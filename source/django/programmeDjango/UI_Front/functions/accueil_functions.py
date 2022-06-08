@@ -141,14 +141,20 @@ def errorParsingHistorical(search_string):
 
 class Research_form(forms.Form):
     search = forms.CharField(max_length=512)
-    From = forms.DateField()
-    To = forms.DateField()
+    From = forms.DateField(input_formats=["%Y/%m/%d","%Y-%m-%d"])
+    To = forms.DateField(input_formats=["%Y/%m/%d","%Y-%m-%d"])
 
     def clean(self):
         data = super(Research_form,self).clean()
-        print(data)
-        year_begin = data['From']
-        year_end = data['To']
+        if 'From' in data.keys():
+            year_begin = data['From']
+        else:
+            raise ValidationError("Error in format of begining date.")
+        if 'To' in data.keys():
+            year_end = data['To']
+        else:
+            raise ValidationError("Error in format of ending date.")
+
         if year_end < year_begin :
             raise ValidationError(" year_end must be higher or equal than year_begin")
         else:

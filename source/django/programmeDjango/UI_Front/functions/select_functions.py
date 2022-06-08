@@ -196,7 +196,6 @@ def get_Articles_Filtered(research,filters):
     # we check in these order: topic,author,Doi and keyword
     # for all block filters. In a block, logical operation is AND
 
-    print(filters)
     for _ , filter in filters.items():
         
         #as the logical operation is AND, we define a first list of article
@@ -210,12 +209,10 @@ def get_Articles_Filtered(research,filters):
         #we check topic filters
         if 'topic' in filter:
             for topic in filter['topic']:
-                print("topic = " + topic )
                 # we get all cluster object with the topic
                 cluster_list = Cluster.objects.filter(topic=topic, research=research)
                 # if this is the first filter in this block filter, the initial set of article
                 # is the article where there is a match with the topic in cluster objects
-                print(cluster_list.count())
                 if first:
                     for cluster in cluster_list:
                         article_list.append(cluster.article)
@@ -305,7 +302,8 @@ def get_Articles_Filtered(research,filters):
                 #if first, the initial set of article is all article in DataBase who have at least 1 match in his abstract firstly
                 # and in his full_text secondly. the match is insensitive case
                 if first:
-                    article_list = Article.objects.filter(research_article__research=research).filter(Q(abstract__icontains=keyword) | Q(full_text__icontains=keyword))
+                    regex_key = r".*" + keyword + r".*"
+                    article_list = Article.objects.filter(research_article__research=research).filter(Q(abstract__iregex=regex_key) | Q(full_text__iregex=regex_key))
                     first = False
                     continue
                 

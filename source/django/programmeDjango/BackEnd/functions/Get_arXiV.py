@@ -202,7 +202,7 @@ def extract_article(id_list,research):
             Article_Author.objects.create(article=article,author=author)
 
 
-def get_article(search, research, number_threads=1):
+def get_article(search, research,begin,end, number_threads=1):
     
     #sets the location of the API for the fetching
     api_fetch = 'http://export.arxiv.org/api/query?id_list='

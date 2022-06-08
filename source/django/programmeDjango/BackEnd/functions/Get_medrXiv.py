@@ -21,10 +21,19 @@ def get_search_term(search):
     
     return search_term
 
-def get_max_article(search):
+def get_max_article(search,begin,end):
+
+    year_begin = str(begin.year)
+    month_begin = str(begin.month)
+    day_begin = str(begin.day)
+
+    year_end = str(end.year)
+    month_end = str(end.month)
+    day_end = str(end.day)
+
     search_term = get_search_term(search)
     api_query = 'https://www.medrxiv.org/search/'
-    query_base = api_query + search_term  
+    query_base = api_query + search_term + f"+limit_from:{year_begin}-{month_begin}-{day_begin}+limit_to:{year_end}-{month_end}-{day_end}+"
     
     first_page_query = query_base
     text = requests.get(first_page_query).text
@@ -35,9 +44,18 @@ def get_max_article(search):
     article_by_page=10
     return article_by_page * num_pages
 
-def extract_id(search_term):
+def extract_id(search_term,begin,end):
+
+    year_begin = str(begin.year)
+    month_begin = str(begin.month)
+    day_begin = str(begin.day)
+
+    year_end = str(end.year)
+    month_end = str(end.month)
+    day_end = str(end.day)
+
     api_query = 'https://www.medrxiv.org/search/'
-    query_base = api_query + search_term  # + " numresults:100 sort:publication-date direction:descending"
+    query_base = api_query + search_term  + f"+limit_from:{year_begin}-{month_begin}-{day_begin}+limit_to:{year_end}-{month_end}-{day_end}+"
     
     id = []
     metadata ={}
@@ -153,11 +171,11 @@ def extract_article(entry_id_list,entry,research):
             Article_Author.objects.create(article=article,author=author)
 
 
-def get_article( search, research, number_thread=1):
+def get_article( search, research,begin,end, number_thread=1):
     """ we get the article and write them in database. The process is parallelized"""
 
     search_term = get_search_term(search)
-    id, entry = extract_id(search_term)
+    id, entry = extract_id(search_term,begin,end)
     total = str(len(id))
 
     #we distribute the job to each thread

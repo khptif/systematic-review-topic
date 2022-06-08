@@ -8,15 +8,9 @@
     <div>
         <ul style="overflow: auto; height:50%; border: black 1px solid;">
             <li> search : {{search}} </li>
-            <li> year_begin : {{year_begin}} </li>
-            <li> year_end : {{year_end}} </li>
-            <li> keywords :
-                <ul>
-                    {%for w in keywords%}
-                    <li> {{w}} </li>
-                    {% endfor%}
-                </ul> 
-            </li>
+            <li> From : {{year_begin}} </li>
+            <li> To : {{year_end}} </li>
+        
         </ul>
 
         <form action='' method='POST'>

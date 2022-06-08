@@ -47,7 +47,7 @@ def print_research(output_text,research_id):
         a.close()
 
 
-def max_article(search):
+def max_article(search,begin,end):
     article = 0
     try:
         article += max_arxiv(search)
@@ -56,38 +56,38 @@ def max_article(search):
         pass
 
     try:
-        article += max_biorxiv(search)
+        article += max_biorxiv(search,begin,end)
     except:
         print("error bio",file=sys.stderr)
         pass
-
+     
     try:
-        article += max_medrxiv(search) 
+        article += max_medrxiv(search,begin,end) 
     except:
         print("error med",file=sys.stderr)
         pass
 
     try:
-        article += max_pap(search) 
+        article += max_pap(search,begin,end) 
     except:
         print("error pap",file=sys.stderr)
         pass
-
+    
     try:
-        article += max_pmc(search) 
+        article += max_pmc(search,begin,end) 
     except:
         print("error pmc",file=sys.stderr)
         pass
 
     try:
-        article += max_pm(search) 
+        article += max_pm(search,begin,end) 
     except:
         print("error pubmed",file=sys.stderr)
         pass
 
     return  article
 
-def make_research (search,research,thread=1):
+def make_research (search,research,begin,end,thread=1):
 
     
     # we delete all objects Research_Article
@@ -95,7 +95,7 @@ def make_research (search,research,thread=1):
 
     print_research("old Research_Article objects cleaned",research.id)
 
-    arg = (search,research,thread)
+    arg = (search,research,begin,end,thread)
     thread_arxiv = Thread(target=arxiv,args=arg)
     thread_biorxiv = Thread(target=biorxiv,args=arg)
     thread_medrxiv = Thread(target=medrxiv,args=arg)
@@ -179,6 +179,8 @@ def preprocessing_parallel(research,articles,corpus):
         
         id_article = list_id[i]
         text = text_list[i]
+        #we add the title to the text
+        text += Article.objects.get(id=id_article).title
 
         # we check if this articles was already preprocessed for this research
         if Preprocess_text.objects.filter(research = research, id_article=id_article).exists():
@@ -333,18 +335,17 @@ def back_process(research):
     research.begining_date = time_start.date()
     research.save()
 
+    begin_date = research.year_begin
+    end_date = research.year_end
+
     print_research("\n\n ################ RESEARCH BEGINNING ################# \nsearch_terme = " + research.search + "\n",research.id)
 
     if research.step == "article":
 
         print_research("Article Step begin",research.id)
         search = research.search
-        # we give the max article possible to get so we can see the progression
-        print_research("Get number max of article",research.id)
-        research.max_article = max_article(search)
-        print_research("Number of max article done",research.id)
         print_research("Article research start",research.id)
-        make_research(search,research,NUMBER_THREADS_ALLOWED)
+        make_research(search,research,begin_date,end_date,NUMBER_THREADS_ALLOWED)
         print_research("Article research done",research.id)
         # when it's done, we change the current step
         research.step = "processing"

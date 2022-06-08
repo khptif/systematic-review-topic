@@ -27,12 +27,21 @@ def get_search_term(search):
     
     return search_term.replace(" ","+")
 
-def get_max_article(search):
+def get_max_article(search,begin,end):
     """we give the max article of this research"""
+
+    year_begin = str(begin.year)
+    month_begin = str(begin.month)
+    day_begin = str(begin.day)
+
+    year_end = str(end.year)
+    month_end = str(end.month)
+    day_end = str(end.day)
+
     search_term = get_search_term(search)
 
     api_query = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?'
-    api_query = api_query + "db=" + db + "&term=" + search_term
+    api_query = api_query + "db=" + db + "&term=" + search_term +f"&datetype=edat&mindate={year_begin}/{month_begin}/{day_begin}&maxdate={year_end}/{month_end}/{day_end}"
 
     #gets the XML response
     xml_doc = ET.parse(urlopen(api_query)).getroot()
@@ -42,11 +51,22 @@ def get_max_article(search):
 
     return max_article
 
-def get_ID(search):
+def get_ID(search,begin,end):
     """ return a list of id of article"""
-    api_query = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?'
+
+    year_begin = str(begin.year)
+    month_begin = str(begin.month)
+    day_begin = str(begin.day)
+
+    year_end = str(end.year)
+    month_end = str(end.month)
+    day_end = str(end.day)
+
     search_term = get_search_term(search)
-    query_base = api_query + 'db=' + db + '&term=' + search_term
+
+    api_query = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?'
+    query_base = api_query + "db=" + db + "&term=" + search_term +f"&datetype=edat&mindate={year_begin}/{month_begin}/{day_begin}&maxdate={year_end}/{month_end}/{day_end}"
+
 
     #gets the XML response
     xml_doc = ET.parse(urlopen(query_base)).getroot()
@@ -207,13 +227,13 @@ def get_article_parallel(research,ID_list):
                 author = Author.objects.create(last_name = author[0],first_name = author[1])
                 Article_Author.objects.create(article=article,author=author)
 
-def get_article(search,research,number_threads=1):
+def get_article(search,research,begin,end,number_threads=1):
 
     # we configure the search_term
     search_term = get_search_term(search)
 
     #we get the list of id of articles
-    list_id = get_ID(search)
+    list_id = get_ID(search,begin,end)
 
     #we distribute the id
     Thread_id = []
