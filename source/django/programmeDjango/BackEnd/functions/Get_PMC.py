@@ -206,7 +206,7 @@ def get_article_parallel(research,ID_list):
             is_file_get = True
         except:
             full_text = ""
-
+        
         article.full_text=full_text.replace("\x00", "\uFFFD")
         article.is_file_get=is_file_get
         article.save()
