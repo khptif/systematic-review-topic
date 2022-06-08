@@ -199,7 +199,7 @@ def get_article_parallel(research,ID_list):
         except:
             full_text = ""
 
-        article.full_text=full_text
+        article.full_text=full_text.decode("utf-8", errors="replace").replace("\x00", "\uFFFD")
         article.is_file_get=is_file_get
         article.save()
         

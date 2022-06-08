@@ -181,7 +181,7 @@ def extract_article(id_list,research):
                 full_text = remove_references(full_text)
             except:
                 full_text = ""
-            article.full_text = full_text
+            article.full_text = full_text.decode("utf-8", errors="replace").replace("\x00", "\uFFFD")
             article.is_file_get = is_file_get
             article.save()
         else:

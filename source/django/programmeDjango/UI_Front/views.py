@@ -180,8 +180,7 @@ def page_user(request):
         if "submit" in request.POST:
             if request.POST["submit"] == "delete_all":
                 # we delete all research 
-                #Research.objects.all().delete()
-                pass 
+                Research.objects.all().delete() 
             
             elif request.POST["submit"] == "restart_fault":
                 #we restart all research with fault

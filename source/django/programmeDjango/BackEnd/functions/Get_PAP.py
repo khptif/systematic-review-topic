@@ -218,7 +218,7 @@ def get_article_parallel(begin_page,number_page,research,search_term,begin,end):
             except:
                 full_text = ""
                 
-            article.full_text = full_text
+            article.full_text = full_text.decode("utf-8", errors="replace").replace("\x00", "\uFFFD")
             article.is_file_get = is_file_get
             article.save()
 
