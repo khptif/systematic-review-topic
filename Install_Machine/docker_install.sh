@@ -19,6 +19,7 @@ sudo apt-get -y install docker-ce docker-ce-cli containerd.io
 path_to_docker_volume=$(pwd)/docker_volume
 mkdir $path_to_docker_volume
 mkdir $path_to_docker_volume/data
+mkdir $path_to_docker_volume/articles
 
 sudo docker volume create --name docker_volume --opt type=none --opt device=$path_to_docker_volume --opt o=bind
 

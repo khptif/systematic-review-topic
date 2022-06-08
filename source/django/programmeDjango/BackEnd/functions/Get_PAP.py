@@ -21,7 +21,7 @@ from threading import Thread,Lock
 from BackEnd.functions.Remove_references import remove_references
 
 paperity_mutex = Lock()
-seconds_between_request = 1
+seconds_between_request = 2
 previous_request_datetime = datetime.datetime.now()
 
 def get_search_term(search):
@@ -182,19 +182,28 @@ def get_article_parallel(begin_page,number_page,research,search_term):
 
             publication = datetime.datetime.strptime(metadata["date"],'%Y-%m-%d').date()
             authors = metadata['authors']
-
-            try:
-                full_text = pdf.extract_full_text(metadata['url'],"papetery_page_"+str(i)+ "_article_"+str(id)+"_research_"+str(research.id))
-                full_text = remove_references(full_text)
-            except:
-                full_text = ""
-                
             title = metadata['title']
             abstract = metadata['abstract']
             url_file = metadata['url']
-            article = Article.objects.create(title=title,doi=doi,abstract=abstract,full_text=full_text,publication=publication,url_file=url_file)
 
-           
+            article = Article.objects.create(title=title,doi=doi,abstract=abstract,publication=publication,url_file=url_file)
+            is_file_get = False
+            try:
+                name = "article_{id}_{title}"
+                if len(article.title) <= 30:
+                    name = name.format(id=str(article.id),title=article.title[0:].replace(" ","_"))
+                else:
+                    name = name.format(id=str(article.id),title=article.title[0:30].replace(" ","_"))
+                full_text = pdf.extract_full_text(metadata['url'],name)
+                full_text = remove_references(full_text)
+                is_file_get = True
+            except:
+                full_text = ""
+                
+            article.full_text = full_text
+            article.is_file_get = is_file_get
+            article.save()
+
             Research_Article.objects.create(research=research,article=article)
             author_list = []
             # we create the authors and associate to the article

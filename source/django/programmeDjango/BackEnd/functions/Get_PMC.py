@@ -163,21 +163,33 @@ def get_article_parallel(research,ID_list):
     for id in ID_list:
         # we extract metadata
         metadata = extract_metadata(id)
+        if not metadata:
+            continue
         #we check if we have this article with the doi
         article = Article.objects.filter(doi=metadata["doi"])
         if article.exists():
             Research_Article.objects.create(research=research,article=article[0])
             continue
-
+        
+        article = Article.objects.create(title=metadata['title'],doi=metadata['doi'],abstract=metadata['abstract'],publication=metadata['date'],url_file=metadata['url'])
         #we extract the pdf
+        is_file_get = False
         try:
-            full_text = pdf.extract_full_text(metadata['url'],"pmc_article_"+str(id)+"_research_"+str(research.id))
+            name = "article_{id}_{title}"
+            if len(article.title) <= 30:
+                name = name.format(id=str(article.id),title=article.title[0:].replace(" ","_"))
+            else:
+                name = name.format(id=str(article.id),title=article.title[0:30].replace(" ","_"))
+
+            full_text = pdf.extract_full_text(metadata['url'],name)
             full_text = remove_references(full_text)
+            is_file_get = True
         except:
             full_text = ""
 
-        #we create the article
-        article = Article.objects.create(title=metadata['title'],doi=metadata['doi'],abstract=metadata['abstract'],full_text=full_text,publication=metadata['date'],url_file=metadata['url'])
+        article.full_text=full_text
+        article.is_file_get=is_file_get
+        article.save()
         
         # we bind it to the research
         Research_Article.objects.create(research=research,article=article)

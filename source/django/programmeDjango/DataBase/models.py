@@ -18,7 +18,6 @@ class Article(models.Model):
     publication = models.DateField(default=datetime.date(1900,1,1))
     url_file = models.URLField(max_length=4096,null=True)
     is_file_get = models.BooleanField(default=False)
-    pmcid = models.CharField(max_length=256, null=True)
 
 class Article_Author(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
@@ -43,6 +42,7 @@ class Research(models.Model):
 
     process_time = models.IntegerField(default=0)
     current_article_db = models.CharField(max_length=128,default='')
+    begining_date = models.DateField(null=True)
 
 class Research_Article(models.Model):
     research = models.ForeignKey(Research,on_delete=models.CASCADE)
@@ -72,3 +72,8 @@ class TableChoice(models.Model):
     to_display = models.BooleanField(default=True)
     is_initial = models.BooleanField(default=True)
     is_check = models.BooleanField(default=False)
+
+class ThreadDaemon(models.Model):
+    name = models.CharField(max_length=128)
+    is_running = models.BooleanField(default=False)
+    check_still_running = models.IntegerField(default=0)

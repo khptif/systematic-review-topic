@@ -166,13 +166,24 @@ def extract_article(id_list,research):
 
         # we write the article in database
         article = ''
+        is_file_get = False
         if doi == '' or not Article.objects.filter(doi=doi).exists():
+            article = Article.objects.create(title=title,doi=doi,abstract=abstract,publication=Date,url_file=URL)
             try:
-                full_text = pdf.extract_full_text(URL,"research_"+str(research.id) + "_article_"+str(ID))
+                name = "article_{id}_{title}"
+                if len(article.title) <= 30:
+                    name = name.format(id=str(article.id),title=article.title[0:].replace(" ","_"))
+                else:
+                    name = name.format(id=str(article.id),title=article.title[0:30].replace(" ","_"))
+
+                full_text = pdf.extract_full_text(URL,name)
+                is_file_get = True
                 full_text = remove_references(full_text)
             except:
                 full_text = ""
-            article = Article.objects.create(title=title,doi=doi,abstract=abstract,full_text=full_text,publication=Date,url_file=URL)
+            article.full_text = full_text
+            article.is_file_get = is_file_get
+            article.save()
         else:
             article = Article.objects.filter(doi=doi)[0]
         

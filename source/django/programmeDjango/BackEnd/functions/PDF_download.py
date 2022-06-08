@@ -16,6 +16,7 @@ import requests
 import PyPDF2
 import urllib.request
 from programmeDjango.settings import TEMPORARY_DATA
+from programmeDjango.settings import ARTICLE_DATA
 
 #session = FuturesSession()
 
@@ -129,16 +130,16 @@ def extract_full_text(url_PDF,name):
     """Extracts the full text. downloading cooresponding PDF from url and
        extracting the text. Return full_text pdf or nan if problem occurs"""
     
-    path_pdf = TEMPORARY_DATA+ "/" + str(name) +".pdf"
+    path_pdf = ARTICLE_DATA+ "/" + str(name) +".pdf"
 
     if download_from_URL(url_PDF,path_pdf) :
         
         full_text = convert_PDF(path_pdf)
-        os.remove(path_pdf)
+        #os.remove(path_pdf)
         return full_text
 
     else: #(the link to pdf or downloading was not working for some reason)
-        return np.nan
+        return ""
 
 
 

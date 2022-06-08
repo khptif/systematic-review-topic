@@ -1,5 +1,8 @@
 from UI_Front.functions.utils_functions import *
 from DataBase.models import *
+from DataBase.functions.view_functions import *
+from django.http.response import HttpResponse
+
 
 def update_new_TableChoice(user,research,article_id_list):
     """When user make a new research filtering, the ancients are deleted and the new are written"""
@@ -33,11 +36,11 @@ def update_article_to_display_TableChoice(user,research,list_id):
         if not test.user == user:
             return False
 
-    #we update the boolean 'to_display'
+    #we update the boolean 'to_display' if the article is in the list or is checked, put to True
     tablechoice = TableChoice.objects.filter(user=user,research=research,to_display=True)
     for row in tablechoice:
         # if the article is not in the check list, not to display
-        if not str(row.id) in list_id:
+        if not str(row.id) in list_id and not row.is_check :
             row.to_display = False
             row.save()
     
@@ -74,59 +77,15 @@ def reset_TableChoice(user,research):
         tablechoice.is_check=False
         tablechoice.save()
 
-def test_download_finalzip(request,user,research):
-    from zipfile import ZipFile
-    import os
-    import os.path
-    from django.http.response import HttpResponse
-    import mimetypes
-    import tarfile
-
-    liste_article = Article.objects.filter(tablechoice__user = user,tablechoice__research=research,tablechoice__to_display=True)
-    user_name = user.email[:6]
-    filename = 'final_'+user_name+'.tar'
-    if os.path.exists(filename):
-        os.remove(filename)
+def test_download_finalzip(research,user):
     
-    zipfinal = ZipFile('final.zip', 'w')
-    tarfinal = tarfile.open(filename,'w')
-    
-    for article in liste_article:
-        title = article.title
-        if len(title) > 30:
-            title = title[:31]
-        elif len(title) <= 0:
-            title = 'no_title'
-        title += '.txt'
-        full_text = article.full_text
-        try:
-            file = open(title,'w')
-        except:
-            file.close()
-            continue
-        
-        file.write(full_text)
-        file.close()
-        zipfinal.write(title)
-        tarfinal.add(title)
-        os.remove(title)
-    zipfinal.close()
-    tarfinal.close()
-    
-    # Define Django project base directory
-    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    
-    # Define text file name
-    
-    # Define the full file path
-    filepath = BASE_DIR + '/' + filename
+    filepath = create_final_file(research,user)
+   
     # Open the file for reading content
-    path = open(filepath, 'r',encoding="utf-8", errors="ignore")
-    # Set the mime type
-    mime_type, _ = mimetypes.guess_type(filepath)
+    path = open(filepath, 'rb')
     # Set the return value of the HttpResponse
-    response = HttpResponse(path, content_type=mime_type)
+    response = HttpResponse(path, content_type="application/zip")
     # Set the HTTP header for sending to browser
-    response['Content-Disposition'] = "attachment; filename=%s" % filename
+    response['Content-Disposition'] = "attachment; filename={name_file}".format(name_file="final_articles.zip")
     # Return the response value
     return response

@@ -349,7 +349,7 @@ def page_table_choice(request):
         elif submit == 'finish':
             update_article_is_check_TableChoice(user=request.user,research=research,list_id=check_list)
             update_article_to_display_TableChoice(user=request.user,research=research,list_id=check_list)
-            return test_download_finalzip(request=request,user=user,research=research)
+            return test_download_finalzip(research=research,user=user)
         elif submit == 'previous':
             if current_page == 1:
                 pass
@@ -389,7 +389,10 @@ def page_table_choice(request):
         variables["first_page"] = False
     
     variables["current_page"] = current_page
-    variables["total_page"] = int(tablechoice_list.count()/NUMBER_ARTICLE_BY_PAGE) + 1
+    if tablechoice_list.count()%NUMBER_ARTICLE_BY_PAGE == 0:
+        variables["total_page"] = int(tablechoice_list.count()/NUMBER_ARTICLE_BY_PAGE)
+    else:
+        variables["total_page"] = int(tablechoice_list.count()/NUMBER_ARTICLE_BY_PAGE) + 1
         
     return render(request,"page_table_choice.html",variables)
 

@@ -141,13 +141,14 @@ def errorParsingHistorical(search_string):
 
 class Research_form(forms.Form):
     search = forms.CharField(max_length=512)
-    year_begin = forms.IntegerField(min_value=1990)
-    year_end = forms.IntegerField(min_value=1990)
+    From = forms.DateField()
+    To = forms.DateField()
 
     def clean(self):
         data = super(Research_form,self).clean()
-        year_begin = data['year_begin']
-        year_end = data['year_end']
+        print(data)
+        year_begin = data['From']
+        year_end = data['To']
         if year_end < year_begin :
             raise ValidationError(" year_end must be higher or equal than year_begin")
         else:

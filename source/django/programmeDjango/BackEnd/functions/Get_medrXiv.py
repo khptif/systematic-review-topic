@@ -119,15 +119,25 @@ def extract_article(entry_id_list,entry,research):
             
         #we write the article
         article = Article.objects.filter(doi = doi)
+        is_file_get = False
         if article.exists():
             article = article[0]
         else:
+            article = Article.objects.create(title=title,doi=doi,abstract=abstract,full_text=full_text,publication=publication,url_file=url)
             try:
+                name = "article_{id}_{title}"
+                if len(article.title) <= 30:
+                    name = name.format(id=str(article.id),title=article.title[0:].replace(" ","_"))
+                else:
+                    name = name.format(id=str(article.id),title=article.title[0:30].replace(" ","_"))
                 full_text = pdf.extract_full_text(url,"research_"+str(research.id) + "_id_" + str(entry_id))
                 full_text = remove_references(full_text)
+                is_file_get = True
             except:
                 full_text = ""
-            article = Article.objects.create(title=title,doi=doi,abstract=abstract,full_text=full_text,publication=publication,url_file=url)
+            article.full_text = full_text
+            article.is_file_get = is_file_get
+            article.save()
 
         # we bond the article to the research
         Research_Article.objects.create(research=research,article=article)

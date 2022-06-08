@@ -159,3 +159,4 @@ UPDATE_INTERVAL = 2700000
 
 # we define the repertory where there is all temporary data
 TEMPORARY_DATA = os.path.join(BASE_DIR,'docker_volume/data')
+ARTICLE_DATA = os.path.join(BASE_DIR,'docker_volume/articles')

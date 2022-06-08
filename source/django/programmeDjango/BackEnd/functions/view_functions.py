@@ -4,6 +4,7 @@ from BackEnd.functions.Get_biorXiv import get_article as biorxiv, get_max_articl
 from BackEnd.functions.Get_medrXiv import get_article as medrxiv, get_max_article as max_medrxiv
 from BackEnd.functions.Get_PAP import get_article as pap, get_max_article as max_pap
 from BackEnd.functions.Get_PMC import get_article as pmc, get_max_article as max_pmc
+from BackEnd.functions.Get_PM import get_article as pm, get_max_article as max_pm
 from BackEnd.functions.scatter_with_hover import scatter_with_hover
 
 import BackEnd.functions.text_processing as text_processing
@@ -75,7 +76,13 @@ def max_article(search):
     try:
         article += max_pmc(search) 
     except:
-        print("error pap",file=sys.stderr)
+        print("error pmc",file=sys.stderr)
+        pass
+
+    try:
+        article += max_pm(search) 
+    except:
+        print("error pubmed",file=sys.stderr)
         pass
 
     return  article
@@ -94,6 +101,7 @@ def make_research (search,research,thread=1):
     thread_medrxiv = Thread(target=medrxiv,args=arg)
     thread_pap = Thread(target=pap,args=arg)
     thread_pmc = Thread(target=pmc,args=arg)
+    thread_pm = Thread(target=pm,args=arg)
 
     print_research("Research thread created",research.id)
 
@@ -126,12 +134,19 @@ def make_research (search,research,thread=1):
     thread_pap.join()
     print_research("Research in paperity end",research.id)
 
-    research.current_article_db = "pubmed"
+    research.current_article_db = "PMC"
     research.save()
     thread_pmc.start()
-    print_research("Research in paperity begin",research.id)
+    print_research("Research in pmc begin",research.id)
     thread_pmc.join()
-    print_research("Research in paperity end",research.id)
+    print_research("Research in pmc end",research.id)
+
+    research.current_article_db = "PM"
+    research.save()
+    thread_pm.start()
+    print_research("Research in pm begin",research.id)
+    thread_pm.join()
+    print_research("Research in pm end",research.id)
 
 
 
@@ -315,6 +330,7 @@ def back_process(research):
 
     time_start = datetime.datetime.now()
     research.is_running = True
+    research.begining_date = time_start.date()
     research.save()
 
     print_research("\n\n ################ RESEARCH BEGINNING ################# \nsearch_terme = " + research.search + "\n",research.id)
