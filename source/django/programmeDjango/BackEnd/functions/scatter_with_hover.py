@@ -72,7 +72,10 @@ def scatter_with_hover(research,path,fig=None, cols=None, name=None, marker='cir
         df['abstract'].append(points.article.abstract)
 
     unique_topic = list(set(df['topic']))
-    palette = d3['Category10'][len(unique_topic)]
+    if len(unique_topic) > 2:
+        palette = d3['Category10'][len(unique_topic)]
+    else:
+        palette = d3['Category10'][3]
     color_map = CategoricalColorMapper(factors=unique_topic,palette=palette)
     # We're getting data from the given dataframe
     source = ColumnDataSource(data=df)
