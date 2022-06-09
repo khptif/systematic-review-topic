@@ -61,6 +61,7 @@ def page_accueil(request):
                 year_end = research_form.cleaned_data['To']
 
                 keywords = word_list(search)
+                request.session["keywords"] = keywords
                 keys_values = [('search',search),('year_begin',year_begin.strftime("%Y/%m/%d")),('year_end',year_end.strftime("%Y/%m/%d"))]
                 # we keep the variables in the session
                 # we give theses variables to the template and display a "are you sure" window before accept the research
