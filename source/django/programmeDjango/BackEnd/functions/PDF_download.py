@@ -97,14 +97,14 @@ def convert_PDF(path_file):
 
         pdffileobj=open(path_file,'rb')
     except:
-        return False
+        return ""
  
     #create reader variable that will read the pdffileobj
     try:
         pdfreader=PyPDF2.PdfFileReader(pdffileobj)
         num_page = pdfreader.numPages
     except:
-        return False
+        return ""
         
     #This will store the number of pages of this pdf file
     
