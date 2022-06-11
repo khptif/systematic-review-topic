@@ -1,6 +1,7 @@
 
 import re
 
+
 def split_search_term(search_term):
     """ Take the search term and return a list of each element( and, word, paranthesis, etc) in order
     and dictionnary where the key is a keyword and the value is a list. It will fill with id of article

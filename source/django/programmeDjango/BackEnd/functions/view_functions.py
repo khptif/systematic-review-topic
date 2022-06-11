@@ -27,7 +27,7 @@ list_stopwords = text_processing.create_stopwords()
 
 from programmeDjango.settings import NUMBER_THREADS_ALLOWED
 from programmeDjango.settings import NUMBER_TRIALS
-from programmeDjango.settings import TEMPORARY_DATA
+from programmeDjango.settings import TEMPORARY_DATA,PLOT_DATA
 
 # all research processing will be done in a new thread. We keep the thread object
 # to check if it is still alive
@@ -377,7 +377,7 @@ def back_process(research):
         print_research("Clusterin end",research.id)
         
         # we create the plot html of clusters
-        scatter_with_hover(research, "UI_Front/templates/research_{id}_plot.html".format(id=research.id))
+        scatter_with_hover(research, PLOT_DATA + "/research_{id}_plot.html".format(id=research.id))
 
         # we reset the step to "article" and mark the research as "finished"
         research.is_running = False

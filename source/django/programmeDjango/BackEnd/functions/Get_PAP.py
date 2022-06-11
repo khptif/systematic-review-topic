@@ -19,9 +19,10 @@ import BackEnd.functions.PDF_download as pdf
 from threading import Thread,Lock
 
 from BackEnd.functions.Remove_references import remove_references
+from programmeDjango.settings import ARTICLE_DATA
 
 paperity_mutex = Lock()
-seconds_between_request = 2
+seconds_between_request = 1
 previous_request_datetime = datetime.datetime.now()
 
 def get_search_term(search):
@@ -70,12 +71,10 @@ def extract_metadata(ID):
         
     except:
         previous_request_datetime = datetime.datetime.now()
-        print(previous_request_datetime)
         paperity_mutex.release()
         return False
 
     previous_request_datetime = datetime.datetime.now()
-    print(previous_request_datetime)
     paperity_mutex.release()
           
     #Gets the DOI
@@ -132,9 +131,6 @@ def extract_metadata(ID):
     if json_data['paper']['url_pdf'] != None:
         URL = (json_data['paper']['url_pdf'])
             
-    else:
-        URL = (np.nan)
-
     #Wait 1s before making another request, as demanded by paperity staff
     #time.sleep(1.1)
     return {"title": Title,"date": Date,"doi": DOI, "authors": Authors, "abstract": Abstract,"url": URL}
@@ -196,6 +192,11 @@ def get_article_parallel(begin_page,number_page,research,search_term,begin,end):
             a = Article.objects.filter(doi = doi)
             if not doi=='' and a.exists():
                 Research_Article.objects.create(research=research,article=a[0])
+                if not a[0].is_file_get:
+                    is_download = pdf.download_from_URL(a[0].url_file,ARTICLE_DATA + "/" +pdf.name_article_pdf(a[0]))
+                    if is_download:
+                        a[0].is_file_get = True
+                        a[0].save()
                 continue
 
             publication = datetime.datetime.strptime(metadata["date"],'%Y-%m-%d').date()
@@ -207,11 +208,7 @@ def get_article_parallel(begin_page,number_page,research,search_term,begin,end):
             article = Article.objects.create(title=title,doi=doi,abstract=abstract,publication=publication,url_file=url_file)
             is_file_get = False
             try:
-                name = "article_{id}_{title}"
-                if len(article.title) <= 30:
-                    name = name.format(id=str(article.id),title=article.title[0:].replace(" ","_"))
-                else:
-                    name = name.format(id=str(article.id),title=article.title[0:30].replace(" ","_"))
+                name = pdf.name_article_pdf(article)
                 full_text = pdf.extract_full_text(metadata['url'],name)
                 full_text = remove_references(full_text)
                 is_file_get = True
@@ -273,13 +270,13 @@ def get_article(search,research,begin,end,number_threads = 1,test_number_page=0,
 
     # we build the threads
     for thread in range(number_threads):
-        begin = current_page
-        Thread_id.append(Thread(target=get_article_parallel,args=(begin,number_page_by_thread,research,search_term,begin,end)))
+        begin_page = current_page
+        Thread_id.append(Thread(target=get_article_parallel,args=(begin_page,number_page_by_thread,research,search_term,begin,end)))
         current_page += number_page_by_thread
     # we build the last thread with the last pages
-    begin = current_page
+    begin_page = current_page
     last_pages = max_page - current_page
-    Thread_id.append(Thread(target=get_article_parallel,args=(begin,last_pages,research,search_term,begin,end)))
+    Thread_id.append(Thread(target=get_article_parallel,args=(begin_page,last_pages,research,search_term,begin,end)))
 
     # we start the threads
 

@@ -23,6 +23,15 @@ from programmeDjango.settings import ARTICLE_DATA
 #################################################################################################################################################
 #                                                          SUBROUTINES                                                                          #
 #################################################################################################################################################
+
+def name_article_pdf(article):
+    name = "article_{id}_{title}"
+    if len(article.title) <= 30:
+        name = name.format(id=str(article.id),title=article.title[0:].replace(" ","_"))
+    else:
+        name = name.format(id=str(article.id),title=article.title[0:30].replace(" ","_"))
+    return name + ".pdf"
+
 def remove_char(string):
     '''
     Description

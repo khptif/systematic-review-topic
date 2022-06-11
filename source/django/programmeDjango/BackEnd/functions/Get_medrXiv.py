@@ -11,6 +11,8 @@ from DataBase.models import *
 from BackEnd.functions.Remove_references import *
 from threading import Thread
 
+from programmeDjango.settings import ARTICLE_DATA
+
 def get_search_term(search):
     """we translate the search to a readable string search for the api"""
     split,_ = split_search_term(search)
@@ -38,8 +40,15 @@ def get_max_article(search,begin,end):
     first_page_query = query_base
     text = requests.get(first_page_query).text
     soup = BeautifulSoup(text, 'html.parser')
-    last_str = soup.select_one('li.pager-last.last.odd a').string    
-    num_pages = int(last_str)
+    try:
+        last_str = soup.select_one('li.pager-last.last.odd a').string    
+        num_pages = int(last_str)
+    except:
+        try:
+            last_str = soup.select_one('li.pager-item.last.odd a').string    
+            num_pages = int(last_str)
+        except:
+            num_pages = 1
 
     article_by_page=10
     return article_by_page * num_pages
@@ -65,10 +74,16 @@ def extract_id(search_term,begin,end):
         text = requests.get(first_page_query).text
     except:
         return [],{}
-    
     soup = BeautifulSoup(text, 'html.parser')
-    last_str = soup.select_one('li.pager-last.last.odd a').string
-    num_pages = int(last_str)
+    try:
+        last_str = soup.select_one('li.pager-last.last.odd a').string    
+        num_pages = int(last_str)
+    except:
+        try:
+            last_str = soup.select_one('li.pager-item.last.odd a').string    
+            num_pages = int(last_str)
+        except:
+            num_pages = 1
 
     for i in range(num_pages):
 
@@ -102,6 +117,11 @@ def extract_article(entry_id_list,entry,research):
         a = Article.objects.filter(doi = doi)
         if a.exists():
             Research_Article.objects.create(research=research,article=a[0])
+            if not a[0].is_file_get:
+                is_download = pdf.download_from_URL(a[0].url_file,ARTICLE_DATA + "/" +pdf.name_article_pdf(a[0]))
+                if is_download:
+                    a[0].is_file_get = True
+                    a[0].save()
             continue
 
         authors_list = []
@@ -121,10 +141,13 @@ def extract_article(entry_id_list,entry,research):
         except:
             publication = datetime.date(1900,1,1)
 
-        title_sel = entry[entry_id].select_one('.highwire-cite-linked-title')
-        title = title_sel.text
-        abstract_url = "https://www.medrxiv.org" + title_sel["href"]
-        url = abstract_url + ".full.pdf"
+        try:
+            title_sel = entry[entry_id].select_one('.highwire-cite-linked-title')
+            title = title_sel.text
+            abstract_url = "https://www.medrxiv.org" + title_sel["href"]
+            url = abstract_url + ".full.pdf"
+        except:
+            url = ""
 
         abstract = ''
         try:
@@ -141,13 +164,9 @@ def extract_article(entry_id_list,entry,research):
         if article.exists():
             article = article[0]
         else:
-            article = Article.objects.create(title=title,doi=doi,abstract=abstract,full_text=full_text,publication=publication,url_file=url)
+            article = Article.objects.create(title=title,doi=doi,abstract=abstract,publication=publication,url_file=url)
             try:
-                name = "article_{id}_{title}"
-                if len(article.title) <= 30:
-                    name = name.format(id=str(article.id),title=article.title[0:].replace(" ","_"))
-                else:
-                    name = name.format(id=str(article.id),title=article.title[0:30].replace(" ","_"))
+                name = pdf.name_article_pdf(article)
                 full_text = pdf.extract_full_text(url,"research_"+str(research.id) + "_id_" + str(entry_id))
                 full_text = remove_references(full_text)
                 is_file_get = True

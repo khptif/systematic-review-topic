@@ -1,5 +1,3 @@
-from tabnanny import verbose
-
 from BackEnd.models import Number_trial
 import pacmap
 import matplotlib.pyplot as plt
@@ -24,7 +22,7 @@ def pacmap_default(tf_idf, plot=True):
     
     np.random.seed(set_seed)
     try:
-        embedding_2d = pacmap.PaCMAP(random_state=set_seed, apply_pca=True,verbose=True).fit(
+        embedding_2d = pacmap.PaCMAP(random_state=set_seed, apply_pca=True,verbose=False).fit(
         tf_idf, init="pca"
     )
     except:

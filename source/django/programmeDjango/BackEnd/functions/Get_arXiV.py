@@ -15,6 +15,8 @@ from BackEnd.functions.filter_article import split_search_term
 
 from DataBase.models import *
 
+from programmeDjango.settings import ARTICLE_DATA
+
 from threading import Thread
 
 def get_search_term(search):
@@ -100,7 +102,7 @@ def extract_article(id_list,research):
 
         # we check if research still exists
         
-        URL = 'http://arxiv.org/pdf/' + ID + '.pdf'
+        URL = 'http://arxiv.org/pdf/' + str(ID) + '.pdf'
         fetch = api_fetch + ID 
         # Extracts data from xml   
         begin_sub = ''
@@ -124,6 +126,12 @@ def extract_article(id_list,research):
         a = Article.objects.filter(doi=doi)
         if not doi == '' and a.exists():
             Research_Article.objects.create(research=research,article=a[0])
+            #we check if the pdf is in local
+            if not a[0].is_file_get:
+                is_download = pdf.download_from_URL(a[0].url_file,ARTICLE_DATA + "/" +pdf.name_article_pdf(a[0]))
+                if is_download:
+                    a[0].is_file_get = True
+                    a[0].save()
             continue
          
         #Extracts the date from the XML, always available
@@ -170,11 +178,7 @@ def extract_article(id_list,research):
         if doi == '' or not Article.objects.filter(doi=doi).exists():
             article = Article.objects.create(title=title,doi=doi,abstract=abstract,publication=Date,url_file=URL)
             try:
-                name = "article_{id}_{title}"
-                if len(article.title) <= 30:
-                    name = name.format(id=str(article.id),title=article.title[0:].replace(" ","_"))
-                else:
-                    name = name.format(id=str(article.id),title=article.title[0:30].replace(" ","_"))
+                name = pdf.name_article_pdf(article)
 
                 full_text = pdf.extract_full_text(URL,name)
                 is_file_get = True

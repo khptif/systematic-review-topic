@@ -18,7 +18,7 @@ from UI_Front.functions.user_page_functions import *
 from UI_Front.functions.utils_functions import *
 
 
-from programmeDjango.settings import NUMBER_TRIALS
+from programmeDjango.settings import NUMBER_TRIALS, PLOT_DATA
 
 
 from BackEnd.functions.view_functions import *
@@ -242,7 +242,6 @@ def page_select(request):
             blocks_filters = filters_manager(research,request.POST)
             # we get a list of id article who match all the filters
             id_article_list = get_Articles_Filtered(research=research,filters=blocks_filters)
-            print(len(id_article_list))
             # we save this list in session user
             request.session['id_article_list'] = id_article_list
             request.session['id_research'] = research_id
@@ -296,7 +295,7 @@ def page_select(request):
 
     #we give the plot html
     data=""
-    with open("UI_Front/templates/research_{id}_plot.html".format(id=id), 'r') as file:
+    with open(PLOT_DATA + "/research_{id}_plot.html".format(id=id), 'r') as file:
         data = file.read()
     variables["plot_html"] = data
 
