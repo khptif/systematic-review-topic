@@ -20,6 +20,7 @@ path_to_docker_volume=$(pwd)/docker_volume
 mkdir $path_to_docker_volume
 mkdir $path_to_docker_volume/data
 mkdir $path_to_docker_volume/articles
+mkdir $path_to_docker_volume/plot
 
 sudo docker volume create --name docker_volume --opt type=none --opt device=$path_to_docker_volume --opt o=bind
 
