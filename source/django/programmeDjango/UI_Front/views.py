@@ -407,7 +407,7 @@ def render_plot(request):
         return redirect("/accueil")
     #we check if the plot file exist
     id = request.GET["research"]
-    if not os.path.exists("UI_Front/templates/research_{id}_plot.html".format(id=str(id))):
+    if not os.path.exists(PLOT_DATA + "/research_{id}_plot.html".format(id=str(id))):
         return redirect("/accueil")
     
     #we render the html plot
