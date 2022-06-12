@@ -18,5 +18,7 @@ export Y_INTERVAL_BIG=4000
 # we define 1 month
 export UPDATE_INTERVAL=2700000
 
+#we define the number of article by page in table_choice page
+
 export NUMBER_ARTICLE_BY_PAGE=30
 

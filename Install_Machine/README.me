@@ -1,20 +1,107 @@
 
-### ARCHITECTURE IN HOST ####
 
-In each host, we will have a docker container running,
-a docker volume associated to the repertory "docker_volume
-and a script bash in this repertory with variable, "options.sh".
+### INSTALLATION AND CONFIGURATION OF HOST MACHINE ###
 
-Each host will run the same docker image but thanks to
+Before make any installation, we have to configure all parameters.
 
 
+## Set Parameters ##
 
 
-### INSTALLATION AND CONFIGURATION OF HOST MACHINES ###
+# machine host parameters #
+
+The parameters are in ./parametres_machine.sh and are about the machine host.
+
+To make connection, we need the name of the user of the machine and its ip adress
+-> user_name= name of the user
+-> host_adresse= ip adresse of host.
+Example:
+user_name=ubuntu
+host_adresse=195.15.243.254
+
+To make connection, we use private key. We need to give absolute path to file with this private key.
+-> private_key_path= absolute_path_to_private_key_file
+Example:
+private_key_path=/home/fatih/.ssh/host_private_key
+
+We have to indicate by which port we will connect to our app
+-> host_port= port number
+Example:
+host_port=8000
 
 
-For each host, we have to give parameters in their own 
-repertory where there are documentations to help us.
+# Database parameters #
+
+The parameters are in ./parametres_BD.sh and permit to configure the PostGreSQL database.
+We need to give a database name, a user and a password. These data must be the ones of our Django
+project if we want Django can make connection to our database.
+
+Example:
+db_name=test
+db_user_name=fatih
+password=1234
+
+
+# settings.py parameters #
+
+The parameters are in ./parametres_settings.sh and it defines some variable to add to settings file of django "settings.py".
+
+-> NUMBER_THREADS_ALLOWED= the number of thread that is allowed for each research
+-> NUMBER_TRIALS= the number of trials to make during clustering
+
+-> X_INTERVAL_LITTLE=
+-> Y_INTERVAL_LITTLE= x,y interval for the plot if number of article is < 10'000
+
+-> X_INTERVAL_BIG=
+-> Y_INTERVAL_BIG= x,y interval for the plot if number of article is >= 10'000
+
+-> NUMBER_ARTICLE_BY_PAGE= number of article by page in the table_choice page.
+
+
+
+## Installation and Configuration ##
+
+
+To prepare the host machine, we simply launch the script ./install.sh .
+We will describe what it does.
+
+- As our app use docker container, we install docker in the host. We create a directory and make it a docker volume where our container
+would read and write files.
+
+- We install Postgresql and create database by using scripts ./install_PostGreSQL.sh . We configure and exchange the file pg_hba.conf
+with ours so the database accept connections
+
+- We create a file with all option for our app and send it to the host
+
+
+
+### Deployment of the app ###
+
+Usually, the Continous deployment is done with travis. But if Travis don't function, we can use the script ./deploiement.sh .
+
+## Parameters ##
+
+The parameters are in ./parametres_deploiement.sh.
+
+-> repository_name= name of the git repository
+-> repository_url= url of the git repository
+-> path_to_dockerfile= path in repository where is the DockerFile
+
+-> docker_image_name= name of the docker image. It must respect naming rule of DockerHub. 
+Example : khptif/systematic_review:latest
+
+-> docker_container_name= the name gave to the container with our app in the host
+
+-> docker_local_port= the port in the container that the app listens.
+Example: container is launch with -p 3000:6000, we have to give docker_local_port=6000
+
+## Deployment ##
+
+To deploy, start the script ./deploiement.sh after that we update the git repository.
+It will clone the repository in local, build the docker image, push to dockerhub, delete local repository,
+delete the current container in host, delete local image in host and launch the container.
+For security, the password of DockerHub has to be manually given.
+
 
 
 
