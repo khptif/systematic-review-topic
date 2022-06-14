@@ -81,10 +81,10 @@ def filters_manager(research,post_data):
     """
     We first give the research object.
     We secondly give the dictionnary with post data and return a dictionnary:
-    input:  dictionnary with key in format= "filter_X_Y" X is the numero of the filter and Y the numero of element in the filter
+    input:  dictionnary with key in format= "filter_X_Y" X is the numero of the filter and Y the numero of the element in the filter.
             value is a string. The format of each string is
             "Type:data_type;name_value:value;"
-            for data_type = topic -> "Type:topic;topic_name:name_of_topic" name of topic is in format [A-Za-z0-9_,\-\s]+ .
+            for data_type = topic -> "Type:topic;topic_name:name_of_topic;" name of topic is in format [A-Za-z0-9_,\-\s]+ .
             for data_type = author -> "Type:author;name:name;" name format is [A-Za-z0-9\-\s_]. It can be without name
             for data_type = keyword -> "Type:keyword;keyword:value;" the value can be [A-Za-z0-9\-\s_]
             for data_type = neighbour -> "Type:neighbour;DOI:value;"
@@ -108,22 +108,24 @@ def filters_manager(research,post_data):
             # we check if this a filter we have already meet
             if not filter_name in filters:
                 filters[filter_name]= dict()
+
             # we check the type of filter
-            
             type = re.findall("^Type:[a-z]+",value)
             type = type[0].replace("Type:","")
 
-            #we check all type
             if type=='topic':
+                #if topic, we retrieve the topic name and append it to the return list
                 topic_name = re.findall("topic_name:[A-Za-z0-9_,\-\s]+",value)
                 topic_name = topic_name[0].replace("topic_name:","")
+
+                #we check if we already have in the subdictionnary the key "topic". Otherwise, we initiate it with empty list
                 if not 'topic' in filters[filter_name]:
                     filters[filter_name]['topic'] = []
 
                 filters[filter_name]['topic'].append(topic_name)
                 
             elif type=='author':
-                #we retrive name input
+                #if author, we retrieve name given and check if there is a match in last name or first name.
                 name = re.findall("name:[A-Za-z0-9\-\s_]+",value)
                 if not name:
                     name = ""
@@ -131,7 +133,8 @@ def filters_manager(research,post_data):
                     name = name[0].replace("name:","")
 
                 #we retrieve the author we check for last name and after the first_name
-                #the match is not exact.
+                #the match is not exact and not case sensitive.
+                #Example: "Car" match with "carlos" or "carol". If last nam or first name have the pattern, it match.
                 authors_list = []
                 
                 string_reg = r".*"+name+".*"
@@ -141,7 +144,7 @@ def filters_manager(research,post_data):
                 if not authors_list.exists():
                     continue
                 
-                #we check if we already have a subdictionnary with key "author"
+                #we check if we already have in the subdictionnary the key "author". Otherwise, we initiate it with empty list
                 if not 'author' in filters[filter_name]:
                     filters[filter_name]['author'] =[]
                 
@@ -153,19 +156,25 @@ def filters_manager(research,post_data):
                     filters[filter_name]['author'].append(author)
 
             elif type=='keyword':
+                # we retrieve the keyword and append it
                 keyword = re.findall("keyword:[A-Za-z0-9\-\s_]+",value)
                 keyword = keyword[0].replace("keyword:","")
 
+                #we check if we already have in the subdictionnary the key "keyword". Otherwise, we initiate it with empty list
                 if not 'keyword' in filters[filter_name]:
                     filters[filter_name]['keyword'] = []
                 filters[filter_name]['keyword'].append(keyword)
 
             elif type=='neighbour':
-                doi = re.findall("DOI:[A-Za-z0-9\-\s_\/]+",value)
+                # we retrieve the article with the doi if exists
+                # we get the doi string
+                doi = re.findall("DOI:.+",value)
                 doi = doi[0].replace("DOI:","")
-
+                doi = doi[0:-1] # we delete the ';' at end
+                #we check if we already have in the subdictionnary the key "neighbour". Otherwise, we initiate it with empty list
                 if not 'neighbour' in filters[filter_name]:
                     filters[filter_name]['neighbour'] = []
+                
                 #we check if the doi match with one of the article of the research
                 article = Article.objects.filter(doi=doi,research_article__research=research)
                 if article.exists():

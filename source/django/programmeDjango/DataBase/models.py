@@ -52,11 +52,6 @@ class Keyword(models.Model):
     word = models.CharField(max_length=128)
     research = models.ForeignKey(Research,on_delete=models.CASCADE)
 
-class Preproc(models.Model):
-    research = models.ForeignKey(Research, on_delete=models.CASCADE)
-    article = models.ForeignKey(Article, on_delete=models.CASCADE)
-    keyword = models.ForeignKey(Keyword,on_delete=models.CASCADE)
-    percentage = models.FloatField()
 
 class Cluster(models.Model):
     research = models.ForeignKey(Research, on_delete=models.CASCADE)

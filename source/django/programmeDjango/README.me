@@ -1,0 +1,35 @@
+This is the directory with django/python code of the project.
+
+If you want to run in local:
+
+- Download python3, pip and virtualenv 
+
+sudo apt-get install python3
+sudo apt-get install python3-pip
+sudo apt-get install virtualenv
+
+- Create and activate python virtual environnment
+
+virtualenv name_virtual_env
+source name_virtual_env/bin/activate
+
+- Now, we can download all requirements module of the app
+
+python3 -m pip install -r requirements.txt
+
+After the modules are downloaded, you can use django framework as usual.
+You have to define a database in programmeDjango/settings.py.
+You have to create the directory:
+- docker_volume/
+- docker_volume/data
+- docker_volume/articles
+- docker_volume/plot
+
+These directory will keep some temporary data, the pdf of article and the html plot 
+from result of research.
+
+The script launch_django.sh is used in the docker container. It will set the parameters
+from docker_volume in the container (password, number of trials, etc) and execute 
+django. The requirements modules are download here, in the container and not in the image
+because one of the module produce the signal Illegal Instruction when you download on
+one hardware and execute on another because it makes some compilation of c++ code.
