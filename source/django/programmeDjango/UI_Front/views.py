@@ -411,6 +411,6 @@ def render_plot(request):
         return redirect("/accueil")
     
     #we render the html plot
-    return render(request,"research_{id}_plot.html".format(id=str(id)))
+    return render(request,PLOT_DATA + "/research_{id}_plot.html".format(id=str(id)))
 
 # Create your views here.
