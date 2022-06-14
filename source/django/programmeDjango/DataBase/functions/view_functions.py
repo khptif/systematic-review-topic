@@ -1,4 +1,4 @@
-from matplotlib.pyplot import title
+
 from DataBase.models import *
 import zipfile
 from programmeDjango.settings import TEMPORARY_DATA,ARTICLE_DATA
