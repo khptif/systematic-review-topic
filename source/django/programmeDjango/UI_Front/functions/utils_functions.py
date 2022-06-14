@@ -4,7 +4,7 @@ from DataBase.models import *
 def neighbour_article(article,research,number_neighbor=5):
     """ The function take an article, a research and process with cluster object, the nearest neighbor. By default, we take the 5 nearest.
     by iteration, we search around the article +-100 and if we doesnt have enough, the same but with +-200 around. We make max +-1000.
-    The function return a list of article"""
+    The function return a list of article but there isn't the center article in the list"""
 
     neighbour_articles = []
     distant = 100
@@ -31,6 +31,11 @@ def neighbour_article(article,research,number_neighbor=5):
                                                 pos_y__lte=center[1] + distant)
         
         for cluster in cluster_list:
+            
+            # if this is the cluster of the center article we pass to next iteration
+            if cluster.article == article:
+                continue
+
             # if there are some place, we add the cluster
             if len(nearest_cluster)<number_neighbor:
                 nearest_cluster.append(cluster)

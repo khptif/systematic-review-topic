@@ -244,18 +244,19 @@ class test_get_Articles_Filtered(TestCase):
         # define the nearest et farest position
         near_position_list = []
         for i in range(number_neighbour):
-            x = center_position[0] + random.randint(-2,2)
-            y = center_position[1] + random.randint(-2,2)
+            x = center_position[0] + random.randint(0,20)
+            y = center_position[1] + random.randint(0,20)
             near_position_list.append((x,y))
         
         far_position_list = []
         for i in range(random.randint(10,50)):
-            x = center_position[0] + random.randint(-20,20) + 100
-            y = center_position[1] + random.randint(-20,20) + 100
+            x = center_position[0] + random.randint(0,20) + 100
+            y = center_position[1] + random.randint(0,20) + 100
             far_position_list.append((x,y))
 
         # we create the article in center
-        article_center = Article.objects.create(research=research,pos_x=center_position[0],pos_y=center_position[1],topic='')
+        article_center = Article.objects.create()
+        Cluster.objects.create(article=article_center,research=research,pos_x=center_position[0],pos_y=center_position[1],topic='')
 
         # we create other article with their Cluster object
         near_article_list = []
@@ -272,11 +273,13 @@ class test_get_Articles_Filtered(TestCase):
             far_article_list.append(article)
             Research_Article(research=research,article=article)
         
-        input = {"filter_0":{"author":[article_center]}}
+        input = {"filter_0":{"neighbour":[article_center]}}
 
         output_result= get_Articles_Filtered(research,input)
 
         #we check if the result is what we expect
+        print(near_article_list)
+        print(output_result)
         for article in near_article_list:
             self.assertIn(article.id,output_result)
         for article in far_article_list:
