@@ -8,6 +8,7 @@ import random
 
 from DataBase.models import *
 from BackEnd.models import *
+from BackEnd.functions.view_functions import max_article
 
 register = template.Library()
 
@@ -37,8 +38,11 @@ def number_article_prepoc(research):
 
 @register.filter
 def number_article(research):
-
+    # if number of article > max article, we update max article of the research
     number = Research_Article.objects.filter(research=research).count()
+    if number > research.max_article : 
+        research.max_article = max_article(research.search,research.year_begin,research.year_end)
+        research.save()
     return str(number)
 
 @register.filter

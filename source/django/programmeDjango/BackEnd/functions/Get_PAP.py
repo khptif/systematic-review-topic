@@ -153,7 +153,7 @@ def get_article_parallel(begin_page,number_page,research,search_term,begin,end):
 
     api_query='http://paperity.org/api/1.0/search/'
     for i in range(begin_page, begin_page + number_page):
-        
+        print(str(i) + " on " + str(begin_page + number_page))
         query_base = api_query + str(i) + '?text=' + search_term + f"&f_date_start={year_begin}&f_date_end={year_end}"
         json_data = ''
         bad_request = False
@@ -286,4 +286,4 @@ def get_article(search,research,begin,end,number_threads = 1,test_number_page=0,
     # we wait the thread finish
     for thread in Thread_id:
         thread.join()
-    
+    print("end pap")    

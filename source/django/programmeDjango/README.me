@@ -33,3 +33,12 @@ from docker_volume in the container (password, number of trials, etc) and execut
 django. The requirements modules are download here, in the container and not in the image
 because one of the module produce the signal Illegal Instruction when you download on
 one hardware and execute on another because it makes some compilation of c++ code.
+
+Each module BackEnd,DataBase andUI-Front are composed of:
+- functions directory with all functions of the module
+- tests directory with unitary test for the previous functions
+- the usual file of django app: model.py, view.py, etc..
+
+As static file, we have a CSS file and a Javascript File. The javascript is only used for
+the user interface of the filters and one function to check or uncheck all article during a 
+manually selection.

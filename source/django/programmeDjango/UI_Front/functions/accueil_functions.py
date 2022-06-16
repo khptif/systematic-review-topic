@@ -8,7 +8,7 @@ from django.core.exceptions import ValidationError
 
 
 def errorParsingResearch(string_to_parse):
-    """ Check if there is error in the search string for the research"""
+    """ Check if there is error syntax in the search string for the research"""
     lower_string = string_to_parse.lower()
     char=re.findall("(?![a-z]|\(|\)|[0-9]|\-|\"|,|;|\s).",lower_string)
     # check if there are forbidden characters. Only [a-z], [0-9], '-', double quotes, comma, ';' ,parenthesis and space allowed
@@ -156,7 +156,7 @@ class Research_form(forms.Form):
             raise ValidationError("Error in format of ending date.")
 
         if year_end < year_begin :
-            raise ValidationError(" year_end must be higher or equal than year_begin")
+            raise ValidationError(" Ending date must be more recent or equal than beginning date")
         else:
             return data
 

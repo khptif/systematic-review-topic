@@ -217,7 +217,8 @@ def retrieve_best_study(research, tf_idf, study):
     )
 
     __ = best_study.evaluate()
-    # we conserve best score in database with the research
+    # we conserve best score in database with the research and the number of neighbour
+    research.number_neighbour = best_study.pacmap_n_neighbors
     research.best_dbcv = best_study.score
     research.save()
     best_study_embedding = best_study.embedding.embedding_
@@ -250,10 +251,6 @@ def hover_with_keywords(research,list_id, list_final, embedding_2d, best_study_c
         for i in position_article:
             text_cluster += "".join(list_final[i]) + " "
         
-        if len(text_cluster)>20:
-            print("text"+text_cluster[0:20])
-        else:
-            print("text"+text_cluster)
 
         # we extract the keyword of this cluster
         try:

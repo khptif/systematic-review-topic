@@ -43,6 +43,7 @@ class Research(models.Model):
     process_time = models.IntegerField(default=0)
     current_article_db = models.CharField(max_length=128,default='')
     begining_date = models.DateField(null=True)
+    number_neighbour = models.IntegerField(default=5)
 
 class Research_Article(models.Model):
     research = models.ForeignKey(Research,on_delete=models.CASCADE)
