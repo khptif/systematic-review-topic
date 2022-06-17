@@ -1,0 +1,1001 @@
+-- Logs begin at Tue 2022-05-31 00:00:01 CEST, end at Fri 2022-06-17 10:51:28 CEST. --
+jun 17 10:48:54 fatih-All-Series kubelet[38530]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:417 +0xdf
+jun 17 10:48:54 fatih-All-Series kubelet[38530]: goroutine 81 [select]:
+jun 17 10:48:54 fatih-All-Series kubelet[38530]: k8s.io/kubernetes/vendor/go.opencensus.io/stats/view.(*worker).start(0xc000113040)
+jun 17 10:48:54 fatih-All-Series kubelet[38530]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/go.opencensus.io/stats/view/worker.go:154 +0x105
+jun 17 10:48:54 fatih-All-Series kubelet[38530]: created by k8s.io/kubernetes/vendor/go.opencensus.io/stats/view.init.0
+jun 17 10:48:54 fatih-All-Series kubelet[38530]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/go.opencensus.io/stats/view/worker.go:32 +0x57
+jun 17 10:48:54 fatih-All-Series kubelet[38530]: goroutine 59 [select]:
+jun 17 10:48:54 fatih-All-Series kubelet[38530]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.BackoffUntil(0x4a8d418, 0x4f28b60, 0xc0009ddd70, 0x1, 0xc0000ac0c0)
+jun 17 10:48:54 fatih-All-Series kubelet[38530]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:167 +0x149
+jun 17 10:48:54 fatih-All-Series kubelet[38530]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.JitterUntil(0x4a8d418, 0x12a05f200, 0x0, 0xc00027c401, 0xc0000ac0c0)
+jun 17 10:48:54 fatih-All-Series kubelet[38530]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:133 +0x98
+jun 17 10:48:54 fatih-All-Series kubelet[38530]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.Until(...)
+jun 17 10:48:54 fatih-All-Series kubelet[38530]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:90
+jun 17 10:48:54 fatih-All-Series kubelet[38530]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.Forever(0x4a8d418, 0x12a05f200)
+jun 17 10:48:54 fatih-All-Series kubelet[38530]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:81 +0x4f
+jun 17 10:48:54 fatih-All-Series kubelet[38530]: created by k8s.io/kubernetes/vendor/k8s.io/component-base/logs.InitLogs
+jun 17 10:48:54 fatih-All-Series kubelet[38530]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/component-base/logs/logs.go:58 +0x8a
+jun 17 10:48:54 fatih-All-Series systemd[1]: [0;1;39m[0;1;31m[0;1;39mkubelet.service: Main process exited, code=exited, status=255/EXCEPTION[0m
+jun 17 10:48:54 fatih-All-Series systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mkubelet.service: Failed with result 'exit-code'.[0m
+jun 17 10:49:01 fatih-All-Series CRON[38550]: pam_unix(cron:session): session opened for user fatih by (uid=0)
+jun 17 10:49:01 fatih-All-Series CRON[38551]: (fatih) CMD (date >> /home/fatih/heure)
+jun 17 10:49:01 fatih-All-Series CRON[38550]: pam_unix(cron:session): session closed for user fatih
+jun 17 10:49:01 fatih-All-Series dbus-daemon[4278]: [session uid=1000 pid=4278] Activating via systemd: service name='org.freedesktop.Tracker1' unit='tracker-store.service' requested by ':1.2' (uid=1000 pid=4274 comm="/usr/libexec/tracker-miner-fs " label="unconfined")
+jun 17 10:49:01 fatih-All-Series systemd[4262]: Starting Tracker metadata database store and lookup manager...
+jun 17 10:49:01 fatih-All-Series dbus-daemon[4278]: [session uid=1000 pid=4278] Successfully activated service 'org.freedesktop.Tracker1'
+jun 17 10:49:01 fatih-All-Series systemd[4262]: Started Tracker metadata database store and lookup manager.
+jun 17 10:49:02 fatih-All-Series dbus-daemon[4278]: [session uid=1000 pid=4278] Activating via systemd: service name='org.freedesktop.Tracker1.Miner.Extract' unit='tracker-extract.service' requested by ':1.2' (uid=1000 pid=4274 comm="/usr/libexec/tracker-miner-fs " label="unconfined")
+jun 17 10:49:02 fatih-All-Series systemd[4262]: Starting Tracker metadata extractor...
+jun 17 10:49:02 fatih-All-Series tracker-extract[38561]: [0;1;39m[0;1;31m[0;1;39mSet scheduler policy to SCHED_IDLE[0m
+jun 17 10:49:02 fatih-All-Series tracker-extract[38561]: [0;1;39m[0;1;31m[0;1;39mSetting priority nice level to 19[0m
+jun 17 10:49:02 fatih-All-Series dbus-daemon[4278]: [session uid=1000 pid=4278] Successfully activated service 'org.freedesktop.Tracker1.Miner.Extract'
+jun 17 10:49:02 fatih-All-Series systemd[4262]: Started Tracker metadata extractor.
+jun 17 10:49:05 fatih-All-Series systemd[1]: kubelet.service: Scheduled restart job, restart counter is at 628.
+jun 17 10:49:05 fatih-All-Series systemd[1]: Stopped kubelet: The Kubernetes Node Agent.
+jun 17 10:49:05 fatih-All-Series systemd[1]: Started kubelet: The Kubernetes Node Agent.
+jun 17 10:49:05 fatih-All-Series kubelet[38586]: F0617 10:49:05.223369   38586 server.go:198] failed to load Kubelet config file /var/lib/kubelet/config.yaml, error failed to read kubelet config file "/var/lib/kubelet/config.yaml", error: open /var/lib/kubelet/config.yaml: no such file or directory
+jun 17 10:49:05 fatih-All-Series kubelet[38586]: goroutine 1 [running]:
+jun 17 10:49:05 fatih-All-Series kubelet[38586]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.stacks(0xc000010001, 0xc0000ca840, 0xfb, 0x14d)
+jun 17 10:49:05 fatih-All-Series kubelet[38586]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1026 +0xb9
+jun 17 10:49:05 fatih-All-Series kubelet[38586]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).output(0x70e94e0, 0xc000000003, 0x0, 0x0, 0xc000bf6d90, 0x6f53cea, 0x9, 0xc6, 0x411b00)
+jun 17 10:49:05 fatih-All-Series kubelet[38586]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:975 +0x19b
+jun 17 10:49:05 fatih-All-Series kubelet[38586]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).printDepth(0x70e94e0, 0xc000000003, 0x0, 0x0, 0x0, 0x0, 0x1, 0xc000506a10, 0x1, 0x1)
+jun 17 10:49:05 fatih-All-Series kubelet[38586]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:732 +0x16f
+jun 17 10:49:05 fatih-All-Series kubelet[38586]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).print(...)
+jun 17 10:49:05 fatih-All-Series kubelet[38586]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:714
+jun 17 10:49:05 fatih-All-Series kubelet[38586]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.Fatal(...)
+jun 17 10:49:05 fatih-All-Series kubelet[38586]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1482
+jun 17 10:49:05 fatih-All-Series kubelet[38586]: k8s.io/kubernetes/cmd/kubelet/app.NewKubeletCommand.func1(0xc000a5a2c0, 0xc00004e0d0, 0x3, 0x3)
+jun 17 10:49:05 fatih-All-Series kubelet[38586]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/cmd/kubelet/app/server.go:198 +0xe5a
+jun 17 10:49:05 fatih-All-Series kubelet[38586]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).execute(0xc000a5a2c0, 0xc00004e0d0, 0x3, 0x3, 0xc000a5a2c0, 0xc00004e0d0)
+jun 17 10:49:05 fatih-All-Series kubelet[38586]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:854 +0x2c2
+jun 17 10:49:05 fatih-All-Series kubelet[38586]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).ExecuteC(0xc000a5a2c0, 0x16f95c3ab36219d9, 0x70e90a0, 0x409b25)
+jun 17 10:49:05 fatih-All-Series kubelet[38586]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:958 +0x375
+jun 17 10:49:05 fatih-All-Series kubelet[38586]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).Execute(...)
+jun 17 10:49:05 fatih-All-Series kubelet[38586]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:895
+jun 17 10:49:05 fatih-All-Series kubelet[38586]: main.main()
+jun 17 10:49:05 fatih-All-Series kubelet[38586]:         _output/dockerized/go/src/k8s.io/kubernetes/cmd/kubelet/kubelet.go:41 +0xe5
+jun 17 10:49:05 fatih-All-Series kubelet[38586]: goroutine 6 [chan receive]:
+jun 17 10:49:05 fatih-All-Series kubelet[38586]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).flushDaemon(0x70e94e0)
+jun 17 10:49:05 fatih-All-Series kubelet[38586]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1169 +0x8b
+jun 17 10:49:05 fatih-All-Series kubelet[38586]: created by k8s.io/kubernetes/vendor/k8s.io/klog/v2.init.0
+jun 17 10:49:05 fatih-All-Series kubelet[38586]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:417 +0xdf
+jun 17 10:49:05 fatih-All-Series kubelet[38586]: goroutine 64 [select]:
+jun 17 10:49:05 fatih-All-Series kubelet[38586]: k8s.io/kubernetes/vendor/go.opencensus.io/stats/view.(*worker).start(0xc0000ab9a0)
+jun 17 10:49:05 fatih-All-Series kubelet[38586]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/go.opencensus.io/stats/view/worker.go:154 +0x105
+jun 17 10:49:05 fatih-All-Series kubelet[38586]: created by k8s.io/kubernetes/vendor/go.opencensus.io/stats/view.init.0
+jun 17 10:49:05 fatih-All-Series kubelet[38586]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/go.opencensus.io/stats/view/worker.go:32 +0x57
+jun 17 10:49:05 fatih-All-Series kubelet[38586]: goroutine 118 [select]:
+jun 17 10:49:05 fatih-All-Series kubelet[38586]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.BackoffUntil(0x4a8d418, 0x4f28b60, 0xc000882780, 0x1, 0xc0000ac0c0)
+jun 17 10:49:05 fatih-All-Series kubelet[38586]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:167 +0x149
+jun 17 10:49:05 fatih-All-Series kubelet[38586]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.JitterUntil(0x4a8d418, 0x12a05f200, 0x0, 0xc000554301, 0xc0000ac0c0)
+jun 17 10:49:05 fatih-All-Series kubelet[38586]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:133 +0x98
+jun 17 10:49:05 fatih-All-Series kubelet[38586]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.Until(...)
+jun 17 10:49:05 fatih-All-Series kubelet[38586]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:90
+jun 17 10:49:05 fatih-All-Series kubelet[38586]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.Forever(0x4a8d418, 0x12a05f200)
+jun 17 10:49:05 fatih-All-Series kubelet[38586]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:81 +0x4f
+jun 17 10:49:05 fatih-All-Series kubelet[38586]: created by k8s.io/kubernetes/vendor/k8s.io/component-base/logs.InitLogs
+jun 17 10:49:05 fatih-All-Series kubelet[38586]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/component-base/logs/logs.go:58 +0x8a
+jun 17 10:49:05 fatih-All-Series systemd[1]: [0;1;39m[0;1;31m[0;1;39mkubelet.service: Main process exited, code=exited, status=255/EXCEPTION[0m
+jun 17 10:49:05 fatih-All-Series systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mkubelet.service: Failed with result 'exit-code'.[0m
+jun 17 10:49:12 fatih-All-Series gnome-shell[5437]: [5438:5438:0617/104912.822665:ERROR:CONSOLE(14)] "Failed to handle media duration metadata: missing publisher key for media key youtube_cXD7j4I9fKE", source: chrome-extension://mnojpmjdmbbfmejpflffifhffcmidifd/out/brave_extension_background.bundle.js (14)
+jun 17 10:49:12 fatih-All-Series gnome-shell[5437]: [5438:5438:0617/104912.822923:ERROR:CONSOLE(14)] "Failed to handle media duration metadata: missing publisher key for media key youtube_cXD7j4I9fKE", source: chrome-extension://mnojpmjdmbbfmejpflffifhffcmidifd/out/brave_extension_background.bundle.js (14)
+jun 17 10:49:12 fatih-All-Series gnome-shell[5437]: [5438:5438:0617/104912.823577:ERROR:CONSOLE(14)] "Failed to handle media duration metadata: missing publisher key for media key youtube_cXD7j4I9fKE", source: chrome-extension://mnojpmjdmbbfmejpflffifhffcmidifd/out/brave_extension_background.bundle.js (14)
+jun 17 10:49:12 fatih-All-Series gnome-shell[5437]: [5438:5438:0617/104912.823702:ERROR:CONSOLE(14)] "Failed to handle media duration metadata: missing publisher key for media key youtube_cXD7j4I9fKE", source: chrome-extension://mnojpmjdmbbfmejpflffifhffcmidifd/out/brave_extension_background.bundle.js (14)
+jun 17 10:49:12 fatih-All-Series systemd[4262]: tracker-extract.service: Succeeded.
+jun 17 10:49:15 fatih-All-Series systemd[1]: kubelet.service: Scheduled restart job, restart counter is at 629.
+jun 17 10:49:15 fatih-All-Series systemd[1]: Stopped kubelet: The Kubernetes Node Agent.
+jun 17 10:49:15 fatih-All-Series systemd[1]: Started kubelet: The Kubernetes Node Agent.
+jun 17 10:49:15 fatih-All-Series kubelet[38609]: F0617 10:49:15.469837   38609 server.go:198] failed to load Kubelet config file /var/lib/kubelet/config.yaml, error failed to read kubelet config file "/var/lib/kubelet/config.yaml", error: open /var/lib/kubelet/config.yaml: no such file or directory
+jun 17 10:49:15 fatih-All-Series kubelet[38609]: goroutine 1 [running]:
+jun 17 10:49:15 fatih-All-Series kubelet[38609]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.stacks(0xc00012a001, 0xc000828000, 0xfb, 0x14d)
+jun 17 10:49:15 fatih-All-Series kubelet[38609]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1026 +0xb9
+jun 17 10:49:15 fatih-All-Series kubelet[38609]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).output(0x70e94e0, 0xc000000003, 0x0, 0x0, 0xc000a03c00, 0x6f53cea, 0x9, 0xc6, 0x411b00)
+jun 17 10:49:15 fatih-All-Series kubelet[38609]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:975 +0x19b
+jun 17 10:49:15 fatih-All-Series kubelet[38609]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).printDepth(0x70e94e0, 0xc000000003, 0x0, 0x0, 0x0, 0x0, 0x1, 0xc00054c130, 0x1, 0x1)
+jun 17 10:49:15 fatih-All-Series kubelet[38609]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:732 +0x16f
+jun 17 10:49:15 fatih-All-Series kubelet[38609]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).print(...)
+jun 17 10:49:15 fatih-All-Series kubelet[38609]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:714
+jun 17 10:49:15 fatih-All-Series kubelet[38609]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.Fatal(...)
+jun 17 10:49:15 fatih-All-Series kubelet[38609]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1482
+jun 17 10:49:15 fatih-All-Series kubelet[38609]: k8s.io/kubernetes/cmd/kubelet/app.NewKubeletCommand.func1(0xc000696b00, 0xc00012e010, 0x3, 0x3)
+jun 17 10:49:15 fatih-All-Series kubelet[38609]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/cmd/kubelet/app/server.go:198 +0xe5a
+jun 17 10:49:15 fatih-All-Series kubelet[38609]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).execute(0xc000696b00, 0xc00012e010, 0x3, 0x3, 0xc000696b00, 0xc00012e010)
+jun 17 10:49:15 fatih-All-Series kubelet[38609]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:854 +0x2c2
+jun 17 10:49:15 fatih-All-Series kubelet[38609]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).ExecuteC(0xc000696b00, 0x16f95c3d161fbb74, 0x70e90a0, 0x409b25)
+jun 17 10:49:15 fatih-All-Series kubelet[38609]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:958 +0x375
+jun 17 10:49:15 fatih-All-Series kubelet[38609]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).Execute(...)
+jun 17 10:49:15 fatih-All-Series kubelet[38609]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:895
+jun 17 10:49:15 fatih-All-Series kubelet[38609]: main.main()
+jun 17 10:49:15 fatih-All-Series kubelet[38609]:         _output/dockerized/go/src/k8s.io/kubernetes/cmd/kubelet/kubelet.go:41 +0xe5
+jun 17 10:49:15 fatih-All-Series kubelet[38609]: goroutine 19 [chan receive]:
+jun 17 10:49:15 fatih-All-Series kubelet[38609]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).flushDaemon(0x70e94e0)
+jun 17 10:49:15 fatih-All-Series kubelet[38609]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1169 +0x8b
+jun 17 10:49:15 fatih-All-Series kubelet[38609]: created by k8s.io/kubernetes/vendor/k8s.io/klog/v2.init.0
+jun 17 10:49:15 fatih-All-Series kubelet[38609]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:417 +0xdf
+jun 17 10:49:15 fatih-All-Series kubelet[38609]: goroutine 102 [select]:
+jun 17 10:49:15 fatih-All-Series kubelet[38609]: k8s.io/kubernetes/vendor/go.opencensus.io/stats/view.(*worker).start(0xc00013e280)
+jun 17 10:49:15 fatih-All-Series kubelet[38609]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/go.opencensus.io/stats/view/worker.go:154 +0x105
+jun 17 10:49:15 fatih-All-Series kubelet[38609]: created by k8s.io/kubernetes/vendor/go.opencensus.io/stats/view.init.0
+jun 17 10:49:15 fatih-All-Series kubelet[38609]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/go.opencensus.io/stats/view/worker.go:32 +0x57
+jun 17 10:49:15 fatih-All-Series kubelet[38609]: goroutine 91 [select]:
+jun 17 10:49:15 fatih-All-Series kubelet[38609]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.BackoffUntil(0x4a8d418, 0x4f28b60, 0xc000732bd0, 0x1, 0xc00010e0c0)
+jun 17 10:49:15 fatih-All-Series kubelet[38609]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:167 +0x149
+jun 17 10:49:15 fatih-All-Series kubelet[38609]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.JitterUntil(0x4a8d418, 0x12a05f200, 0x0, 0xc000660401, 0xc00010e0c0)
+jun 17 10:49:15 fatih-All-Series kubelet[38609]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:133 +0x98
+jun 17 10:49:15 fatih-All-Series kubelet[38609]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.Until(...)
+jun 17 10:49:15 fatih-All-Series kubelet[38609]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:90
+jun 17 10:49:15 fatih-All-Series kubelet[38609]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.Forever(0x4a8d418, 0x12a05f200)
+jun 17 10:49:15 fatih-All-Series kubelet[38609]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:81 +0x4f
+jun 17 10:49:15 fatih-All-Series kubelet[38609]: created by k8s.io/kubernetes/vendor/k8s.io/component-base/logs.InitLogs
+jun 17 10:49:15 fatih-All-Series kubelet[38609]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/component-base/logs/logs.go:58 +0x8a
+jun 17 10:49:15 fatih-All-Series systemd[1]: [0;1;39m[0;1;31m[0;1;39mkubelet.service: Main process exited, code=exited, status=255/EXCEPTION[0m
+jun 17 10:49:15 fatih-All-Series systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mkubelet.service: Failed with result 'exit-code'.[0m
+jun 17 10:49:25 fatih-All-Series systemd[1]: kubelet.service: Scheduled restart job, restart counter is at 630.
+jun 17 10:49:25 fatih-All-Series systemd[1]: Stopped kubelet: The Kubernetes Node Agent.
+jun 17 10:49:25 fatih-All-Series systemd[1]: Started kubelet: The Kubernetes Node Agent.
+jun 17 10:49:25 fatih-All-Series kubelet[38626]: F0617 10:49:25.721723   38626 server.go:198] failed to load Kubelet config file /var/lib/kubelet/config.yaml, error failed to read kubelet config file "/var/lib/kubelet/config.yaml", error: open /var/lib/kubelet/config.yaml: no such file or directory
+jun 17 10:49:25 fatih-All-Series kubelet[38626]: goroutine 1 [running]:
+jun 17 10:49:25 fatih-All-Series kubelet[38626]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.stacks(0xc000010001, 0xc0000ca840, 0xfb, 0x14d)
+jun 17 10:49:25 fatih-All-Series kubelet[38626]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1026 +0xb9
+jun 17 10:49:25 fatih-All-Series kubelet[38626]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).output(0x70e94e0, 0xc000000003, 0x0, 0x0, 0xc0009cf420, 0x6f53cea, 0x9, 0xc6, 0x411b00)
+jun 17 10:49:25 fatih-All-Series kubelet[38626]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:975 +0x19b
+jun 17 10:49:25 fatih-All-Series kubelet[38626]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).printDepth(0x70e94e0, 0xc000000003, 0x0, 0x0, 0x0, 0x0, 0x1, 0xc0003dda00, 0x1, 0x1)
+jun 17 10:49:25 fatih-All-Series kubelet[38626]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:732 +0x16f
+jun 17 10:49:25 fatih-All-Series kubelet[38626]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).print(...)
+jun 17 10:49:25 fatih-All-Series kubelet[38626]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:714
+jun 17 10:49:25 fatih-All-Series kubelet[38626]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.Fatal(...)
+jun 17 10:49:25 fatih-All-Series kubelet[38626]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1482
+jun 17 10:49:25 fatih-All-Series kubelet[38626]: k8s.io/kubernetes/cmd/kubelet/app.NewKubeletCommand.func1(0xc0002e8840, 0xc00004e0d0, 0x3, 0x3)
+jun 17 10:49:25 fatih-All-Series kubelet[38626]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/cmd/kubelet/app/server.go:198 +0xe5a
+jun 17 10:49:25 fatih-All-Series kubelet[38626]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).execute(0xc0002e8840, 0xc00004e0d0, 0x3, 0x3, 0xc0002e8840, 0xc00004e0d0)
+jun 17 10:49:25 fatih-All-Series kubelet[38626]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:854 +0x2c2
+jun 17 10:49:25 fatih-All-Series kubelet[38626]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).ExecuteC(0xc0002e8840, 0x16f95c3f792ae8f4, 0x70e90a0, 0x409b25)
+jun 17 10:49:25 fatih-All-Series kubelet[38626]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:958 +0x375
+jun 17 10:49:25 fatih-All-Series kubelet[38626]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).Execute(...)
+jun 17 10:49:25 fatih-All-Series kubelet[38626]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:895
+jun 17 10:49:25 fatih-All-Series kubelet[38626]: main.main()
+jun 17 10:49:25 fatih-All-Series kubelet[38626]:         _output/dockerized/go/src/k8s.io/kubernetes/cmd/kubelet/kubelet.go:41 +0xe5
+jun 17 10:49:25 fatih-All-Series kubelet[38626]: goroutine 6 [chan receive]:
+jun 17 10:49:25 fatih-All-Series kubelet[38626]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).flushDaemon(0x70e94e0)
+jun 17 10:49:25 fatih-All-Series kubelet[38626]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1169 +0x8b
+jun 17 10:49:25 fatih-All-Series kubelet[38626]: created by k8s.io/kubernetes/vendor/k8s.io/klog/v2.init.0
+jun 17 10:49:25 fatih-All-Series kubelet[38626]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:417 +0xdf
+jun 17 10:49:25 fatih-All-Series kubelet[38626]: goroutine 110 [select]:
+jun 17 10:49:25 fatih-All-Series kubelet[38626]: k8s.io/kubernetes/vendor/go.opencensus.io/stats/view.(*worker).start(0xc0000aab40)
+jun 17 10:49:25 fatih-All-Series kubelet[38626]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/go.opencensus.io/stats/view/worker.go:154 +0x105
+jun 17 10:49:25 fatih-All-Series kubelet[38626]: created by k8s.io/kubernetes/vendor/go.opencensus.io/stats/view.init.0
+jun 17 10:49:25 fatih-All-Series kubelet[38626]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/go.opencensus.io/stats/view/worker.go:32 +0x57
+jun 17 10:49:25 fatih-All-Series kubelet[38626]: goroutine 150 [select]:
+jun 17 10:49:25 fatih-All-Series kubelet[38626]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.BackoffUntil(0x4a8d418, 0x4f28b60, 0xc000a894a0, 0x1, 0xc0000ac0c0)
+jun 17 10:49:25 fatih-All-Series kubelet[38626]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:167 +0x149
+jun 17 10:49:25 fatih-All-Series kubelet[38626]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.JitterUntil(0x4a8d418, 0x12a05f200, 0x0, 0xc000176301, 0xc0000ac0c0)
+jun 17 10:49:25 fatih-All-Series kubelet[38626]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:133 +0x98
+jun 17 10:49:25 fatih-All-Series kubelet[38626]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.Until(...)
+jun 17 10:49:25 fatih-All-Series kubelet[38626]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:90
+jun 17 10:49:25 fatih-All-Series kubelet[38626]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.Forever(0x4a8d418, 0x12a05f200)
+jun 17 10:49:25 fatih-All-Series kubelet[38626]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:81 +0x4f
+jun 17 10:49:25 fatih-All-Series kubelet[38626]: created by k8s.io/kubernetes/vendor/k8s.io/component-base/logs.InitLogs
+jun 17 10:49:25 fatih-All-Series kubelet[38626]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/component-base/logs/logs.go:58 +0x8a
+jun 17 10:49:25 fatih-All-Series systemd[1]: [0;1;39m[0;1;31m[0;1;39mkubelet.service: Main process exited, code=exited, status=255/EXCEPTION[0m
+jun 17 10:49:25 fatih-All-Series systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mkubelet.service: Failed with result 'exit-code'.[0m
+jun 17 10:49:32 fatih-All-Series tracker-store[38554]: OK
+jun 17 10:49:32 fatih-All-Series systemd[4262]: tracker-store.service: Succeeded.
+jun 17 10:49:35 fatih-All-Series systemd[1]: kubelet.service: Scheduled restart job, restart counter is at 631.
+jun 17 10:49:35 fatih-All-Series systemd[1]: Stopped kubelet: The Kubernetes Node Agent.
+jun 17 10:49:35 fatih-All-Series systemd[1]: Started kubelet: The Kubernetes Node Agent.
+jun 17 10:49:35 fatih-All-Series kubelet[38645]: F0617 10:49:35.973054   38645 server.go:198] failed to load Kubelet config file /var/lib/kubelet/config.yaml, error failed to read kubelet config file "/var/lib/kubelet/config.yaml", error: open /var/lib/kubelet/config.yaml: no such file or directory
+jun 17 10:49:35 fatih-All-Series kubelet[38645]: goroutine 1 [running]:
+jun 17 10:49:35 fatih-All-Series kubelet[38645]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.stacks(0xc000010001, 0xc0000ca840, 0xfb, 0x14d)
+jun 17 10:49:35 fatih-All-Series kubelet[38645]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1026 +0xb9
+jun 17 10:49:35 fatih-All-Series kubelet[38645]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).output(0x70e94e0, 0xc000000003, 0x0, 0x0, 0xc000c78000, 0x6f53cea, 0x9, 0xc6, 0x411b00)
+jun 17 10:49:35 fatih-All-Series kubelet[38645]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:975 +0x19b
+jun 17 10:49:35 fatih-All-Series kubelet[38645]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).printDepth(0x70e94e0, 0xc000000003, 0x0, 0x0, 0x0, 0x0, 0x1, 0xc00002a250, 0x1, 0x1)
+jun 17 10:49:35 fatih-All-Series kubelet[38645]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:732 +0x16f
+jun 17 10:49:35 fatih-All-Series kubelet[38645]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).print(...)
+jun 17 10:49:35 fatih-All-Series kubelet[38645]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:714
+jun 17 10:49:35 fatih-All-Series kubelet[38645]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.Fatal(...)
+jun 17 10:49:35 fatih-All-Series kubelet[38645]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1482
+jun 17 10:49:35 fatih-All-Series kubelet[38645]: k8s.io/kubernetes/cmd/kubelet/app.NewKubeletCommand.func1(0xc000d9e000, 0xc00004e0d0, 0x3, 0x3)
+jun 17 10:49:35 fatih-All-Series kubelet[38645]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/cmd/kubelet/app/server.go:198 +0xe5a
+jun 17 10:49:35 fatih-All-Series kubelet[38645]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).execute(0xc000d9e000, 0xc00004e0d0, 0x3, 0x3, 0xc000d9e000, 0xc00004e0d0)
+jun 17 10:49:35 fatih-All-Series kubelet[38645]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:854 +0x2c2
+jun 17 10:49:35 fatih-All-Series kubelet[38645]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).ExecuteC(0xc000d9e000, 0x16f95c41dc242d42, 0x70e90a0, 0x409b25)
+jun 17 10:49:35 fatih-All-Series kubelet[38645]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:958 +0x375
+jun 17 10:49:35 fatih-All-Series kubelet[38645]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).Execute(...)
+jun 17 10:49:35 fatih-All-Series kubelet[38645]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:895
+jun 17 10:49:35 fatih-All-Series kubelet[38645]: main.main()
+jun 17 10:49:35 fatih-All-Series kubelet[38645]:         _output/dockerized/go/src/k8s.io/kubernetes/cmd/kubelet/kubelet.go:41 +0xe5
+jun 17 10:49:35 fatih-All-Series kubelet[38645]: goroutine 6 [chan receive]:
+jun 17 10:49:35 fatih-All-Series kubelet[38645]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).flushDaemon(0x70e94e0)
+jun 17 10:49:35 fatih-All-Series kubelet[38645]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1169 +0x8b
+jun 17 10:49:35 fatih-All-Series kubelet[38645]: created by k8s.io/kubernetes/vendor/k8s.io/klog/v2.init.0
+jun 17 10:49:35 fatih-All-Series kubelet[38645]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:417 +0xdf
+jun 17 10:49:35 fatih-All-Series kubelet[38645]: goroutine 122 [select]:
+jun 17 10:49:35 fatih-All-Series kubelet[38645]: k8s.io/kubernetes/vendor/go.opencensus.io/stats/view.(*worker).start(0xc00068e960)
+jun 17 10:49:35 fatih-All-Series kubelet[38645]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/go.opencensus.io/stats/view/worker.go:154 +0x105
+jun 17 10:49:35 fatih-All-Series kubelet[38645]: created by k8s.io/kubernetes/vendor/go.opencensus.io/stats/view.init.0
+jun 17 10:49:35 fatih-All-Series kubelet[38645]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/go.opencensus.io/stats/view/worker.go:32 +0x57
+jun 17 10:49:35 fatih-All-Series kubelet[38645]: goroutine 77 [select]:
+jun 17 10:49:35 fatih-All-Series kubelet[38645]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.BackoffUntil(0x4a8d418, 0x4f28b60, 0xc000b60000, 0x1, 0xc0000ac0c0)
+jun 17 10:49:35 fatih-All-Series kubelet[38645]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:167 +0x149
+jun 17 10:49:35 fatih-All-Series kubelet[38645]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.JitterUntil(0x4a8d418, 0x12a05f200, 0x0, 0xc000380701, 0xc0000ac0c0)
+jun 17 10:49:35 fatih-All-Series kubelet[38645]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:133 +0x98
+jun 17 10:49:35 fatih-All-Series kubelet[38645]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.Until(...)
+jun 17 10:49:35 fatih-All-Series kubelet[38645]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:90
+jun 17 10:49:35 fatih-All-Series kubelet[38645]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.Forever(0x4a8d418, 0x12a05f200)
+jun 17 10:49:35 fatih-All-Series kubelet[38645]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:81 +0x4f
+jun 17 10:49:35 fatih-All-Series kubelet[38645]: created by k8s.io/kubernetes/vendor/k8s.io/component-base/logs.InitLogs
+jun 17 10:49:35 fatih-All-Series kubelet[38645]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/component-base/logs/logs.go:58 +0x8a
+jun 17 10:49:35 fatih-All-Series systemd[1]: [0;1;39m[0;1;31m[0;1;39mkubelet.service: Main process exited, code=exited, status=255/EXCEPTION[0m
+jun 17 10:49:35 fatih-All-Series systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mkubelet.service: Failed with result 'exit-code'.[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mDaemon: 2022-06-17 10:49:42,332 WARNING  lbry.extras.daemon.exchange_rate_manager:89: Could not parse exchange rate response from Cryptonator: <!DOCTYPE html>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m<html lang="en-US">[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m   <head>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m      <title>Access denied</title>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m      <meta http-equiv="X-UA-Compatible" content="IE=Edge" />[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m      <meta name="robots" content="noindex, nofollow" />[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m      <meta name="viewport" content="width=device-width,initial-scale=1" />[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m      <link rel="stylesheet" href="/cdn-cgi/styles/errors.new.min.css" media="screen" />[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m      <script>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m(function(){if(document.addEventListener&&window.XMLHttpRequest&&JSON&&JSON.stringify){var e=function(a){var c=document.getElementById("error-feedback-survey"),d=document.getElementById("error-feedback-success"),b=new XMLHttpRequest;a={event:"feedback clicked",properties:{errorCode:1020,helpful:a,version:3}};b.open("POST","https://sparrow.cloudflare.com/api/v1/event");b.setRequestHeader("Content-Type","application/json");b.setRequestHeader("Sparrow-Source-Key","c771f0e4b54944bebf4261d44bd79a1e");[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mb.send(JSON.stringify(a));c.classList.add("feedback-hidden");d.classList.remove("feedback-hidden")};document.addEventListener("DOMContentLoaded",function(){var a=document.getElementById("error-feedback"),c=document.getElementById("feedback-button-yes"),d=document.getElementById("feedback-button-no");"classList"in a&&(a.classList.remove("feedback-hidden"),c.addEventListener("click",function(){e(!0)}),d.addEventListener("click",function(){e(!1)}))})}})();[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m</script>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m      <script>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m         (function(){if(document.addEventListener){var c=function(){var b=document.getElementById("copy-label");document.getElementById("plain-ray-id");if(navigator.clipboard)navigator.clipboard.writeText("71ca888f79b20229");else{var a=document.createElement("textarea");a.value="71ca888f79b20229";a.style.top="0";a.style.left="0";a.style.position="fixed";document.body.appendChild(a);a.focus();a.select();document.execCommand("copy");document.body.removeChild(a)}b.innerText="Copied"};document.addEventListener("DOMContentLoaded",[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mfunction(){var b=document.getElementById("plain-ray-id"),a=document.getElementById("click-to-copy-btn");"classList"in b&&(b.classList.add("hidden"),a.classList.remove("hidden"),a.addEventListener("click",c))})}})();[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m      </script>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m      <script defer src="https://api.radar.cloudflare.com/beacon.js"></script>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m   <script async src='/cdn-cgi/challenge-platform/h/g/scripts/invisible.js?ts=1655452800'></script></head>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m   <body>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m      <div class="main-wrapper" role="main">[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m         <div class="header section">[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m            <h1>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m               <span class="error-description">Access denied</span>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m               <span class="code-label">Error code <span>1020</span></span>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m            </h1>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m            <div class="large-font">[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m               <p>You do not have access to api.cryptonator.com.</p><p>The site owner may have set restrictions that prevent you from accessing the site. Contact the site owner for access or try loading the page again.</p>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m            </div>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m         </div>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m      </div>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m      <div>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m         <div class="clearfix section">[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m            <div class="column know-more">[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m               <h2 class="large-font">Additional information</h2>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m               <p>The access policies of a site define which visits are allowed. Your current visit is not allowed according to those policies.</p><p>Only the site owner can change site access policies.</p>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m            </div>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m            <div class="column know-more">[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m               <h2 class="large-font">I am the site owner</h2>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m               <p class="ray-id-wrapper">[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m                  Ray ID:[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m                  <span class="plain-ray-id" id="plain-ray-id">[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m                     71ca888f79b20229[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m                  </span>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m                  <button class="click-to-copy-btn hidden" id="click-to-copy-btn" title="Click to copy Ray ID" type="button">[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m                     <span class="ray-id">71ca888f79b20229</span><span class="copy-label" id="copy-label">Copy</span>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m                  </button>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m               </p>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m               <ol>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m                  <li>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m                     Search the[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m                     <a rel="noopener noreferrer" href="https://dash.cloudflare.com/?to=/:account/:zone/firewall" target="_blank">Firewall Events Log</a>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m                     <img class="external-link" title="Opens in new tab" src="/cdn-cgi/images/external.png" alt="External link">[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m                     for the above Ray ID.[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m                  </li>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m                  <li>Examine and assess the details of the access policy.</li>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m               </ol>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m               <br>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m               <a rel="noopener noreferrer" href="https://support.cloudflare.com/hc/articles/360029779472-Troubleshooting-Cloudflare-1XXX-errors#error1020" target="_blank">Troubleshooting guide</a>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m               <img class="external-link" title="Opens in new tab" src="/cdn-cgi/images/external.png" alt="External link">[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m            </div>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m         </div>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m         <div class="clearfix footer section" role="contentinfo">[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m            <div class="column">[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m               <div class="feedback-hidden py-8 text-center" id="error-feedback">[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m    <div id="error-feedback-survey" class="footer-line-wrapper">[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m        Was this page helpful?[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m        <button class="border border-solid bg-white cf-button cursor-pointer ml-4 px-4 py-2 rounded" id="feedback-button-yes" type="button">Yes</button>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m        <button class="border border-solid bg-white cf-button cursor-pointer ml-4 px-4 py-2 rounded" id="feedback-button-no" type="button">No</button>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m    </div>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m    <div class="feedback-success feedback-hidden" id="error-feedback-success">[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m        Thank you for your feedback![0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m    </div>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m</div>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m            </div>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m            <div class="column footer-line-wrapper text-center">[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m               Performance &amp; security by <a rel="noopener noreferrer" href="https://www.cloudflare.com" target="_blank">Cloudflare</a>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m               <img class="external-link" title="Opens in new tab" src="/cdn-cgi/images/external.png" alt="External link">[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m            </div>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m         </div>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m      </div>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m   <script type="text/javascript">(function(){window['__CF$cv$params']={r:'71ca888f79b20229',m:'gch851dHdxAfCqX9fmGUNvieH1.V9TQ3B5c3g2ADvi0-1655455782-0-AZzYM1p6m3Q1kpkkRcg9+E58IcAPh9iVXWqw+dGTpSFtGCNu28/u6bBc0hWQ0RW9BU861qosOzeMo3yA3seH1L7ZmAWar8AhDV2idjdTwJxOsMJJrYsLw8IUoKvKu3D44uPjwjX5LceFp7ElWt5CUGA=',s:[0x29deac1a1e,0xd1de425cc8],u:'/cdn-cgi/challenge-platform/h/g'}})();</script></body>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m</html>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mDaemon: 2022-06-17 10:49:42,333 WARNING  lbry.extras.daemon.exchange_rate_manager:89: Could not parse exchange rate response from Cryptonator: <!DOCTYPE html>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m<html lang="en-US">[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m   <head>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m      <title>Access denied</title>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m      <meta http-equiv="X-UA-Compatible" content="IE=Edge" />[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m      <meta name="robots" content="noindex, nofollow" />[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m      <meta name="viewport" content="width=device-width,initial-scale=1" />[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m      <link rel="stylesheet" href="/cdn-cgi/styles/errors.new.min.css" media="screen" />[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m      <script>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m(function(){if(document.addEventListener&&window.XMLHttpRequest&&JSON&&JSON.stringify){var e=function(a){var c=document.getElementById("error-feedback-survey"),d=document.getElementById("error-feedback-success"),b=new XMLHttpRequest;a={event:"feedback clicked",properties:{errorCode:1020,helpful:a,version:3}};b.open("POST","https://sparrow.cloudflare.com/api/v1/event");b.setRequestHeader("Content-Type","application/json");b.setRequestHeader("Sparrow-Source-Key","c771f0e4b54944bebf4261d44bd79a1e");[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mb.send(JSON.stringify(a));c.classList.add("feedback-hidden");d.classList.remove("feedback-hidden")};document.addEventListener("DOMContentLoaded",function(){var a=document.getElementById("error-feedback"),c=document.getElementById("feedback-button-yes"),d=document.getElementById("feedback-button-no");"classList"in a&&(a.classList.remove("feedback-hidden"),c.addEventListener("click",function(){e(!0)}),d.addEventListener("click",function(){e(!1)}))})}})();[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m</script>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m      <script>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m         (function(){if(document.addEventListener){var c=function(){var b=document.getElementById("copy-label");document.getElementById("plain-ray-id");if(navigator.clipboard)navigator.clipboard.writeText("71ca888f79a90229");else{var a=document.createElement("textarea");a.value="71ca888f79a90229";a.style.top="0";a.style.left="0";a.style.position="fixed";document.body.appendChild(a);a.focus();a.select();document.execCommand("copy");document.body.removeChild(a)}b.innerText="Copied"};document.addEventListener("DOMContentLoaded",[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mfunction(){var b=document.getElementById("plain-ray-id"),a=document.getElementById("click-to-copy-btn");"classList"in b&&(b.classList.add("hidden"),a.classList.remove("hidden"),a.addEventListener("click",c))})}})();[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m      </script>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m      <script defer src="https://api.radar.cloudflare.com/beacon.js"></script>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m   <script async src='/cdn-cgi/challenge-platform/h/g/scripts/invisible.js?ts=1655452800'></script></head>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m   <body>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m      <div class="main-wrapper" role="main">[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m         <div class="header section">[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m            <h1>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m               <span class="error-description">Access denied</span>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m               <span class="code-label">Error code <span>1020</span></span>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m            </h1>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m            <div class="large-font">[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m               <p>You do not have access to api.cryptonator.com.</p><p>The site owner may have set restrictions that prevent you from accessing the site. Contact the site owner for access or try loading the page again.</p>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m            </div>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m         </div>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m      </div>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m      <div>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m         <div class="clearfix section">[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m            <div class="column know-more">[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m               <h2 class="large-font">Additional information</h2>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m               <p>The access policies of a site define which visits are allowed. Your current visit is not allowed according to those policies.</p><p>Only the site owner can change site access policies.</p>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m            </div>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m            <div class="column know-more">[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m               <h2 class="large-font">I am the site owner</h2>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m               <p class="ray-id-wrapper">[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m                  Ray ID:[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m                  <span class="plain-ray-id" id="plain-ray-id">[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m                     71ca888f79a90229[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m                  </span>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m                  <button class="click-to-copy-btn hidden" id="click-to-copy-btn" title="Click to copy Ray ID" type="button">[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m                     <span class="ray-id">71ca888f79a90229</span><span class="copy-label" id="copy-label">Copy</span>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m                  </button>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m               </p>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m               <ol>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m                  <li>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m                     Search the[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m                     <a rel="noopener noreferrer" href="https://dash.cloudflare.com/?to=/:account/:zone/firewall" target="_blank">Firewall Events Log</a>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m                     <img class="external-link" title="Opens in new tab" src="/cdn-cgi/images/external.png" alt="External link">[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m                     for the above Ray ID.[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m                  </li>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m                  <li>Examine and assess the details of the access policy.</li>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m               </ol>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m               <br>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m               <a rel="noopener noreferrer" href="https://support.cloudflare.com/hc/articles/360029779472-Troubleshooting-Cloudflare-1XXX-errors#error1020" target="_blank">Troubleshooting guide</a>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m               <img class="external-link" title="Opens in new tab" src="/cdn-cgi/images/external.png" alt="External link">[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m            </div>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m         </div>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m         <div class="clearfix footer section" role="contentinfo">[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m            <div class="column">[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m               <div class="feedback-hidden py-8 text-center" id="error-feedback">[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m    <div id="error-feedback-survey" class="footer-line-wrapper">[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m        Was this page helpful?[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m        <button class="border border-solid bg-white cf-button cursor-pointer ml-4 px-4 py-2 rounded" id="feedback-button-yes" type="button">Yes</button>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m        <button class="border border-solid bg-white cf-button cursor-pointer ml-4 px-4 py-2 rounded" id="feedback-button-no" type="button">No</button>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m    </div>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m    <div class="feedback-success feedback-hidden" id="error-feedback-success">[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m        Thank you for your feedback![0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m    </div>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m</div>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m            </div>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m            <div class="column footer-line-wrapper text-center">[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m               Performance &amp; security by <a rel="noopener noreferrer" href="https://www.cloudflare.com" target="_blank">Cloudflare</a>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m               <img class="external-link" title="Opens in new tab" src="/cdn-cgi/images/external.png" alt="External link">[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m            </div>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m         </div>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m      </div>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m   <script type="text/javascript">(function(){window['__CF$cv$params']={r:'71ca888f79a90229',m:'AjZt.wi.7KWmiqQycX4sObl_Whsehu7lB7GvW.jybLY-1655455782-0-AVP+dJRmDceCtuvVfIoavMH7sZYmFstBX52qG05VfePmETUl6gasaiKs+qaQ2VBJAm1lLEi1RjHq3hje8rQJVVbvzu3fi6DJMIZqSN9YXzA/ZMYLWvz7vnWAaqTBIkKW4BAa+quLkHmbc1UAZBVVPaM=',s:[0x859960ef04,0x4e99e1130d],u:'/cdn-cgi/challenge-platform/h/g'}})();</script></body>[0m
+jun 17 10:49:42 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m</html>[0m
+jun 17 10:49:46 fatih-All-Series systemd[1]: kubelet.service: Scheduled restart job, restart counter is at 632.
+jun 17 10:49:46 fatih-All-Series systemd[1]: Stopped kubelet: The Kubernetes Node Agent.
+jun 17 10:49:46 fatih-All-Series systemd[1]: Started kubelet: The Kubernetes Node Agent.
+jun 17 10:49:46 fatih-All-Series kubelet[38665]: F0617 10:49:46.219900   38665 server.go:198] failed to load Kubelet config file /var/lib/kubelet/config.yaml, error failed to read kubelet config file "/var/lib/kubelet/config.yaml", error: open /var/lib/kubelet/config.yaml: no such file or directory
+jun 17 10:49:46 fatih-All-Series kubelet[38665]: goroutine 1 [running]:
+jun 17 10:49:46 fatih-All-Series kubelet[38665]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.stacks(0xc0001a4001, 0xc0001b8840, 0xfb, 0x14d)
+jun 17 10:49:46 fatih-All-Series kubelet[38665]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1026 +0xb9
+jun 17 10:49:46 fatih-All-Series kubelet[38665]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).output(0x70e94e0, 0xc000000003, 0x0, 0x0, 0xc000d271f0, 0x6f53cea, 0x9, 0xc6, 0x411b00)
+jun 17 10:49:46 fatih-All-Series kubelet[38665]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:975 +0x19b
+jun 17 10:49:46 fatih-All-Series kubelet[38665]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).printDepth(0x70e94e0, 0xc000000003, 0x0, 0x0, 0x0, 0x0, 0x1, 0xc0002fd650, 0x1, 0x1)
+jun 17 10:49:46 fatih-All-Series kubelet[38665]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:732 +0x16f
+jun 17 10:49:46 fatih-All-Series kubelet[38665]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).print(...)
+jun 17 10:49:46 fatih-All-Series kubelet[38665]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:714
+jun 17 10:49:46 fatih-All-Series kubelet[38665]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.Fatal(...)
+jun 17 10:49:46 fatih-All-Series kubelet[38665]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1482
+jun 17 10:49:46 fatih-All-Series kubelet[38665]: k8s.io/kubernetes/cmd/kubelet/app.NewKubeletCommand.func1(0xc000a698c0, 0xc0001a8010, 0x3, 0x3)
+jun 17 10:49:46 fatih-All-Series kubelet[38665]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/cmd/kubelet/app/server.go:198 +0xe5a
+jun 17 10:49:46 fatih-All-Series kubelet[38665]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).execute(0xc000a698c0, 0xc0001a8010, 0x3, 0x3, 0xc000a698c0, 0xc0001a8010)
+jun 17 10:49:46 fatih-All-Series kubelet[38665]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:854 +0x2c2
+jun 17 10:49:46 fatih-All-Series kubelet[38665]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).ExecuteC(0xc000a698c0, 0x16f95c443ef2cfed, 0x70e90a0, 0x409b25)
+jun 17 10:49:46 fatih-All-Series kubelet[38665]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:958 +0x375
+jun 17 10:49:46 fatih-All-Series kubelet[38665]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).Execute(...)
+jun 17 10:49:46 fatih-All-Series kubelet[38665]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:895
+jun 17 10:49:46 fatih-All-Series kubelet[38665]: main.main()
+jun 17 10:49:46 fatih-All-Series kubelet[38665]:         _output/dockerized/go/src/k8s.io/kubernetes/cmd/kubelet/kubelet.go:41 +0xe5
+jun 17 10:49:46 fatih-All-Series kubelet[38665]: goroutine 19 [chan receive]:
+jun 17 10:49:46 fatih-All-Series kubelet[38665]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).flushDaemon(0x70e94e0)
+jun 17 10:49:46 fatih-All-Series kubelet[38665]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1169 +0x8b
+jun 17 10:49:46 fatih-All-Series kubelet[38665]: created by k8s.io/kubernetes/vendor/k8s.io/klog/v2.init.0
+jun 17 10:49:46 fatih-All-Series kubelet[38665]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:417 +0xdf
+jun 17 10:49:46 fatih-All-Series kubelet[38665]: goroutine 75 [select]:
+jun 17 10:49:46 fatih-All-Series kubelet[38665]: k8s.io/kubernetes/vendor/go.opencensus.io/stats/view.(*worker).start(0xc0001805a0)
+jun 17 10:49:46 fatih-All-Series kubelet[38665]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/go.opencensus.io/stats/view/worker.go:154 +0x105
+jun 17 10:49:46 fatih-All-Series kubelet[38665]: created by k8s.io/kubernetes/vendor/go.opencensus.io/stats/view.init.0
+jun 17 10:49:46 fatih-All-Series kubelet[38665]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/go.opencensus.io/stats/view/worker.go:32 +0x57
+jun 17 10:49:46 fatih-All-Series kubelet[38665]: goroutine 116 [select]:
+jun 17 10:49:46 fatih-All-Series kubelet[38665]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.BackoffUntil(0x4a8d418, 0x4f28b60, 0xc000435c50, 0x1, 0xc0001820c0)
+jun 17 10:49:46 fatih-All-Series kubelet[38665]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:167 +0x149
+jun 17 10:49:46 fatih-All-Series kubelet[38665]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.JitterUntil(0x4a8d418, 0x12a05f200, 0x0, 0xc000cffb01, 0xc0001820c0)
+jun 17 10:49:46 fatih-All-Series kubelet[38665]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:133 +0x98
+jun 17 10:49:46 fatih-All-Series kubelet[38665]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.Until(...)
+jun 17 10:49:46 fatih-All-Series kubelet[38665]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:90
+jun 17 10:49:46 fatih-All-Series kubelet[38665]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.Forever(0x4a8d418, 0x12a05f200)
+jun 17 10:49:46 fatih-All-Series kubelet[38665]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:81 +0x4f
+jun 17 10:49:46 fatih-All-Series kubelet[38665]: created by k8s.io/kubernetes/vendor/k8s.io/component-base/logs.InitLogs
+jun 17 10:49:46 fatih-All-Series kubelet[38665]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/component-base/logs/logs.go:58 +0x8a
+jun 17 10:49:46 fatih-All-Series systemd[1]: [0;1;39m[0;1;31m[0;1;39mkubelet.service: Main process exited, code=exited, status=255/EXCEPTION[0m
+jun 17 10:49:46 fatih-All-Series systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mkubelet.service: Failed with result 'exit-code'.[0m
+jun 17 10:49:52 fatih-All-Series gnome-shell[5437]: [5438:5438:0617/104952.826125:ERROR:CONSOLE(14)] "Failed to handle media duration metadata: missing publisher key for media key youtube_cXD7j4I9fKE", source: chrome-extension://mnojpmjdmbbfmejpflffifhffcmidifd/out/brave_extension_background.bundle.js (14)
+jun 17 10:49:52 fatih-All-Series gnome-shell[5437]: [5438:5438:0617/104952.826266:ERROR:CONSOLE(14)] "Failed to handle media duration metadata: missing publisher key for media key youtube_cXD7j4I9fKE", source: chrome-extension://mnojpmjdmbbfmejpflffifhffcmidifd/out/brave_extension_background.bundle.js (14)
+jun 17 10:49:52 fatih-All-Series gnome-shell[5437]: [5438:5438:0617/104952.826382:ERROR:CONSOLE(14)] "Failed to handle media duration metadata: missing publisher key for media key youtube_cXD7j4I9fKE", source: chrome-extension://mnojpmjdmbbfmejpflffifhffcmidifd/out/brave_extension_background.bundle.js (14)
+jun 17 10:49:52 fatih-All-Series gnome-shell[5437]: [5438:5438:0617/104952.826752:ERROR:CONSOLE(14)] "Failed to handle media duration metadata: missing publisher key for media key youtube_cXD7j4I9fKE", source: chrome-extension://mnojpmjdmbbfmejpflffifhffcmidifd/out/brave_extension_background.bundle.js (14)
+jun 17 10:49:56 fatih-All-Series systemd[1]: kubelet.service: Scheduled restart job, restart counter is at 633.
+jun 17 10:49:56 fatih-All-Series systemd[1]: Stopped kubelet: The Kubernetes Node Agent.
+jun 17 10:49:56 fatih-All-Series systemd[1]: Started kubelet: The Kubernetes Node Agent.
+jun 17 10:49:56 fatih-All-Series kubelet[38682]: F0617 10:49:56.470476   38682 server.go:198] failed to load Kubelet config file /var/lib/kubelet/config.yaml, error failed to read kubelet config file "/var/lib/kubelet/config.yaml", error: open /var/lib/kubelet/config.yaml: no such file or directory
+jun 17 10:49:56 fatih-All-Series kubelet[38682]: goroutine 1 [running]:
+jun 17 10:49:56 fatih-All-Series kubelet[38682]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.stacks(0xc00012a001, 0xc000c96000, 0xfb, 0x14d)
+jun 17 10:49:56 fatih-All-Series kubelet[38682]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1026 +0xb9
+jun 17 10:49:56 fatih-All-Series kubelet[38682]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).output(0x70e94e0, 0xc000000003, 0x0, 0x0, 0xc000c48d20, 0x6f53cea, 0x9, 0xc6, 0x411b00)
+jun 17 10:49:56 fatih-All-Series kubelet[38682]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:975 +0x19b
+jun 17 10:49:56 fatih-All-Series kubelet[38682]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).printDepth(0x70e94e0, 0xc000000003, 0x0, 0x0, 0x0, 0x0, 0x1, 0xc00056a580, 0x1, 0x1)
+jun 17 10:49:56 fatih-All-Series kubelet[38682]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:732 +0x16f
+jun 17 10:49:56 fatih-All-Series kubelet[38682]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).print(...)
+jun 17 10:49:56 fatih-All-Series kubelet[38682]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:714
+jun 17 10:49:56 fatih-All-Series kubelet[38682]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.Fatal(...)
+jun 17 10:49:56 fatih-All-Series kubelet[38682]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1482
+jun 17 10:49:56 fatih-All-Series kubelet[38682]: k8s.io/kubernetes/cmd/kubelet/app.NewKubeletCommand.func1(0xc000751b80, 0xc00012e010, 0x3, 0x3)
+jun 17 10:49:56 fatih-All-Series kubelet[38682]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/cmd/kubelet/app/server.go:198 +0xe5a
+jun 17 10:49:56 fatih-All-Series kubelet[38682]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).execute(0xc000751b80, 0xc00012e010, 0x3, 0x3, 0xc000751b80, 0xc00012e010)
+jun 17 10:49:56 fatih-All-Series kubelet[38682]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:854 +0x2c2
+jun 17 10:49:56 fatih-All-Series kubelet[38682]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).ExecuteC(0xc000751b80, 0x16f95c46a1f20ebe, 0x70e90a0, 0x409b25)
+jun 17 10:49:56 fatih-All-Series kubelet[38682]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:958 +0x375
+jun 17 10:49:56 fatih-All-Series kubelet[38682]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).Execute(...)
+jun 17 10:49:56 fatih-All-Series kubelet[38682]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:895
+jun 17 10:49:56 fatih-All-Series kubelet[38682]: main.main()
+jun 17 10:49:56 fatih-All-Series kubelet[38682]:         _output/dockerized/go/src/k8s.io/kubernetes/cmd/kubelet/kubelet.go:41 +0xe5
+jun 17 10:49:56 fatih-All-Series kubelet[38682]: goroutine 19 [chan receive]:
+jun 17 10:49:56 fatih-All-Series kubelet[38682]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).flushDaemon(0x70e94e0)
+jun 17 10:49:56 fatih-All-Series kubelet[38682]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1169 +0x8b
+jun 17 10:49:56 fatih-All-Series kubelet[38682]: created by k8s.io/kubernetes/vendor/k8s.io/klog/v2.init.0
+jun 17 10:49:56 fatih-All-Series kubelet[38682]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:417 +0xdf
+jun 17 10:49:56 fatih-All-Series kubelet[38682]: goroutine 124 [select]:
+jun 17 10:49:56 fatih-All-Series kubelet[38682]: k8s.io/kubernetes/vendor/go.opencensus.io/stats/view.(*worker).start(0xc0000ab090)
+jun 17 10:49:56 fatih-All-Series kubelet[38682]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/go.opencensus.io/stats/view/worker.go:154 +0x105
+jun 17 10:49:56 fatih-All-Series kubelet[38682]: created by k8s.io/kubernetes/vendor/go.opencensus.io/stats/view.init.0
+jun 17 10:49:56 fatih-All-Series kubelet[38682]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/go.opencensus.io/stats/view/worker.go:32 +0x57
+jun 17 10:49:56 fatih-All-Series kubelet[38682]: goroutine 74 [select]:
+jun 17 10:49:56 fatih-All-Series kubelet[38682]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.BackoffUntil(0x4a8d418, 0x4f28b60, 0xc0002b1620, 0x1, 0xc00010e0c0)
+jun 17 10:49:56 fatih-All-Series kubelet[38682]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:167 +0x149
+jun 17 10:49:56 fatih-All-Series kubelet[38682]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.JitterUntil(0x4a8d418, 0x12a05f200, 0x0, 0xc000229501, 0xc00010e0c0)
+jun 17 10:49:56 fatih-All-Series kubelet[38682]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:133 +0x98
+jun 17 10:49:56 fatih-All-Series kubelet[38682]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.Until(...)
+jun 17 10:49:56 fatih-All-Series kubelet[38682]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:90
+jun 17 10:49:56 fatih-All-Series kubelet[38682]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.Forever(0x4a8d418, 0x12a05f200)
+jun 17 10:49:56 fatih-All-Series kubelet[38682]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:81 +0x4f
+jun 17 10:49:56 fatih-All-Series kubelet[38682]: created by k8s.io/kubernetes/vendor/k8s.io/component-base/logs.InitLogs
+jun 17 10:49:56 fatih-All-Series kubelet[38682]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/component-base/logs/logs.go:58 +0x8a
+jun 17 10:49:56 fatih-All-Series systemd[1]: [0;1;39m[0;1;31m[0;1;39mkubelet.service: Main process exited, code=exited, status=255/EXCEPTION[0m
+jun 17 10:49:56 fatih-All-Series systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mkubelet.service: Failed with result 'exit-code'.[0m
+jun 17 10:50:01 fatih-All-Series CRON[38696]: pam_unix(cron:session): session opened for user fatih by (uid=0)
+jun 17 10:50:01 fatih-All-Series CRON[38697]: (fatih) CMD (date >> /home/fatih/heure)
+jun 17 10:50:01 fatih-All-Series CRON[38696]: pam_unix(cron:session): session closed for user fatih
+jun 17 10:50:01 fatih-All-Series dbus-daemon[4278]: [session uid=1000 pid=4278] Activating via systemd: service name='org.freedesktop.Tracker1' unit='tracker-store.service' requested by ':1.2' (uid=1000 pid=4274 comm="/usr/libexec/tracker-miner-fs " label="unconfined")
+jun 17 10:50:01 fatih-All-Series systemd[4262]: Starting Tracker metadata database store and lookup manager...
+jun 17 10:50:01 fatih-All-Series dbus-daemon[4278]: [session uid=1000 pid=4278] Successfully activated service 'org.freedesktop.Tracker1'
+jun 17 10:50:01 fatih-All-Series systemd[4262]: Started Tracker metadata database store and lookup manager.
+jun 17 10:50:02 fatih-All-Series dbus-daemon[4278]: [session uid=1000 pid=4278] Activating via systemd: service name='org.freedesktop.Tracker1.Miner.Extract' unit='tracker-extract.service' requested by ':1.2' (uid=1000 pid=4274 comm="/usr/libexec/tracker-miner-fs " label="unconfined")
+jun 17 10:50:02 fatih-All-Series systemd[4262]: Starting Tracker metadata extractor...
+jun 17 10:50:02 fatih-All-Series tracker-extract[38707]: [0;1;39m[0;1;31m[0;1;39mSet scheduler policy to SCHED_IDLE[0m
+jun 17 10:50:02 fatih-All-Series tracker-extract[38707]: [0;1;39m[0;1;31m[0;1;39mSetting priority nice level to 19[0m
+jun 17 10:50:02 fatih-All-Series dbus-daemon[4278]: [session uid=1000 pid=4278] Successfully activated service 'org.freedesktop.Tracker1.Miner.Extract'
+jun 17 10:50:02 fatih-All-Series systemd[4262]: Started Tracker metadata extractor.
+jun 17 10:50:06 fatih-All-Series systemd[1]: kubelet.service: Scheduled restart job, restart counter is at 634.
+jun 17 10:50:06 fatih-All-Series systemd[1]: Stopped kubelet: The Kubernetes Node Agent.
+jun 17 10:50:06 fatih-All-Series systemd[1]: Started kubelet: The Kubernetes Node Agent.
+jun 17 10:50:06 fatih-All-Series kubelet[38741]: F0617 10:50:06.720488   38741 server.go:198] failed to load Kubelet config file /var/lib/kubelet/config.yaml, error failed to read kubelet config file "/var/lib/kubelet/config.yaml", error: open /var/lib/kubelet/config.yaml: no such file or directory
+jun 17 10:50:06 fatih-All-Series kubelet[38741]: goroutine 1 [running]:
+jun 17 10:50:06 fatih-All-Series kubelet[38741]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.stacks(0xc00012a001, 0xc000140840, 0xfb, 0x14d)
+jun 17 10:50:06 fatih-All-Series kubelet[38741]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1026 +0xb9
+jun 17 10:50:06 fatih-All-Series kubelet[38741]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).output(0x70e94e0, 0xc000000003, 0x0, 0x0, 0xc000c7acb0, 0x6f53cea, 0x9, 0xc6, 0x411b00)
+jun 17 10:50:06 fatih-All-Series kubelet[38741]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:975 +0x19b
+jun 17 10:50:06 fatih-All-Series kubelet[38741]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).printDepth(0x70e94e0, 0xc000000003, 0x0, 0x0, 0x0, 0x0, 0x1, 0xc000819750, 0x1, 0x1)
+jun 17 10:50:06 fatih-All-Series kubelet[38741]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:732 +0x16f
+jun 17 10:50:06 fatih-All-Series kubelet[38741]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).print(...)
+jun 17 10:50:06 fatih-All-Series kubelet[38741]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:714
+jun 17 10:50:06 fatih-All-Series kubelet[38741]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.Fatal(...)
+jun 17 10:50:06 fatih-All-Series kubelet[38741]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1482
+jun 17 10:50:06 fatih-All-Series kubelet[38741]: k8s.io/kubernetes/cmd/kubelet/app.NewKubeletCommand.func1(0xc000d782c0, 0xc00012e010, 0x3, 0x3)
+jun 17 10:50:06 fatih-All-Series kubelet[38741]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/cmd/kubelet/app/server.go:198 +0xe5a
+jun 17 10:50:06 fatih-All-Series kubelet[38741]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).execute(0xc000d782c0, 0xc00012e010, 0x3, 0x3, 0xc000d782c0, 0xc00012e010)
+jun 17 10:50:06 fatih-All-Series kubelet[38741]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:854 +0x2c2
+jun 17 10:50:06 fatih-All-Series kubelet[38741]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).ExecuteC(0xc000d782c0, 0x16f95c4904e6450a, 0x70e90a0, 0x409b25)
+jun 17 10:50:06 fatih-All-Series kubelet[38741]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:958 +0x375
+jun 17 10:50:06 fatih-All-Series kubelet[38741]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).Execute(...)
+jun 17 10:50:06 fatih-All-Series kubelet[38741]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:895
+jun 17 10:50:06 fatih-All-Series kubelet[38741]: main.main()
+jun 17 10:50:06 fatih-All-Series kubelet[38741]:         _output/dockerized/go/src/k8s.io/kubernetes/cmd/kubelet/kubelet.go:41 +0xe5
+jun 17 10:50:06 fatih-All-Series kubelet[38741]: goroutine 19 [chan receive]:
+jun 17 10:50:06 fatih-All-Series kubelet[38741]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).flushDaemon(0x70e94e0)
+jun 17 10:50:06 fatih-All-Series kubelet[38741]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1169 +0x8b
+jun 17 10:50:06 fatih-All-Series kubelet[38741]: created by k8s.io/kubernetes/vendor/k8s.io/klog/v2.init.0
+jun 17 10:50:06 fatih-All-Series kubelet[38741]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:417 +0xdf
+jun 17 10:50:06 fatih-All-Series kubelet[38741]: goroutine 138 [select]:
+jun 17 10:50:06 fatih-All-Series kubelet[38741]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.BackoffUntil(0x4a8d418, 0x4f28b60, 0xc00059e7e0, 0x1, 0xc00010e0c0)
+jun 17 10:50:06 fatih-All-Series kubelet[38741]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:167 +0x149
+jun 17 10:50:06 fatih-All-Series kubelet[38741]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.JitterUntil(0x4a8d418, 0x12a05f200, 0x0, 0xc000b33e01, 0xc00010e0c0)
+jun 17 10:50:06 fatih-All-Series kubelet[38741]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:133 +0x98
+jun 17 10:50:06 fatih-All-Series kubelet[38741]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.Until(...)
+jun 17 10:50:06 fatih-All-Series kubelet[38741]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:90
+jun 17 10:50:06 fatih-All-Series kubelet[38741]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.Forever(0x4a8d418, 0x12a05f200)
+jun 17 10:50:06 fatih-All-Series kubelet[38741]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:81 +0x4f
+jun 17 10:50:06 fatih-All-Series kubelet[38741]: created by k8s.io/kubernetes/vendor/k8s.io/component-base/logs.InitLogs
+jun 17 10:50:06 fatih-All-Series kubelet[38741]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/component-base/logs/logs.go:58 +0x8a
+jun 17 10:50:06 fatih-All-Series kubelet[38741]: goroutine 33 [select]:
+jun 17 10:50:06 fatih-All-Series kubelet[38741]: k8s.io/kubernetes/vendor/go.opencensus.io/stats/view.(*worker).start(0xc00013ef00)
+jun 17 10:50:06 fatih-All-Series kubelet[38741]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/go.opencensus.io/stats/view/worker.go:154 +0x105
+jun 17 10:50:06 fatih-All-Series kubelet[38741]: created by k8s.io/kubernetes/vendor/go.opencensus.io/stats/view.init.0
+jun 17 10:50:06 fatih-All-Series kubelet[38741]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/go.opencensus.io/stats/view/worker.go:32 +0x57
+jun 17 10:50:06 fatih-All-Series systemd[1]: [0;1;39m[0;1;31m[0;1;39mkubelet.service: Main process exited, code=exited, status=255/EXCEPTION[0m
+jun 17 10:50:06 fatih-All-Series systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mkubelet.service: Failed with result 'exit-code'.[0m
+jun 17 10:50:07 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mDaemon: 2022-06-17 10:50:07,212 ERROR    lbry.extras.daemon.exchange_rate_manager:93: Exchange rate error (BTCLBC from UPbit):[0m
+jun 17 10:50:07 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mTraceback (most recent call last):[0m
+jun 17 10:50:07 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m  File "lbry/extras/daemon/exchange_rate_manager.py", line 77, in get_rate[0m
+jun 17 10:50:07 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m  File "lbry/extras/daemon/exchange_rate_manager.py", line 205, in get_rate_from_response[0m
+jun 17 10:50:07 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mKeyError: 0[0m
+jun 17 10:50:12 fatih-All-Series systemd[4262]: tracker-extract.service: Succeeded.
+jun 17 10:50:16 fatih-All-Series systemd[1]: kubelet.service: Scheduled restart job, restart counter is at 635.
+jun 17 10:50:16 fatih-All-Series systemd[1]: Stopped kubelet: The Kubernetes Node Agent.
+jun 17 10:50:16 fatih-All-Series systemd[1]: Started kubelet: The Kubernetes Node Agent.
+jun 17 10:50:16 fatih-All-Series kubelet[38771]: F0617 10:50:16.974919   38771 server.go:198] failed to load Kubelet config file /var/lib/kubelet/config.yaml, error failed to read kubelet config file "/var/lib/kubelet/config.yaml", error: open /var/lib/kubelet/config.yaml: no such file or directory
+jun 17 10:50:16 fatih-All-Series kubelet[38771]: goroutine 1 [running]:
+jun 17 10:50:16 fatih-All-Series kubelet[38771]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.stacks(0xc000010001, 0xc000998000, 0xfb, 0x14d)
+jun 17 10:50:16 fatih-All-Series kubelet[38771]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1026 +0xb9
+jun 17 10:50:16 fatih-All-Series kubelet[38771]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).output(0x70e94e0, 0xc000000003, 0x0, 0x0, 0xc000cd2fc0, 0x6f53cea, 0x9, 0xc6, 0x411b00)
+jun 17 10:50:16 fatih-All-Series kubelet[38771]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:975 +0x19b
+jun 17 10:50:16 fatih-All-Series kubelet[38771]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).printDepth(0x70e94e0, 0xc000000003, 0x0, 0x0, 0x0, 0x0, 0x1, 0xc000492be0, 0x1, 0x1)
+jun 17 10:50:16 fatih-All-Series kubelet[38771]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:732 +0x16f
+jun 17 10:50:16 fatih-All-Series kubelet[38771]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).print(...)
+jun 17 10:50:16 fatih-All-Series kubelet[38771]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:714
+jun 17 10:50:16 fatih-All-Series kubelet[38771]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.Fatal(...)
+jun 17 10:50:16 fatih-All-Series kubelet[38771]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1482
+jun 17 10:50:16 fatih-All-Series kubelet[38771]: k8s.io/kubernetes/cmd/kubelet/app.NewKubeletCommand.func1(0xc0000eb600, 0xc00004e0d0, 0x3, 0x3)
+jun 17 10:50:16 fatih-All-Series kubelet[38771]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/cmd/kubelet/app/server.go:198 +0xe5a
+jun 17 10:50:16 fatih-All-Series kubelet[38771]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).execute(0xc0000eb600, 0xc00004e0d0, 0x3, 0x3, 0xc0000eb600, 0xc00004e0d0)
+jun 17 10:50:16 fatih-All-Series kubelet[38771]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:854 +0x2c2
+jun 17 10:50:16 fatih-All-Series kubelet[38771]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).ExecuteC(0xc0000eb600, 0x16f95c4b681ba977, 0x70e90a0, 0x409b25)
+jun 17 10:50:16 fatih-All-Series kubelet[38771]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:958 +0x375
+jun 17 10:50:16 fatih-All-Series kubelet[38771]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).Execute(...)
+jun 17 10:50:16 fatih-All-Series kubelet[38771]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:895
+jun 17 10:50:16 fatih-All-Series kubelet[38771]: main.main()
+jun 17 10:50:16 fatih-All-Series kubelet[38771]:         _output/dockerized/go/src/k8s.io/kubernetes/cmd/kubelet/kubelet.go:41 +0xe5
+jun 17 10:50:16 fatih-All-Series kubelet[38771]: goroutine 6 [chan receive]:
+jun 17 10:50:16 fatih-All-Series kubelet[38771]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).flushDaemon(0x70e94e0)
+jun 17 10:50:16 fatih-All-Series kubelet[38771]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1169 +0x8b
+jun 17 10:50:16 fatih-All-Series kubelet[38771]: created by k8s.io/kubernetes/vendor/k8s.io/klog/v2.init.0
+jun 17 10:50:16 fatih-All-Series kubelet[38771]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:417 +0xdf
+jun 17 10:50:16 fatih-All-Series kubelet[38771]: goroutine 109 [select]:
+jun 17 10:50:16 fatih-All-Series kubelet[38771]: k8s.io/kubernetes/vendor/go.opencensus.io/stats/view.(*worker).start(0xc00029cf00)
+jun 17 10:50:16 fatih-All-Series kubelet[38771]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/go.opencensus.io/stats/view/worker.go:154 +0x105
+jun 17 10:50:16 fatih-All-Series kubelet[38771]: created by k8s.io/kubernetes/vendor/go.opencensus.io/stats/view.init.0
+jun 17 10:50:16 fatih-All-Series kubelet[38771]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/go.opencensus.io/stats/view/worker.go:32 +0x57
+jun 17 10:50:16 fatih-All-Series kubelet[38771]: goroutine 149 [select]:
+jun 17 10:50:16 fatih-All-Series kubelet[38771]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.BackoffUntil(0x4a8d418, 0x4f28b60, 0xc000abd680, 0x1, 0xc0000ac0c0)
+jun 17 10:50:16 fatih-All-Series kubelet[38771]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:167 +0x149
+jun 17 10:50:16 fatih-All-Series kubelet[38771]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.JitterUntil(0x4a8d418, 0x12a05f200, 0x0, 0xc000214601, 0xc0000ac0c0)
+jun 17 10:50:16 fatih-All-Series kubelet[38771]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:133 +0x98
+jun 17 10:50:16 fatih-All-Series kubelet[38771]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.Until(...)
+jun 17 10:50:16 fatih-All-Series kubelet[38771]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:90
+jun 17 10:50:16 fatih-All-Series kubelet[38771]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.Forever(0x4a8d418, 0x12a05f200)
+jun 17 10:50:16 fatih-All-Series kubelet[38771]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:81 +0x4f
+jun 17 10:50:16 fatih-All-Series kubelet[38771]: created by k8s.io/kubernetes/vendor/k8s.io/component-base/logs.InitLogs
+jun 17 10:50:16 fatih-All-Series kubelet[38771]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/component-base/logs/logs.go:58 +0x8a
+jun 17 10:50:16 fatih-All-Series systemd[1]: [0;1;39m[0;1;31m[0;1;39mkubelet.service: Main process exited, code=exited, status=255/EXCEPTION[0m
+jun 17 10:50:16 fatih-All-Series systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mkubelet.service: Failed with result 'exit-code'.[0m
+jun 17 10:50:27 fatih-All-Series systemd[1]: kubelet.service: Scheduled restart job, restart counter is at 636.
+jun 17 10:50:27 fatih-All-Series systemd[1]: Stopped kubelet: The Kubernetes Node Agent.
+jun 17 10:50:27 fatih-All-Series systemd[1]: Started kubelet: The Kubernetes Node Agent.
+jun 17 10:50:27 fatih-All-Series kubelet[38784]: F0617 10:50:27.222097   38784 server.go:198] failed to load Kubelet config file /var/lib/kubelet/config.yaml, error failed to read kubelet config file "/var/lib/kubelet/config.yaml", error: open /var/lib/kubelet/config.yaml: no such file or directory
+jun 17 10:50:27 fatih-All-Series kubelet[38784]: goroutine 1 [running]:
+jun 17 10:50:27 fatih-All-Series kubelet[38784]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.stacks(0xc000010001, 0xc0000ca840, 0xfb, 0x14d)
+jun 17 10:50:27 fatih-All-Series kubelet[38784]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1026 +0xb9
+jun 17 10:50:27 fatih-All-Series kubelet[38784]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).output(0x70e94e0, 0xc000000003, 0x0, 0x0, 0xc000dac150, 0x6f53cea, 0x9, 0xc6, 0x411b00)
+jun 17 10:50:27 fatih-All-Series kubelet[38784]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:975 +0x19b
+jun 17 10:50:27 fatih-All-Series kubelet[38784]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).printDepth(0x70e94e0, 0xc000000003, 0x0, 0x0, 0x0, 0x0, 0x1, 0xc0004a7300, 0x1, 0x1)
+jun 17 10:50:27 fatih-All-Series kubelet[38784]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:732 +0x16f
+jun 17 10:50:27 fatih-All-Series kubelet[38784]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).print(...)
+jun 17 10:50:27 fatih-All-Series kubelet[38784]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:714
+jun 17 10:50:27 fatih-All-Series kubelet[38784]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.Fatal(...)
+jun 17 10:50:27 fatih-All-Series kubelet[38784]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1482
+jun 17 10:50:27 fatih-All-Series kubelet[38784]: k8s.io/kubernetes/cmd/kubelet/app.NewKubeletCommand.func1(0xc0006a0dc0, 0xc00004e0d0, 0x3, 0x3)
+jun 17 10:50:27 fatih-All-Series kubelet[38784]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/cmd/kubelet/app/server.go:198 +0xe5a
+jun 17 10:50:27 fatih-All-Series kubelet[38784]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).execute(0xc0006a0dc0, 0xc00004e0d0, 0x3, 0x3, 0xc0006a0dc0, 0xc00004e0d0)
+jun 17 10:50:27 fatih-All-Series kubelet[38784]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:854 +0x2c2
+jun 17 10:50:27 fatih-All-Series kubelet[38784]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).ExecuteC(0xc0006a0dc0, 0x16f95c4dcae1fdc4, 0x70e90a0, 0x409b25)
+jun 17 10:50:27 fatih-All-Series kubelet[38784]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:958 +0x375
+jun 17 10:50:27 fatih-All-Series kubelet[38784]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).Execute(...)
+jun 17 10:50:27 fatih-All-Series kubelet[38784]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:895
+jun 17 10:50:27 fatih-All-Series kubelet[38784]: main.main()
+jun 17 10:50:27 fatih-All-Series kubelet[38784]:         _output/dockerized/go/src/k8s.io/kubernetes/cmd/kubelet/kubelet.go:41 +0xe5
+jun 17 10:50:27 fatih-All-Series kubelet[38784]: goroutine 6 [chan receive]:
+jun 17 10:50:27 fatih-All-Series kubelet[38784]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).flushDaemon(0x70e94e0)
+jun 17 10:50:27 fatih-All-Series kubelet[38784]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1169 +0x8b
+jun 17 10:50:27 fatih-All-Series kubelet[38784]: created by k8s.io/kubernetes/vendor/k8s.io/klog/v2.init.0
+jun 17 10:50:27 fatih-All-Series kubelet[38784]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:417 +0xdf
+jun 17 10:50:27 fatih-All-Series kubelet[38784]: goroutine 29 [select]:
+jun 17 10:50:27 fatih-All-Series kubelet[38784]: k8s.io/kubernetes/vendor/go.opencensus.io/stats/view.(*worker).start(0xc0002f0f00)
+jun 17 10:50:27 fatih-All-Series kubelet[38784]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/go.opencensus.io/stats/view/worker.go:154 +0x105
+jun 17 10:50:27 fatih-All-Series kubelet[38784]: created by k8s.io/kubernetes/vendor/go.opencensus.io/stats/view.init.0
+jun 17 10:50:27 fatih-All-Series kubelet[38784]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/go.opencensus.io/stats/view/worker.go:32 +0x57
+jun 17 10:50:27 fatih-All-Series kubelet[38784]: goroutine 113 [select]:
+jun 17 10:50:27 fatih-All-Series kubelet[38784]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.BackoffUntil(0x4a8d418, 0x4f28b60, 0xc000a417d0, 0x1, 0xc0000ac0c0)
+jun 17 10:50:27 fatih-All-Series kubelet[38784]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:167 +0x149
+jun 17 10:50:27 fatih-All-Series kubelet[38784]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.JitterUntil(0x4a8d418, 0x12a05f200, 0x0, 0xc000c48f01, 0xc0000ac0c0)
+jun 17 10:50:27 fatih-All-Series kubelet[38784]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:133 +0x98
+jun 17 10:50:27 fatih-All-Series kubelet[38784]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.Until(...)
+jun 17 10:50:27 fatih-All-Series kubelet[38784]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:90
+jun 17 10:50:27 fatih-All-Series kubelet[38784]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.Forever(0x4a8d418, 0x12a05f200)
+jun 17 10:50:27 fatih-All-Series kubelet[38784]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:81 +0x4f
+jun 17 10:50:27 fatih-All-Series kubelet[38784]: created by k8s.io/kubernetes/vendor/k8s.io/component-base/logs.InitLogs
+jun 17 10:50:27 fatih-All-Series kubelet[38784]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/component-base/logs/logs.go:58 +0x8a
+jun 17 10:50:27 fatih-All-Series systemd[1]: [0;1;39m[0;1;31m[0;1;39mkubelet.service: Main process exited, code=exited, status=255/EXCEPTION[0m
+jun 17 10:50:27 fatih-All-Series systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mkubelet.service: Failed with result 'exit-code'.[0m
+jun 17 10:50:32 fatih-All-Series gnome-shell[5437]: [5438:5438:0617/105032.826822:ERROR:CONSOLE(14)] "Failed to handle media duration metadata: missing publisher key for media key youtube_cXD7j4I9fKE", source: chrome-extension://mnojpmjdmbbfmejpflffifhffcmidifd/out/brave_extension_background.bundle.js (14)
+jun 17 10:50:32 fatih-All-Series gnome-shell[5437]: [5438:5438:0617/105032.827210:ERROR:CONSOLE(14)] "Failed to handle media duration metadata: missing publisher key for media key youtube_cXD7j4I9fKE", source: chrome-extension://mnojpmjdmbbfmejpflffifhffcmidifd/out/brave_extension_background.bundle.js (14)
+jun 17 10:50:32 fatih-All-Series gnome-shell[5437]: [5438:5438:0617/105032.827359:ERROR:CONSOLE(14)] "Failed to handle media duration metadata: missing publisher key for media key youtube_cXD7j4I9fKE", source: chrome-extension://mnojpmjdmbbfmejpflffifhffcmidifd/out/brave_extension_background.bundle.js (14)
+jun 17 10:50:32 fatih-All-Series gnome-shell[5437]: [5438:5438:0617/105032.827607:ERROR:CONSOLE(14)] "Failed to handle media duration metadata: missing publisher key for media key youtube_cXD7j4I9fKE", source: chrome-extension://mnojpmjdmbbfmejpflffifhffcmidifd/out/brave_extension_background.bundle.js (14)
+jun 17 10:50:32 fatih-All-Series tracker-store[38700]: OK
+jun 17 10:50:32 fatih-All-Series systemd[4262]: tracker-store.service: Succeeded.
+jun 17 10:50:37 fatih-All-Series systemd[1]: kubelet.service: Scheduled restart job, restart counter is at 637.
+jun 17 10:50:37 fatih-All-Series systemd[1]: Stopped kubelet: The Kubernetes Node Agent.
+jun 17 10:50:37 fatih-All-Series systemd[1]: Started kubelet: The Kubernetes Node Agent.
+jun 17 10:50:37 fatih-All-Series kubelet[38820]: F0617 10:50:37.475236   38820 server.go:198] failed to load Kubelet config file /var/lib/kubelet/config.yaml, error failed to read kubelet config file "/var/lib/kubelet/config.yaml", error: open /var/lib/kubelet/config.yaml: no such file or directory
+jun 17 10:50:37 fatih-All-Series kubelet[38820]: goroutine 1 [running]:
+jun 17 10:50:37 fatih-All-Series kubelet[38820]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.stacks(0xc000010001, 0xc000d6e000, 0xfb, 0x14d)
+jun 17 10:50:37 fatih-All-Series kubelet[38820]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1026 +0xb9
+jun 17 10:50:37 fatih-All-Series kubelet[38820]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).output(0x70e94e0, 0xc000000003, 0x0, 0x0, 0xc000d2e620, 0x6f53cea, 0x9, 0xc6, 0x411b00)
+jun 17 10:50:37 fatih-All-Series kubelet[38820]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:975 +0x19b
+jun 17 10:50:37 fatih-All-Series kubelet[38820]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).printDepth(0x70e94e0, 0xc000000003, 0x0, 0x0, 0x0, 0x0, 0x1, 0xc0001ca760, 0x1, 0x1)
+jun 17 10:50:37 fatih-All-Series kubelet[38820]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:732 +0x16f
+jun 17 10:50:37 fatih-All-Series kubelet[38820]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).print(...)
+jun 17 10:50:37 fatih-All-Series kubelet[38820]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:714
+jun 17 10:50:37 fatih-All-Series kubelet[38820]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.Fatal(...)
+jun 17 10:50:37 fatih-All-Series kubelet[38820]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1482
+jun 17 10:50:37 fatih-All-Series kubelet[38820]: k8s.io/kubernetes/cmd/kubelet/app.NewKubeletCommand.func1(0xc0000eab00, 0xc00004e0d0, 0x3, 0x3)
+jun 17 10:50:37 fatih-All-Series kubelet[38820]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/cmd/kubelet/app/server.go:198 +0xe5a
+jun 17 10:50:37 fatih-All-Series kubelet[38820]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).execute(0xc0000eab00, 0xc00004e0d0, 0x3, 0x3, 0xc0000eab00, 0xc00004e0d0)
+jun 17 10:50:37 fatih-All-Series kubelet[38820]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:854 +0x2c2
+jun 17 10:50:37 fatih-All-Series kubelet[38820]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).ExecuteC(0xc0000eab00, 0x16f95c502df556d6, 0x70e90a0, 0x409b25)
+jun 17 10:50:37 fatih-All-Series kubelet[38820]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:958 +0x375
+jun 17 10:50:37 fatih-All-Series kubelet[38820]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).Execute(...)
+jun 17 10:50:37 fatih-All-Series kubelet[38820]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:895
+jun 17 10:50:37 fatih-All-Series kubelet[38820]: main.main()
+jun 17 10:50:37 fatih-All-Series kubelet[38820]:         _output/dockerized/go/src/k8s.io/kubernetes/cmd/kubelet/kubelet.go:41 +0xe5
+jun 17 10:50:37 fatih-All-Series kubelet[38820]: goroutine 6 [chan receive]:
+jun 17 10:50:37 fatih-All-Series kubelet[38820]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).flushDaemon(0x70e94e0)
+jun 17 10:50:37 fatih-All-Series kubelet[38820]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1169 +0x8b
+jun 17 10:50:37 fatih-All-Series kubelet[38820]: created by k8s.io/kubernetes/vendor/k8s.io/klog/v2.init.0
+jun 17 10:50:37 fatih-All-Series kubelet[38820]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:417 +0xdf
+jun 17 10:50:37 fatih-All-Series kubelet[38820]: goroutine 32 [select]:
+jun 17 10:50:37 fatih-All-Series kubelet[38820]: k8s.io/kubernetes/vendor/go.opencensus.io/stats/view.(*worker).start(0xc0000ab220)
+jun 17 10:50:37 fatih-All-Series kubelet[38820]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/go.opencensus.io/stats/view/worker.go:154 +0x105
+jun 17 10:50:37 fatih-All-Series kubelet[38820]: created by k8s.io/kubernetes/vendor/go.opencensus.io/stats/view.init.0
+jun 17 10:50:37 fatih-All-Series kubelet[38820]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/go.opencensus.io/stats/view/worker.go:32 +0x57
+jun 17 10:50:37 fatih-All-Series kubelet[38820]: goroutine 116 [semacquire]:
+jun 17 10:50:37 fatih-All-Series kubelet[38820]: sync.runtime_SemacquireMutex(0x70e94fc, 0x0, 0x1)
+jun 17 10:50:37 fatih-All-Series kubelet[38820]:         /usr/local/go/src/runtime/sema.go:71 +0x47
+jun 17 10:50:37 fatih-All-Series kubelet[38820]: sync.(*Mutex).lockSlow(0x70e94f8)
+jun 17 10:50:37 fatih-All-Series kubelet[38820]:         /usr/local/go/src/sync/mutex.go:138 +0x105
+jun 17 10:50:37 fatih-All-Series kubelet[38820]: sync.(*Mutex).Lock(...)
+jun 17 10:50:37 fatih-All-Series kubelet[38820]:         /usr/local/go/src/sync/mutex.go:81
+jun 17 10:50:37 fatih-All-Series kubelet[38820]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).lockAndFlushAll(0x70e94e0)
+jun 17 10:50:37 fatih-All-Series kubelet[38820]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1176 +0x85
+jun 17 10:50:37 fatih-All-Series kubelet[38820]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.Flush()
+jun 17 10:50:37 fatih-All-Series kubelet[38820]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:445 +0x2d
+jun 17 10:50:37 fatih-All-Series kubelet[38820]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.BackoffUntil.func1(0x4a8d418)
+jun 17 10:50:37 fatih-All-Series kubelet[38820]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:155 +0x5f
+jun 17 10:50:37 fatih-All-Series kubelet[38820]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.BackoffUntil(0x4a8d418, 0x4f28b60, 0xc00079e000, 0x1, 0xc0000ac0c0)
+jun 17 10:50:37 fatih-All-Series kubelet[38820]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:156 +0xad
+jun 17 10:50:37 fatih-All-Series kubelet[38820]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.JitterUntil(0x4a8d418, 0x12a05f200, 0x0, 0xc0000a1101, 0xc0000ac0c0)
+jun 17 10:50:37 fatih-All-Series kubelet[38820]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:133 +0x98
+jun 17 10:50:37 fatih-All-Series kubelet[38820]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.Until(...)
+jun 17 10:50:37 fatih-All-Series kubelet[38820]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:90
+jun 17 10:50:37 fatih-All-Series kubelet[38820]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.Forever(0x4a8d418, 0x12a05f200)
+jun 17 10:50:37 fatih-All-Series kubelet[38820]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:81 +0x4f
+jun 17 10:50:37 fatih-All-Series kubelet[38820]: created by k8s.io/kubernetes/vendor/k8s.io/component-base/logs.InitLogs
+jun 17 10:50:37 fatih-All-Series kubelet[38820]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/component-base/logs/logs.go:58 +0x8a
+jun 17 10:50:37 fatih-All-Series systemd[1]: [0;1;39m[0;1;31m[0;1;39mkubelet.service: Main process exited, code=exited, status=255/EXCEPTION[0m
+jun 17 10:50:37 fatih-All-Series systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mkubelet.service: Failed with result 'exit-code'.[0m
+jun 17 10:50:47 fatih-All-Series systemd[1]: kubelet.service: Scheduled restart job, restart counter is at 638.
+jun 17 10:50:47 fatih-All-Series systemd[1]: Stopped kubelet: The Kubernetes Node Agent.
+jun 17 10:50:47 fatih-All-Series systemd[1]: Started kubelet: The Kubernetes Node Agent.
+jun 17 10:50:47 fatih-All-Series kubelet[38838]: F0617 10:50:47.726137   38838 server.go:198] failed to load Kubelet config file /var/lib/kubelet/config.yaml, error failed to read kubelet config file "/var/lib/kubelet/config.yaml", error: open /var/lib/kubelet/config.yaml: no such file or directory
+jun 17 10:50:47 fatih-All-Series kubelet[38838]: goroutine 1 [running]:
+jun 17 10:50:47 fatih-All-Series kubelet[38838]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.stacks(0xc000010001, 0xc0008c22c0, 0xfb, 0x14d)
+jun 17 10:50:47 fatih-All-Series kubelet[38838]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1026 +0xb9
+jun 17 10:50:47 fatih-All-Series kubelet[38838]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).output(0x70e94e0, 0xc000000003, 0x0, 0x0, 0xc00095de30, 0x6f53cea, 0x9, 0xc6, 0x411b00)
+jun 17 10:50:47 fatih-All-Series kubelet[38838]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:975 +0x19b
+jun 17 10:50:47 fatih-All-Series kubelet[38838]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).printDepth(0x70e94e0, 0xc000000003, 0x0, 0x0, 0x0, 0x0, 0x1, 0xc000691890, 0x1, 0x1)
+jun 17 10:50:47 fatih-All-Series kubelet[38838]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:732 +0x16f
+jun 17 10:50:47 fatih-All-Series kubelet[38838]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).print(...)
+jun 17 10:50:47 fatih-All-Series kubelet[38838]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:714
+jun 17 10:50:47 fatih-All-Series kubelet[38838]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.Fatal(...)
+jun 17 10:50:47 fatih-All-Series kubelet[38838]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1482
+jun 17 10:50:47 fatih-All-Series kubelet[38838]: k8s.io/kubernetes/cmd/kubelet/app.NewKubeletCommand.func1(0xc00059e840, 0xc00004e0d0, 0x3, 0x3)
+jun 17 10:50:47 fatih-All-Series kubelet[38838]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/cmd/kubelet/app/server.go:198 +0xe5a
+jun 17 10:50:47 fatih-All-Series kubelet[38838]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).execute(0xc00059e840, 0xc00004e0d0, 0x3, 0x3, 0xc00059e840, 0xc00004e0d0)
+jun 17 10:50:47 fatih-All-Series kubelet[38838]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:854 +0x2c2
+jun 17 10:50:47 fatih-All-Series kubelet[38838]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).ExecuteC(0xc00059e840, 0x16f95c529105ed40, 0x70e90a0, 0x409b25)
+jun 17 10:50:47 fatih-All-Series kubelet[38838]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:958 +0x375
+jun 17 10:50:47 fatih-All-Series kubelet[38838]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).Execute(...)
+jun 17 10:50:47 fatih-All-Series kubelet[38838]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:895
+jun 17 10:50:47 fatih-All-Series kubelet[38838]: main.main()
+jun 17 10:50:47 fatih-All-Series kubelet[38838]:         _output/dockerized/go/src/k8s.io/kubernetes/cmd/kubelet/kubelet.go:41 +0xe5
+jun 17 10:50:47 fatih-All-Series kubelet[38838]: goroutine 6 [chan receive]:
+jun 17 10:50:47 fatih-All-Series kubelet[38838]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).flushDaemon(0x70e94e0)
+jun 17 10:50:47 fatih-All-Series kubelet[38838]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1169 +0x8b
+jun 17 10:50:47 fatih-All-Series kubelet[38838]: created by k8s.io/kubernetes/vendor/k8s.io/klog/v2.init.0
+jun 17 10:50:47 fatih-All-Series kubelet[38838]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:417 +0xdf
+jun 17 10:50:47 fatih-All-Series kubelet[38838]: goroutine 106 [select]:
+jun 17 10:50:47 fatih-All-Series kubelet[38838]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.BackoffUntil(0x4a8d418, 0x4f28b60, 0xc000a709f0, 0x1, 0xc0000ac0c0)
+jun 17 10:50:47 fatih-All-Series kubelet[38838]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:167 +0x149
+jun 17 10:50:47 fatih-All-Series kubelet[38838]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.JitterUntil(0x4a8d418, 0x12a05f200, 0x0, 0xc000260f01, 0xc0000ac0c0)
+jun 17 10:50:47 fatih-All-Series kubelet[38838]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:133 +0x98
+jun 17 10:50:47 fatih-All-Series kubelet[38838]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.Until(...)
+jun 17 10:50:47 fatih-All-Series kubelet[38838]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:90
+jun 17 10:50:47 fatih-All-Series kubelet[38838]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.Forever(0x4a8d418, 0x12a05f200)
+jun 17 10:50:47 fatih-All-Series kubelet[38838]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:81 +0x4f
+jun 17 10:50:47 fatih-All-Series kubelet[38838]: created by k8s.io/kubernetes/vendor/k8s.io/component-base/logs.InitLogs
+jun 17 10:50:47 fatih-All-Series kubelet[38838]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/component-base/logs/logs.go:58 +0x8a
+jun 17 10:50:47 fatih-All-Series kubelet[38838]: goroutine 116 [select]:
+jun 17 10:50:47 fatih-All-Series kubelet[38838]: k8s.io/kubernetes/vendor/go.opencensus.io/stats/view.(*worker).start(0xc0002a5180)
+jun 17 10:50:47 fatih-All-Series kubelet[38838]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/go.opencensus.io/stats/view/worker.go:154 +0x105
+jun 17 10:50:47 fatih-All-Series kubelet[38838]: created by k8s.io/kubernetes/vendor/go.opencensus.io/stats/view.init.0
+jun 17 10:50:47 fatih-All-Series kubelet[38838]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/go.opencensus.io/stats/view/worker.go:32 +0x57
+jun 17 10:50:47 fatih-All-Series systemd[1]: [0;1;39m[0;1;31m[0;1;39mkubelet.service: Main process exited, code=exited, status=255/EXCEPTION[0m
+jun 17 10:50:47 fatih-All-Series systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mkubelet.service: Failed with result 'exit-code'.[0m
+jun 17 10:50:57 fatih-All-Series systemd[1]: kubelet.service: Scheduled restart job, restart counter is at 639.
+jun 17 10:50:57 fatih-All-Series systemd[1]: Stopped kubelet: The Kubernetes Node Agent.
+jun 17 10:50:57 fatih-All-Series systemd[1]: Started kubelet: The Kubernetes Node Agent.
+jun 17 10:50:57 fatih-All-Series kubelet[38859]: F0617 10:50:57.981111   38859 server.go:198] failed to load Kubelet config file /var/lib/kubelet/config.yaml, error failed to read kubelet config file "/var/lib/kubelet/config.yaml", error: open /var/lib/kubelet/config.yaml: no such file or directory
+jun 17 10:50:57 fatih-All-Series kubelet[38859]: goroutine 1 [running]:
+jun 17 10:50:57 fatih-All-Series kubelet[38859]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.stacks(0xc0001a4001, 0xc0009aa160, 0xfb, 0x14d)
+jun 17 10:50:57 fatih-All-Series kubelet[38859]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1026 +0xb9
+jun 17 10:50:57 fatih-All-Series kubelet[38859]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).output(0x70e94e0, 0xc000000003, 0x0, 0x0, 0xc000d905b0, 0x6f53cea, 0x9, 0xc6, 0x411b00)
+jun 17 10:50:57 fatih-All-Series kubelet[38859]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:975 +0x19b
+jun 17 10:50:57 fatih-All-Series kubelet[38859]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).printDepth(0x70e94e0, 0xc000000003, 0x0, 0x0, 0x0, 0x0, 0x1, 0xc000114f50, 0x1, 0x1)
+jun 17 10:50:57 fatih-All-Series kubelet[38859]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:732 +0x16f
+jun 17 10:50:57 fatih-All-Series kubelet[38859]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).print(...)
+jun 17 10:50:57 fatih-All-Series kubelet[38859]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:714
+jun 17 10:50:57 fatih-All-Series kubelet[38859]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.Fatal(...)
+jun 17 10:50:57 fatih-All-Series kubelet[38859]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1482
+jun 17 10:50:57 fatih-All-Series kubelet[38859]: k8s.io/kubernetes/cmd/kubelet/app.NewKubeletCommand.func1(0xc000249b80, 0xc0001a8010, 0x3, 0x3)
+jun 17 10:50:57 fatih-All-Series kubelet[38859]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/cmd/kubelet/app/server.go:198 +0xe5a
+jun 17 10:50:57 fatih-All-Series kubelet[38859]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).execute(0xc000249b80, 0xc0001a8010, 0x3, 0x3, 0xc000249b80, 0xc0001a8010)
+jun 17 10:50:57 fatih-All-Series kubelet[38859]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:854 +0x2c2
+jun 17 10:50:57 fatih-All-Series kubelet[38859]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).ExecuteC(0xc000249b80, 0x16f95c54f4446319, 0x70e90a0, 0x409b25)
+jun 17 10:50:57 fatih-All-Series kubelet[38859]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:958 +0x375
+jun 17 10:50:57 fatih-All-Series kubelet[38859]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).Execute(...)
+jun 17 10:50:57 fatih-All-Series kubelet[38859]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:895
+jun 17 10:50:57 fatih-All-Series kubelet[38859]: main.main()
+jun 17 10:50:57 fatih-All-Series kubelet[38859]:         _output/dockerized/go/src/k8s.io/kubernetes/cmd/kubelet/kubelet.go:41 +0xe5
+jun 17 10:50:57 fatih-All-Series kubelet[38859]: goroutine 19 [chan receive]:
+jun 17 10:50:57 fatih-All-Series kubelet[38859]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).flushDaemon(0x70e94e0)
+jun 17 10:50:57 fatih-All-Series kubelet[38859]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1169 +0x8b
+jun 17 10:50:57 fatih-All-Series kubelet[38859]: created by k8s.io/kubernetes/vendor/k8s.io/klog/v2.init.0
+jun 17 10:50:57 fatih-All-Series kubelet[38859]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:417 +0xdf
+jun 17 10:50:57 fatih-All-Series kubelet[38859]: goroutine 121 [select]:
+jun 17 10:50:57 fatih-All-Series kubelet[38859]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.BackoffUntil(0x4a8d418, 0x4f28b60, 0xc000d56420, 0x1, 0xc0001820c0)
+jun 17 10:50:57 fatih-All-Series kubelet[38859]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:167 +0x149
+jun 17 10:50:57 fatih-All-Series kubelet[38859]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.JitterUntil(0x4a8d418, 0x12a05f200, 0x0, 0xc00030e901, 0xc0001820c0)
+jun 17 10:50:57 fatih-All-Series kubelet[38859]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:133 +0x98
+jun 17 10:50:57 fatih-All-Series kubelet[38859]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.Until(...)
+jun 17 10:50:57 fatih-All-Series kubelet[38859]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:90
+jun 17 10:50:57 fatih-All-Series kubelet[38859]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.Forever(0x4a8d418, 0x12a05f200)
+jun 17 10:50:57 fatih-All-Series kubelet[38859]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:81 +0x4f
+jun 17 10:50:57 fatih-All-Series kubelet[38859]: created by k8s.io/kubernetes/vendor/k8s.io/component-base/logs.InitLogs
+jun 17 10:50:57 fatih-All-Series kubelet[38859]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/component-base/logs/logs.go:58 +0x8a
+jun 17 10:50:57 fatih-All-Series kubelet[38859]: goroutine 33 [select]:
+jun 17 10:50:57 fatih-All-Series kubelet[38859]: k8s.io/kubernetes/vendor/go.opencensus.io/stats/view.(*worker).start(0xc0002f4d20)
+jun 17 10:50:57 fatih-All-Series kubelet[38859]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/go.opencensus.io/stats/view/worker.go:154 +0x105
+jun 17 10:50:57 fatih-All-Series kubelet[38859]: created by k8s.io/kubernetes/vendor/go.opencensus.io/stats/view.init.0
+jun 17 10:50:57 fatih-All-Series kubelet[38859]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/go.opencensus.io/stats/view/worker.go:32 +0x57
+jun 17 10:50:57 fatih-All-Series systemd[1]: [0;1;39m[0;1;31m[0;1;39mkubelet.service: Main process exited, code=exited, status=255/EXCEPTION[0m
+jun 17 10:50:57 fatih-All-Series systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mkubelet.service: Failed with result 'exit-code'.[0m
+jun 17 10:50:58 fatih-All-Series gnome-shell[5437]: [5438:5438:0617/105058.180155:ERROR:CONSOLE(14)] "Failed to handle media duration metadata: missing publisher key for media key youtube_cXD7j4I9fKE", source: chrome-extension://mnojpmjdmbbfmejpflffifhffcmidifd/out/brave_extension_background.bundle.js (14)
+jun 17 10:50:58 fatih-All-Series gnome-shell[5437]: [5438:5438:0617/105058.180332:ERROR:CONSOLE(14)] "Failed to handle media duration metadata: missing publisher key for media key youtube_cXD7j4I9fKE", source: chrome-extension://mnojpmjdmbbfmejpflffifhffcmidifd/out/brave_extension_background.bundle.js (14)
+jun 17 10:50:58 fatih-All-Series gnome-shell[5437]: [5438:5438:0617/105058.180431:ERROR:CONSOLE(14)] "Failed to handle media duration metadata: missing publisher key for media key youtube_cXD7j4I9fKE", source: chrome-extension://mnojpmjdmbbfmejpflffifhffcmidifd/out/brave_extension_background.bundle.js (14)
+jun 17 10:50:58 fatih-All-Series gnome-shell[5437]: [5438:5438:0617/105058.219101:ERROR:CONSOLE(14)] "Failed to handle media duration metadata: missing publisher key for media key youtube_cXD7j4I9fKE", source: chrome-extension://mnojpmjdmbbfmejpflffifhffcmidifd/out/brave_extension_background.bundle.js (14)
+jun 17 10:50:58 fatih-All-Series gnome-shell[5437]: [5438:5438:0617/105058.239134:ERROR:CONSOLE(14)] "Failed to handle media duration metadata: missing publisher key for media key youtube_cXD7j4I9fKE", source: chrome-extension://mnojpmjdmbbfmejpflffifhffcmidifd/out/brave_extension_background.bundle.js (14)
+jun 17 10:50:58 fatih-All-Series gnome-shell[5437]: [5438:5438:0617/105058.239334:ERROR:CONSOLE(14)] "Failed to handle media duration metadata: missing publisher key for media key youtube_cXD7j4I9fKE", source: chrome-extension://mnojpmjdmbbfmejpflffifhffcmidifd/out/brave_extension_background.bundle.js (14)
+jun 17 10:50:58 fatih-All-Series gnome-shell[5437]: [5438:5438:0617/105058.239457:ERROR:CONSOLE(14)] "Failed to handle media duration metadata: missing publisher key for media key youtube_cXD7j4I9fKE", source: chrome-extension://mnojpmjdmbbfmejpflffifhffcmidifd/out/brave_extension_background.bundle.js (14)
+jun 17 10:50:58 fatih-All-Series gnome-shell[5437]: [5438:5438:0617/105058.313866:ERROR:CONSOLE(14)] "Failed to handle media duration metadata: missing publisher key for media key youtube_cXD7j4I9fKE", source: chrome-extension://mnojpmjdmbbfmejpflffifhffcmidifd/out/brave_extension_background.bundle.js (14)
+jun 17 10:51:01 fatih-All-Series CRON[38890]: pam_unix(cron:session): session opened for user fatih by (uid=0)
+jun 17 10:51:01 fatih-All-Series CRON[38893]: (fatih) CMD (date >> /home/fatih/heure)
+jun 17 10:51:01 fatih-All-Series systemd[4262]: Starting Tracker metadata database store and lookup manager...
+jun 17 10:51:01 fatih-All-Series CRON[38890]: pam_unix(cron:session): session closed for user fatih
+jun 17 10:51:01 fatih-All-Series systemd[4262]: Started Tracker metadata database store and lookup manager.
+jun 17 10:51:01 fatih-All-Series dbus-daemon[4278]: [session uid=1000 pid=4278] Activating via systemd: service name='org.freedesktop.Tracker1' unit='tracker-store.service' requested by ':1.2' (uid=1000 pid=4274 comm="/usr/libexec/tracker-miner-fs " label="unconfined")
+jun 17 10:51:01 fatih-All-Series dbus-daemon[4278]: [session uid=1000 pid=4278] Successfully activated service 'org.freedesktop.Tracker1'
+jun 17 10:51:02 fatih-All-Series dbus-daemon[4278]: [session uid=1000 pid=4278] Activating via systemd: service name='org.freedesktop.Tracker1.Miner.Extract' unit='tracker-extract.service' requested by ':1.2' (uid=1000 pid=4274 comm="/usr/libexec/tracker-miner-fs " label="unconfined")
+jun 17 10:51:02 fatih-All-Series systemd[4262]: Starting Tracker metadata extractor...
+jun 17 10:51:02 fatih-All-Series tracker-extract[38903]: [0;1;39m[0;1;31m[0;1;39mSet scheduler policy to SCHED_IDLE[0m
+jun 17 10:51:02 fatih-All-Series tracker-extract[38903]: [0;1;39m[0;1;31m[0;1;39mSetting priority nice level to 19[0m
+jun 17 10:51:02 fatih-All-Series dbus-daemon[4278]: [session uid=1000 pid=4278] Successfully activated service 'org.freedesktop.Tracker1.Miner.Extract'
+jun 17 10:51:02 fatih-All-Series systemd[4262]: Started Tracker metadata extractor.
+jun 17 10:51:03 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mDaemon: 2022-06-17 10:51:03,734 INFO     lbry.dht.blob_announcer:50: announced 10 blobs[0m
+jun 17 10:51:03 fatih-All-Series lbry.desktop[4721]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185m2022-06-17 10:51:03,734 INFO     lbry.dht.blob_announcer:42: 50 blobs to announce[0m
+jun 17 10:51:04 fatih-All-Series gnome-shell[5437]: [5438:5438:0617/105104.428184:ERROR:CONSOLE(14)] "Failed to handle media duration metadata: missing publisher key for media key youtube_vliQTohOhjM", source: chrome-extension://mnojpmjdmbbfmejpflffifhffcmidifd/out/brave_extension_background.bundle.js (14)
+jun 17 10:51:04 fatih-All-Series gnome-shell[5437]: [5438:5438:0617/105104.428531:ERROR:CONSOLE(14)] "Failed to handle media duration metadata: missing publisher key for media key youtube_vliQTohOhjM", source: chrome-extension://mnojpmjdmbbfmejpflffifhffcmidifd/out/brave_extension_background.bundle.js (14)
+jun 17 10:51:04 fatih-All-Series gnome-shell[5437]: [5438:5438:0617/105104.428825:ERROR:CONSOLE(14)] "Failed to handle media duration metadata: missing publisher key for media key youtube_vliQTohOhjM", source: chrome-extension://mnojpmjdmbbfmejpflffifhffcmidifd/out/brave_extension_background.bundle.js (14)
+jun 17 10:51:04 fatih-All-Series gnome-shell[5437]: [5438:5438:0617/105104.429308:ERROR:CONSOLE(14)] "Failed to handle media duration metadata: missing publisher key for media key youtube_vliQTohOhjM", source: chrome-extension://mnojpmjdmbbfmejpflffifhffcmidifd/out/brave_extension_background.bundle.js (14)
+jun 17 10:51:08 fatih-All-Series systemd[1]: kubelet.service: Scheduled restart job, restart counter is at 640.
+jun 17 10:51:08 fatih-All-Series systemd[1]: Stopped kubelet: The Kubernetes Node Agent.
+jun 17 10:51:08 fatih-All-Series systemd[1]: Started kubelet: The Kubernetes Node Agent.
+jun 17 10:51:08 fatih-All-Series kubelet[38937]: F0617 10:51:08.219814   38937 server.go:198] failed to load Kubelet config file /var/lib/kubelet/config.yaml, error failed to read kubelet config file "/var/lib/kubelet/config.yaml", error: open /var/lib/kubelet/config.yaml: no such file or directory
+jun 17 10:51:08 fatih-All-Series kubelet[38937]: goroutine 1 [running]:
+jun 17 10:51:08 fatih-All-Series kubelet[38937]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.stacks(0xc000010001, 0xc0000ca9a0, 0xfb, 0x14d)
+jun 17 10:51:08 fatih-All-Series kubelet[38937]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1026 +0xb9
+jun 17 10:51:08 fatih-All-Series kubelet[38937]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).output(0x70e94e0, 0xc000000003, 0x0, 0x0, 0xc000cbc850, 0x6f53cea, 0x9, 0xc6, 0x411b00)
+jun 17 10:51:08 fatih-All-Series kubelet[38937]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:975 +0x19b
+jun 17 10:51:08 fatih-All-Series kubelet[38937]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).printDepth(0x70e94e0, 0xc000000003, 0x0, 0x0, 0x0, 0x0, 0x1, 0xc00016d7f0, 0x1, 0x1)
+jun 17 10:51:08 fatih-All-Series kubelet[38937]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:732 +0x16f
+jun 17 10:51:08 fatih-All-Series kubelet[38937]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).print(...)
+jun 17 10:51:08 fatih-All-Series kubelet[38937]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:714
+jun 17 10:51:08 fatih-All-Series kubelet[38937]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.Fatal(...)
+jun 17 10:51:08 fatih-All-Series kubelet[38937]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1482
+jun 17 10:51:08 fatih-All-Series kubelet[38937]: k8s.io/kubernetes/cmd/kubelet/app.NewKubeletCommand.func1(0xc0006e5340, 0xc00004e0d0, 0x3, 0x3)
+jun 17 10:51:08 fatih-All-Series kubelet[38937]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/cmd/kubelet/app/server.go:198 +0xe5a
+jun 17 10:51:08 fatih-All-Series kubelet[38937]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).execute(0xc0006e5340, 0xc00004e0d0, 0x3, 0x3, 0xc0006e5340, 0xc00004e0d0)
+jun 17 10:51:08 fatih-All-Series kubelet[38937]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:854 +0x2c2
+jun 17 10:51:08 fatih-All-Series kubelet[38937]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).ExecuteC(0xc0006e5340, 0x16f95c57568b6b19, 0x70e90a0, 0x409b25)
+jun 17 10:51:08 fatih-All-Series kubelet[38937]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:958 +0x375
+jun 17 10:51:08 fatih-All-Series kubelet[38937]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).Execute(...)
+jun 17 10:51:08 fatih-All-Series kubelet[38937]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:895
+jun 17 10:51:08 fatih-All-Series kubelet[38937]: main.main()
+jun 17 10:51:08 fatih-All-Series systemd[1]: [0;1;39m[0;1;31m[0;1;39mkubelet.service: Main process exited, code=exited, status=255/EXCEPTION[0m
+jun 17 10:51:08 fatih-All-Series kubelet[38937]:         _output/dockerized/go/src/k8s.io/kubernetes/cmd/kubelet/kubelet.go:41 +0xe5
+jun 17 10:51:08 fatih-All-Series kubelet[38937]: goroutine 6 [chan receive]:
+jun 17 10:51:08 fatih-All-Series kubelet[38937]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).flushDaemon(0x70e94e0)
+jun 17 10:51:08 fatih-All-Series kubelet[38937]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1169 +0x8b
+jun 17 10:51:08 fatih-All-Series kubelet[38937]: created by k8s.io/kubernetes/vendor/k8s.io/klog/v2.init.0
+jun 17 10:51:08 fatih-All-Series kubelet[38937]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:417 +0xdf
+jun 17 10:51:08 fatih-All-Series kubelet[38937]: goroutine 142 [select]:
+jun 17 10:51:08 fatih-All-Series kubelet[38937]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.BackoffUntil(0x4a8d418, 0x4f28b60, 0xc00082cff0, 0x1, 0xc0000ac0c0)
+jun 17 10:51:08 fatih-All-Series kubelet[38937]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:167 +0x149
+jun 17 10:51:08 fatih-All-Series kubelet[38937]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.JitterUntil(0x4a8d418, 0x12a05f200, 0x0, 0xc000c22301, 0xc0000ac0c0)
+jun 17 10:51:08 fatih-All-Series kubelet[38937]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:133 +0x98
+jun 17 10:51:08 fatih-All-Series kubelet[38937]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.Until(...)
+jun 17 10:51:08 fatih-All-Series kubelet[38937]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:90
+jun 17 10:51:08 fatih-All-Series kubelet[38937]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.Forever(0x4a8d418, 0x12a05f200)
+jun 17 10:51:08 fatih-All-Series kubelet[38937]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:81 +0x4f
+jun 17 10:51:08 fatih-All-Series kubelet[38937]: created by k8s.io/kubernetes/vendor/k8s.io/component-base/logs.InitLogs
+jun 17 10:51:08 fatih-All-Series kubelet[38937]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/component-base/logs/logs.go:58 +0x8a
+jun 17 10:51:08 fatih-All-Series kubelet[38937]: goroutine 89 [select]:
+jun 17 10:51:08 fatih-All-Series kubelet[38937]: k8s.io/kubernetes/vendor/go.opencensus.io/stats/view.(*worker).start(0xc0002a6aa0)
+jun 17 10:51:08 fatih-All-Series kubelet[38937]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/go.opencensus.io/stats/view/worker.go:154 +0x105
+jun 17 10:51:08 fatih-All-Series kubelet[38937]: created by k8s.io/kubernetes/vendor/go.opencensus.io/stats/view.init.0
+jun 17 10:51:08 fatih-All-Series systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mkubelet.service: Failed with result 'exit-code'.[0m
+jun 17 10:51:08 fatih-All-Series kubelet[38937]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/go.opencensus.io/stats/view/worker.go:32 +0x57
+jun 17 10:51:12 fatih-All-Series systemd[4262]: tracker-extract.service: Succeeded.
+jun 17 10:51:14 fatih-All-Series gnome-shell[5437]: [5438:5438:0617/105114.417397:ERROR:CONSOLE(14)] "Failed to handle media duration metadata: missing publisher key for media key youtube_vliQTohOhjM", source: chrome-extension://mnojpmjdmbbfmejpflffifhffcmidifd/out/brave_extension_background.bundle.js (14)
+jun 17 10:51:14 fatih-All-Series gnome-shell[5437]: [5438:5438:0617/105114.417566:ERROR:CONSOLE(14)] "Failed to handle media duration metadata: missing publisher key for media key youtube_vliQTohOhjM", source: chrome-extension://mnojpmjdmbbfmejpflffifhffcmidifd/out/brave_extension_background.bundle.js (14)
+jun 17 10:51:14 fatih-All-Series gnome-shell[5437]: [5438:5438:0617/105114.417712:ERROR:CONSOLE(14)] "Failed to handle media duration metadata: missing publisher key for media key youtube_vliQTohOhjM", source: chrome-extension://mnojpmjdmbbfmejpflffifhffcmidifd/out/brave_extension_background.bundle.js (14)
+jun 17 10:51:14 fatih-All-Series gnome-shell[5437]: [5438:5438:0617/105114.417884:ERROR:CONSOLE(14)] "Failed to handle media duration metadata: missing publisher key for media key youtube_vliQTohOhjM", source: chrome-extension://mnojpmjdmbbfmejpflffifhffcmidifd/out/brave_extension_background.bundle.js (14)
+jun 17 10:51:18 fatih-All-Series systemd[1]: kubelet.service: Scheduled restart job, restart counter is at 641.
+jun 17 10:51:18 fatih-All-Series systemd[1]: Stopped kubelet: The Kubernetes Node Agent.
+jun 17 10:51:18 fatih-All-Series systemd[1]: Started kubelet: The Kubernetes Node Agent.
+jun 17 10:51:18 fatih-All-Series kubelet[38958]: F0617 10:51:18.468958   38958 server.go:198] failed to load Kubelet config file /var/lib/kubelet/config.yaml, error failed to read kubelet config file "/var/lib/kubelet/config.yaml", error: open /var/lib/kubelet/config.yaml: no such file or directory
+jun 17 10:51:18 fatih-All-Series kubelet[38958]: goroutine 1 [running]:
+jun 17 10:51:18 fatih-All-Series kubelet[38958]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.stacks(0xc0001a4001, 0xc0001b8840, 0xfb, 0x14d)
+jun 17 10:51:18 fatih-All-Series kubelet[38958]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1026 +0xb9
+jun 17 10:51:18 fatih-All-Series kubelet[38958]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).output(0x70e94e0, 0xc000000003, 0x0, 0x0, 0xc000b6f810, 0x6f53cea, 0x9, 0xc6, 0x411b00)
+jun 17 10:51:18 fatih-All-Series kubelet[38958]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:975 +0x19b
+jun 17 10:51:18 fatih-All-Series kubelet[38958]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).printDepth(0x70e94e0, 0xc000000003, 0x0, 0x0, 0x0, 0x0, 0x1, 0xc000259000, 0x1, 0x1)
+jun 17 10:51:18 fatih-All-Series kubelet[38958]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:732 +0x16f
+jun 17 10:51:18 fatih-All-Series kubelet[38958]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).print(...)
+jun 17 10:51:18 fatih-All-Series kubelet[38958]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:714
+jun 17 10:51:18 fatih-All-Series kubelet[38958]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.Fatal(...)
+jun 17 10:51:18 fatih-All-Series kubelet[38958]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1482
+jun 17 10:51:18 fatih-All-Series kubelet[38958]: k8s.io/kubernetes/cmd/kubelet/app.NewKubeletCommand.func1(0xc0001db8c0, 0xc0001a8010, 0x3, 0x3)
+jun 17 10:51:18 fatih-All-Series kubelet[38958]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/cmd/kubelet/app/server.go:198 +0xe5a
+jun 17 10:51:18 fatih-All-Series kubelet[38958]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).execute(0xc0001db8c0, 0xc0001a8010, 0x3, 0x3, 0xc0001db8c0, 0xc0001a8010)
+jun 17 10:51:18 fatih-All-Series kubelet[38958]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:854 +0x2c2
+jun 17 10:51:18 fatih-All-Series kubelet[38958]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).ExecuteC(0xc0001db8c0, 0x16f95c59b96eff4e, 0x70e90a0, 0x409b25)
+jun 17 10:51:18 fatih-All-Series kubelet[38958]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:958 +0x375
+jun 17 10:51:18 fatih-All-Series kubelet[38958]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).Execute(...)
+jun 17 10:51:18 fatih-All-Series kubelet[38958]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:895
+jun 17 10:51:18 fatih-All-Series kubelet[38958]: main.main()
+jun 17 10:51:18 fatih-All-Series kubelet[38958]:         _output/dockerized/go/src/k8s.io/kubernetes/cmd/kubelet/kubelet.go:41 +0xe5
+jun 17 10:51:18 fatih-All-Series kubelet[38958]: goroutine 19 [chan receive]:
+jun 17 10:51:18 fatih-All-Series kubelet[38958]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).flushDaemon(0x70e94e0)
+jun 17 10:51:18 fatih-All-Series kubelet[38958]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1169 +0x8b
+jun 17 10:51:18 fatih-All-Series kubelet[38958]: created by k8s.io/kubernetes/vendor/k8s.io/klog/v2.init.0
+jun 17 10:51:18 fatih-All-Series kubelet[38958]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:417 +0xdf
+jun 17 10:51:18 fatih-All-Series kubelet[38958]: goroutine 54 [select]:
+jun 17 10:51:18 fatih-All-Series kubelet[38958]: k8s.io/kubernetes/vendor/go.opencensus.io/stats/view.(*worker).start(0xc0000aabe0)
+jun 17 10:51:18 fatih-All-Series kubelet[38958]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/go.opencensus.io/stats/view/worker.go:154 +0x105
+jun 17 10:51:18 fatih-All-Series kubelet[38958]: created by k8s.io/kubernetes/vendor/go.opencensus.io/stats/view.init.0
+jun 17 10:51:18 fatih-All-Series kubelet[38958]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/go.opencensus.io/stats/view/worker.go:32 +0x57
+jun 17 10:51:18 fatih-All-Series kubelet[38958]: goroutine 138 [select]:
+jun 17 10:51:18 fatih-All-Series kubelet[38958]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.BackoffUntil(0x4a8d418, 0x4f28b60, 0xc000b8a060, 0x1, 0xc0001820c0)
+jun 17 10:51:18 fatih-All-Series kubelet[38958]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:167 +0x149
+jun 17 10:51:18 fatih-All-Series kubelet[38958]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.JitterUntil(0x4a8d418, 0x12a05f200, 0x0, 0xc000244a01, 0xc0001820c0)
+jun 17 10:51:18 fatih-All-Series kubelet[38958]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:133 +0x98
+jun 17 10:51:18 fatih-All-Series kubelet[38958]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.Until(...)
+jun 17 10:51:18 fatih-All-Series kubelet[38958]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:90
+jun 17 10:51:18 fatih-All-Series kubelet[38958]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.Forever(0x4a8d418, 0x12a05f200)
+jun 17 10:51:18 fatih-All-Series kubelet[38958]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:81 +0x4f
+jun 17 10:51:18 fatih-All-Series kubelet[38958]: created by k8s.io/kubernetes/vendor/k8s.io/component-base/logs.InitLogs
+jun 17 10:51:18 fatih-All-Series kubelet[38958]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/component-base/logs/logs.go:58 +0x8a
+jun 17 10:51:18 fatih-All-Series systemd[1]: [0;1;39m[0;1;31m[0;1;39mkubelet.service: Main process exited, code=exited, status=255/EXCEPTION[0m
+jun 17 10:51:18 fatih-All-Series systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mkubelet.service: Failed with result 'exit-code'.[0m
+jun 17 10:51:24 fatih-All-Series gnome-shell[5437]: [5438:5438:0617/105124.426606:ERROR:CONSOLE(14)] "Failed to handle media duration metadata: missing publisher key for media key youtube_vliQTohOhjM", source: chrome-extension://mnojpmjdmbbfmejpflffifhffcmidifd/out/brave_extension_background.bundle.js (14)
+jun 17 10:51:24 fatih-All-Series gnome-shell[5437]: [5438:5438:0617/105124.426865:ERROR:CONSOLE(14)] "Failed to handle media duration metadata: missing publisher key for media key youtube_vliQTohOhjM", source: chrome-extension://mnojpmjdmbbfmejpflffifhffcmidifd/out/brave_extension_background.bundle.js (14)
+jun 17 10:51:24 fatih-All-Series gnome-shell[5437]: [5438:5438:0617/105124.427278:ERROR:CONSOLE(14)] "Failed to handle media duration metadata: missing publisher key for media key youtube_vliQTohOhjM", source: chrome-extension://mnojpmjdmbbfmejpflffifhffcmidifd/out/brave_extension_background.bundle.js (14)
+jun 17 10:51:24 fatih-All-Series gnome-shell[5437]: [5438:5438:0617/105124.427825:ERROR:CONSOLE(14)] "Failed to handle media duration metadata: missing publisher key for media key youtube_vliQTohOhjM", source: chrome-extension://mnojpmjdmbbfmejpflffifhffcmidifd/out/brave_extension_background.bundle.js (14)
+jun 17 10:51:28 fatih-All-Series systemd[1]: kubelet.service: Scheduled restart job, restart counter is at 642.
+jun 17 10:51:28 fatih-All-Series systemd[1]: Stopped kubelet: The Kubernetes Node Agent.
+jun 17 10:51:28 fatih-All-Series systemd[1]: Started kubelet: The Kubernetes Node Agent.
+jun 17 10:51:28 fatih-All-Series kubelet[38970]: F0617 10:51:28.720002   38970 server.go:198] failed to load Kubelet config file /var/lib/kubelet/config.yaml, error failed to read kubelet config file "/var/lib/kubelet/config.yaml", error: open /var/lib/kubelet/config.yaml: no such file or directory
+jun 17 10:51:28 fatih-All-Series kubelet[38970]: goroutine 1 [running]:
+jun 17 10:51:28 fatih-All-Series kubelet[38970]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.stacks(0xc000010001, 0xc0000cab00, 0xfb, 0x14d)
+jun 17 10:51:28 fatih-All-Series kubelet[38970]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1026 +0xb9
+jun 17 10:51:28 fatih-All-Series kubelet[38970]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).output(0x70e94e0, 0xc000000003, 0x0, 0x0, 0xc000da5030, 0x6f53cea, 0x9, 0xc6, 0x411b00)
+jun 17 10:51:28 fatih-All-Series kubelet[38970]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:975 +0x19b
+jun 17 10:51:28 fatih-All-Series kubelet[38970]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).printDepth(0x70e94e0, 0xc000000003, 0x0, 0x0, 0x0, 0x0, 0x1, 0xc00004cb10, 0x1, 0x1)
+jun 17 10:51:28 fatih-All-Series kubelet[38970]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:732 +0x16f
+jun 17 10:51:28 fatih-All-Series kubelet[38970]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).print(...)
+jun 17 10:51:28 fatih-All-Series kubelet[38970]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:714
+jun 17 10:51:28 fatih-All-Series kubelet[38970]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.Fatal(...)
+jun 17 10:51:28 fatih-All-Series kubelet[38970]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1482
+jun 17 10:51:28 fatih-All-Series kubelet[38970]: k8s.io/kubernetes/cmd/kubelet/app.NewKubeletCommand.func1(0xc000646dc0, 0xc00004e0d0, 0x3, 0x3)
+jun 17 10:51:28 fatih-All-Series kubelet[38970]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/cmd/kubelet/app/server.go:198 +0xe5a
+jun 17 10:51:28 fatih-All-Series kubelet[38970]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).execute(0xc000646dc0, 0xc00004e0d0, 0x3, 0x3, 0xc000646dc0, 0xc00004e0d0)
+jun 17 10:51:28 fatih-All-Series kubelet[38970]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:854 +0x2c2
+jun 17 10:51:28 fatih-All-Series kubelet[38970]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).ExecuteC(0xc000646dc0, 0x16f95c5c1c7321a2, 0x70e90a0, 0x409b25)
+jun 17 10:51:28 fatih-All-Series kubelet[38970]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:958 +0x375
+jun 17 10:51:28 fatih-All-Series kubelet[38970]: k8s.io/kubernetes/vendor/github.com/spf13/cobra.(*Command).Execute(...)
+jun 17 10:51:28 fatih-All-Series kubelet[38970]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/github.com/spf13/cobra/command.go:895
+jun 17 10:51:28 fatih-All-Series kubelet[38970]: main.main()
+jun 17 10:51:28 fatih-All-Series kubelet[38970]:         _output/dockerized/go/src/k8s.io/kubernetes/cmd/kubelet/kubelet.go:41 +0xe5
+jun 17 10:51:28 fatih-All-Series kubelet[38970]: goroutine 6 [chan receive]:
+jun 17 10:51:28 fatih-All-Series kubelet[38970]: k8s.io/kubernetes/vendor/k8s.io/klog/v2.(*loggingT).flushDaemon(0x70e94e0)
+jun 17 10:51:28 fatih-All-Series kubelet[38970]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:1169 +0x8b
+jun 17 10:51:28 fatih-All-Series kubelet[38970]: created by k8s.io/kubernetes/vendor/k8s.io/klog/v2.init.0
+jun 17 10:51:28 fatih-All-Series kubelet[38970]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/klog/v2/klog.go:417 +0xdf
+jun 17 10:51:28 fatih-All-Series kubelet[38970]: goroutine 115 [select]:
+jun 17 10:51:28 fatih-All-Series kubelet[38970]: k8s.io/kubernetes/vendor/go.opencensus.io/stats/view.(*worker).start(0xc0006ae9b0)
+jun 17 10:51:28 fatih-All-Series kubelet[38970]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/go.opencensus.io/stats/view/worker.go:154 +0x105
+jun 17 10:51:28 fatih-All-Series kubelet[38970]: created by k8s.io/kubernetes/vendor/go.opencensus.io/stats/view.init.0
+jun 17 10:51:28 fatih-All-Series kubelet[38970]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/go.opencensus.io/stats/view/worker.go:32 +0x57
+jun 17 10:51:28 fatih-All-Series kubelet[38970]: goroutine 132 [select]:
+jun 17 10:51:28 fatih-All-Series kubelet[38970]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.BackoffUntil(0x4a8d418, 0x4f28b60, 0xc000c53e90, 0x1, 0xc0000ac0c0)
+jun 17 10:51:28 fatih-All-Series kubelet[38970]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:167 +0x149
+jun 17 10:51:28 fatih-All-Series kubelet[38970]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.JitterUntil(0x4a8d418, 0x12a05f200, 0x0, 0xc00017a201, 0xc0000ac0c0)
+jun 17 10:51:28 fatih-All-Series kubelet[38970]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:133 +0x98
+jun 17 10:51:28 fatih-All-Series kubelet[38970]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.Until(...)
+jun 17 10:51:28 fatih-All-Series kubelet[38970]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:90
+jun 17 10:51:28 fatih-All-Series kubelet[38970]: k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait.Forever(0x4a8d418, 0x12a05f200)
+jun 17 10:51:28 fatih-All-Series kubelet[38970]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/wait/wait.go:81 +0x4f
+jun 17 10:51:28 fatih-All-Series kubelet[38970]: created by k8s.io/kubernetes/vendor/k8s.io/component-base/logs.InitLogs
+jun 17 10:51:28 fatih-All-Series kubelet[38970]:         /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/component-base/logs/logs.go:58 +0x8a
+jun 17 10:51:28 fatih-All-Series systemd[1]: [0;1;39m[0;1;31m[0;1;39mkubelet.service: Main process exited, code=exited, status=255/EXCEPTION[0m
+jun 17 10:51:28 fatih-All-Series systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mkubelet.service: Failed with result 'exit-code'.[0m
