@@ -253,7 +253,7 @@ def remove_empty(id_list, list_final):
     return_final_list = []
     for i in range(len(list_final)):
         if not list_final[i] == "":
-            return_id_list[i] = id_list[i]
-            return_final_list[i] = list_final[i]
+            return_id_list.append(id_list[i])
+            return_final_list.append(list_final[i])
     
     return return_id_list,return_final_list
