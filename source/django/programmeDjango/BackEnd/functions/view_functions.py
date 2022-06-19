@@ -209,6 +209,7 @@ def preprocessing_parallel(research,articles,corpus):
         
         # we check if this articles was already preprocessed for this research
         if Preprocess_text.objects.filter(research = research, id_article=id_article).exists():
+            Number_preprocess.objects.create(research=research)
             continue
 
         # pre_processing
@@ -300,14 +301,7 @@ def make_preprocessing(research,corpus="abstract",number_thread=1):
     # remove empty abstracts after text processing
     list_id_final, list_final = text_processing.remove_empty(id_article_list, list_common_and_unique)
   
-    # we build the list to build the tfidf
-    list_tfidf =[]
-    list_id_return = []
-    for i in range(len(list_id_final)):
-        if not list_id_final[i] == -1:
-            list_tfidf.append(list_final[i])
-            list_id_return.append(list_id_final[i])
-    
+    # we build the tfidf
     tfidfVectorizer = TfidfVectorizer()
     tf_idf = tfidfVectorizer.fit_transform(list_final)
 
@@ -316,7 +310,7 @@ def make_preprocessing(research,corpus="abstract",number_thread=1):
     joblib.dump(tf_idf, f"{TEMPORARY_DATA}/tf_idf_research_{str(research.id)}.pkl")
     joblib.dump(list_id_final,f"{TEMPORARY_DATA}/id_list_research_{str(research.id)}.pkl")
 
-    return tf_idf,list_id_return,list_final
+    return tf_idf,list_id_final,list_final
     
 
 def make_cluster(research,list_id,list_final,tf_idf,n_trials,n_threads):

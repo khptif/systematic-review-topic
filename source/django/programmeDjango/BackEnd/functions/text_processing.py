@@ -249,8 +249,11 @@ def remove_common_and_unique(list_trigrams):
 
 def remove_empty(id_list, list_final):
 
+    return_id_list = []
+    return_final_list = []
     for i in range(len(list_final)):
-        if list_final[i] == "":
-            id_list[i] = -1
+        if not list_final[i] == "":
+            return_id_list[i] = id_list[i]
+            return_final_list[i] = list_final[i]
     
-    return id_list,list_final
+    return return_id_list,return_final_list
