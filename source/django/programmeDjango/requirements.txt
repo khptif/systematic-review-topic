@@ -37,7 +37,7 @@ pacmap
 
 pandas
 
-PyPDF2
+PyPDF2==2.2.1
 
 
 sklearn
