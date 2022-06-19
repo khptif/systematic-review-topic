@@ -12,6 +12,7 @@ import unidecode as UN
 import datetime
 
 from DataBase.models import *
+from BackEnd.models import *
 
 #Downloading PDF
 import BackEnd.functions.PDF_download as pdf
@@ -154,6 +155,9 @@ def get_article_parallel(begin_page,number_page,research,search_term,begin,end):
     api_query='http://paperity.org/api/1.0/search/'
     for i in range(begin_page, begin_page + number_page):
         
+        if Article_Job.objects.filter(research=research,type="page",job=str(i)).exists():
+            continue
+
         query_base = api_query + str(i) + '?text=' + search_term + f"&f_date_start={year_begin}&f_date_end={year_end}"
         json_data = ''
         bad_request = False
@@ -238,7 +242,7 @@ def get_article_parallel(begin_page,number_page,research,search_term,begin,end):
                     author.save()
                     Article_Author.objects.create(author=author,article=article)
             
-                
+        Article_Job.objects.create(research=research,type="page",job=str(i))        
         #Wait 1s before making anothe request, as demanded by paperity staff
         #time.sleep(1.1)
 

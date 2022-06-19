@@ -89,65 +89,92 @@ def max_article(search,begin,end):
 
 def make_research (search,research,begin,end,thread=1):
 
-    
-    # we delete all objects Research_Article
-    Research_Article.objects.filter(research=research).delete()
-
-    print_research("old Research_Article objects cleaned",research.id)
-
     arg = (search,research,begin,end,thread)
-    thread_arxiv = Thread(target=arxiv,args=arg)
-    thread_biorxiv = Thread(target=biorxiv,args=arg)
-    thread_medrxiv = Thread(target=medrxiv,args=arg)
-    thread_pap = Thread(target=pap,args=arg)
-    thread_pmc = Thread(target=pmc,args=arg)
-    thread_pm = Thread(target=pm,args=arg)
-
+    
     print_research("Research thread created",research.id)
 
+    if research.current_article_db == '':
+        research.current_article_db = "arxiv"
+        research.save()
+        step_article = Article_Step.objects.create(research=research,step="")
+    else:
+        step_article = Article_Step.objects.get(research=research)
+    
+    if research.current_article_db == "arxiv":
+    
+        thread_arxiv = Thread(target=arxiv,args=arg)
+        thread_arxiv.start()
+        print_research("Research in arxiv begin",research.id)
+        thread_arxiv.join()
+        print_research("Research in arxiv end",research.id)
+        step_article.step = ""
+        step_article.save()
+        Article_Job.objects.filter(research = research).delete()
+        research.current_article_db = "biorxiv"
+        research.save()
 
-    research.current_article_db = "arxiv"
-    research.save()
-    thread_arxiv.start()
-    print_research("Research in arxiv begin",research.id)
-    thread_arxiv.join()
-    print_research("Research in arxiv end",research.id)
+    
+    if research.current_article_db == "biorxiv":
 
-    research.current_article_db = "biorxiv"
-    research.save()
-    thread_biorxiv.start()
-    print_research("Research in biorxiv begin",research.id)
-    thread_biorxiv.join()
-    print_research("Research in biorxiv end",research.id)
+        thread_biorxiv = Thread(target=biorxiv,args=arg)
+        thread_biorxiv.start()
+        print_research("Research in biorxiv begin",research.id)
+        thread_biorxiv.join()
+        print_research("Research in biorxiv end",research.id)
+        step_article.step = ""
+        step_article.save()
+        Article_Job.objects.filter(research = research).delete()
+        research.current_article_db = "medrxiv"
+        research.save()
 
-    research.current_article_db = "medrxiv"
-    research.save()
-    thread_medrxiv.start()
-    print_research("Research in medrxiv begin",research.id)
-    thread_medrxiv.join()
-    print_research("Research in medrxiv end",research.id)
+    if research.current_article_db == "medrxiv":
 
-    research.current_article_db = "paperity"
-    research.save()
-    thread_pap.start()
-    print_research("Research in paperity begin",research.id)
-    thread_pap.join()
-    print_research("Research in paperity end",research.id)
+        thread_medrxiv = Thread(target=medrxiv,args=arg)
+        thread_medrxiv.start()
+        print_research("Research in medrxiv begin",research.id)
+        thread_medrxiv.join()
+        print_research("Research in medrxiv end",research.id)
+        step_article.step = ""
+        step_article.save()
+        Article_Job.objects.filter(research = research).delete()
+        research.current_article_db = "paperity"
+        research.save()
 
-    research.current_article_db = "PMC"
-    research.save()
-    thread_pmc.start()
-    print_research("Research in pmc begin",research.id)
-    thread_pmc.join()
-    print_research("Research in pmc end",research.id)
+    if research.current_article_db == "paperity":
 
-    research.current_article_db = "PM"
-    research.save()
-    thread_pm.start()
-    print_research("Research in pm begin",research.id)
-    thread_pm.join()
-    print_research("Research in pm end",research.id)
+        thread_pap = Thread(target=pap,args=arg)
+        thread_pap.start()
+        print_research("Research in paperity begin",research.id)
+        thread_pap.join()
+        print_research("Research in paperity end",research.id)
+        step_article.step = ""
+        step_article.save()
+        research.current_article_db = "PMC"
+        research.save()
 
+    if research.current_article_db == "PMC":
+
+        thread_pmc = Thread(target=pmc,args=arg)
+        thread_pmc.start()
+        print_research("Research in pmc begin",research.id)
+        thread_pmc.join()
+        print_research("Research in pmc end",research.id)
+        step_article.step = ""
+        step_article.save()
+        research.current_article_db = "PM"
+        research.save()
+
+    if research.current_article_db == "PM":
+        
+        thread_pm = Thread(target=pm,args=arg)
+        thread_pm.start()
+        print_research("Research in pm begin",research.id)
+        thread_pm.join()
+        print_research("Research in pm end",research.id)
+        step_article.step = ""
+        step_article.save()
+        research.current_article_db = ""
+        research.save()
 
 
 def preprocessing_parallel(research,articles,corpus):
@@ -179,9 +206,7 @@ def preprocessing_parallel(research,articles,corpus):
         
         id_article = list_id[i]
         text = text_list[i]
-        #we add the title to the text
-        text += Article.objects.get(id=id_article).title
-
+        
         # we check if this articles was already preprocessed for this research
         if Preprocess_text.objects.filter(research = research, id_article=id_article).exists():
             continue
@@ -258,7 +283,12 @@ def make_preprocessing(research,corpus="abstract",number_thread=1):
     print_research("Building tf-idf file",research.id)
     #we recuperate the results from preprocessing
     preprocess = Preprocess_text.objects.filter(research=research)
-    id_article_list = preprocess.values_list('id_article',flat=True).distinct().order_by()
+    id_article_list_query_set = preprocess.values_list('id_article',flat=True).distinct().order_by()
+    # we need change some value of id_list but QuerySet object doesn't allow assignment value.
+    # we change from queryset to a usual list
+    id_article_list = []
+    for id in id_article_list_query_set:
+        id_article_list.append(id)
 
     text_list = []
     for id_article in id_article_list:
@@ -494,7 +524,7 @@ def check(research):
         return False
 
 def delete(research):
-     
+    
     #we delete in the database
     Research.objects.filter(id=research.id).delete()
     

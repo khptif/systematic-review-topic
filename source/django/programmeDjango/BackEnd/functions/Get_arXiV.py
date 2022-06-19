@@ -6,6 +6,7 @@ from lxml import etree as ET
 
 #numpy is used for better arrays
 import numpy as np
+from BackEnd.models import Article_Job, Article_Step
 #unidecoed is for removing accents
 import unidecode as UN
 
@@ -45,7 +46,7 @@ def get_max_article(search):
 
     return total
 
-def Get_ID(search_term):
+def Get_ID(search_term,research):
    
     #sets the location of the API for the query
     api_query = 'http://export.arxiv.org/api/query?search_query='
@@ -62,8 +63,10 @@ def Get_ID(search_term):
     #gets the XML respon
     
     try:
+        
         response = urlopen(query_base)
         xml_doc = ET.fromstring(response.read())
+        
     except:
         return False
 
@@ -74,6 +77,10 @@ def Get_ID(search_term):
     page = int(total/10000) + 1
 
     for i in range(page):
+        
+        if Article_Job.objects.filter(research=research,type="page",job=str(i)).exists():
+            continue
+
         try:
             response = urlopen(query_base + '&start=' + str(i*article_by_page) + '&max_results='+str(article_by_page))       
             xml_doc = ET.fromstring(response.read())
@@ -89,6 +96,10 @@ def Get_ID(search_term):
             if 'abs' in ID.text:
                 temp_ID = ID.text.split('abs/')[1].split('v')[0]
                 arXID.append(temp_ID)
+                Article_Job.objects.create(research=research,type="id",job=str(temp_ID))
+
+        Article_Job.objects.create(research=research,type="page",job=str(i))
+
     return arXID
 
 def extract_article(id_list,research):
@@ -97,9 +108,10 @@ def extract_article(id_list,research):
 
     #url where we fetch data
     api_fetch = 'http://export.arxiv.org/api/query?id_list='
-    
     for ID in id_list:
 
+        if Article_Job.objects.filter(research=research,type="id_done",job=str(ID)).exists():
+            continue
         # we check if research still exists
         
         URL = 'http://arxiv.org/pdf/' + str(ID) + '.pdf'
@@ -117,7 +129,7 @@ def extract_article(id_list,research):
                         break
         except:
             continue
-
+        
         #Extracts the DOI, not always available
         doi = ''
         for tag in xml_doc.findall('.//'+ begin_sub + 'doi'):
@@ -204,6 +216,8 @@ def extract_article(id_list,research):
                 author = Author.objects.create(last_name=author[0],first_name=author[1])
             # we binde the author the the article
             Article_Author.objects.create(article=article,author=author)
+        
+        Article_Job.objects.create(research=research,type="id_done",job=str(ID))
 
 
 def get_article(search, research,begin,end, number_threads=1):
@@ -211,34 +225,48 @@ def get_article(search, research,begin,end, number_threads=1):
     #sets the location of the API for the fetching
     api_fetch = 'http://export.arxiv.org/api/query?id_list='
 
-    # we split the search string in individual element
-    search_term = get_search_term(search)
-    
-    ID_list = Get_ID(search_term)
-    if ID_list == False:
-        time.sleep(1)
-        ID_list = Get_ID(search_term)
+    step_article = Article_Step.objects.get(research=research)
+    if Article_Step.objects.get(research=research).step == "":
+        step_article.step = "get_id"
+        step_article.save()
+
+    ID_list= []
+    if step_article.step == "get_id":
+        # we split the search string in individual element
+        search_term = get_search_term(search)
+        ID_list = Get_ID(search_term,research)
         if ID_list == False:
-            return False
+            time.sleep(1)
+            ID_list = Get_ID(search_term)
+            if ID_list == False:
+                return False
+        
+        step_article.step = "extract_metadata"
+        step_article.save()
 
+    if step_article.step == "extract_metadata":
+        # we distribute the job to the threads
+        
+        list_job = []
+        for i in range(number_threads):
+            list_job.append([])
+        if ID_list == []:
+            ID_list = Article_Job.objects.filter(research=research,type="id").values_list("job", flat=True)
 
-    # we distribute the job to the threads
-    list_job = []
-    for i in range(number_threads):
-        list_job.append([])
-    for i in range(len(ID_list)):
-        current_thread = i % number_threads
-        list_job[current_thread].append(ID_list[i])
+        for i in range(len(ID_list)):
+            current_thread = i % number_threads
+            list_job[current_thread].append(ID_list[i])
+        
+        # we create the threads
+        list_threads = []
+        for i in range(number_threads):
+            list_threads.append(Thread(target=extract_article,args=(list_job[i],research)))
+            
 
-    # we create the threads
-    list_threads = []
+        # we start the thread and wait it finish
+        for thread in list_threads:
+            thread.start()
+        for thread in list_threads:
+            thread.join()
 
-    # we check if research still exists
-    for i in range(number_threads):
-        list_threads.append(Thread(target=extract_article,args=(list_job[i],research)))
-    # we start the thread and wait it finish
-    for thread in list_threads:
-        thread.start()
-    for thread in list_threads:
-        thread.join()
-    # we check if research still exists
+        

@@ -14,6 +14,7 @@ from BackEnd.functions.Remove_references import *
 from threading import Thread
 
 from DataBase.models import *
+from BackEnd.models import *
 from BackEnd.functions.filter_article import split_search_term
 from programmeDjango.settings import ARTICLE_DATA
 db = 'pmc'
@@ -184,6 +185,9 @@ def get_article_parallel(research,ID_list):
     """ we get write the article in our database """
 
     for id in ID_list:
+        
+        if Article_Job.objects.filter(research=research,type="id",job=str(id)).exists():
+            continue
         # we extract metadata
         metadata = extract_metadata(id)
         if not metadata:
@@ -230,6 +234,8 @@ def get_article_parallel(research,ID_list):
             else:
                 author = Author.objects.create(last_name = author[0],first_name = author[1])
                 Article_Author.objects.create(article=article,author=author)
+
+        Article_Job.objects.filter(research=research,type="id",job=str(id))
 
 def get_article(search,research,begin,end,number_threads=1):
 

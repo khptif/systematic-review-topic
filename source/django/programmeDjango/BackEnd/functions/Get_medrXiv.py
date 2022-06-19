@@ -8,6 +8,7 @@ from BackEnd.functions.filter_article import split_search_term
 
 import datetime
 from DataBase.models import *
+from BackEnd.models import *
 from BackEnd.functions.Remove_references import *
 from threading import Thread
 
@@ -53,7 +54,7 @@ def get_max_article(search,begin,end):
     article_by_page=10
     return article_by_page * num_pages
 
-def extract_id(search_term,begin,end):
+def extract_id(search_term,research,begin,end):
 
     year_begin = str(begin.year)
     month_begin = str(begin.month)
@@ -66,8 +67,7 @@ def extract_id(search_term,begin,end):
     api_query = 'https://www.medrxiv.org/search/'
     query_base = api_query + search_term  + f"+limit_from:{year_begin}-{month_begin}-{day_begin}+limit_to:{year_end}-{month_end}-{day_end}+"
     
-    id = []
-    metadata ={}
+    list_entry = []
     
     first_page_query = query_base
     try:
@@ -97,20 +97,23 @@ def extract_id(search_term,begin,end):
         entries = soup.select('div.highwire-article-citation')
 
         for entry in entries:
-            entry_id = entry['data-pisa']
-            id.append(entry_id)
-            metadata[entry_id] = entry
+            Article_Job.objects.create(research=research,type="entry",job=str(entry))
+            list_entry.append(entry)
 
-    return id,metadata
+        Article_Job.objects.create(research=research,type="page",job=str(i))
 
+    return list_entry
 
-def extract_article(entry_id_list,entry,research):
+def extract_article(entry_list,research):
     """ input: a list of entry_id, the dictionnary with all entry and the research.
         For each id, we write the article and all data in our database"""
     
-    for entry_id in entry_id_list:
+    for entry in entry_list:
 
-        doi_url = str(entry[entry_id].select_one(".highwire-cite-metadata-doi").contents[1]).strip()
+        if Article_Job.objects.filter(research=research,type="entry_done",job=str(entry)).exists():
+            continue
+
+        doi_url = str(entry.select_one(".highwire-cite-metadata-doi").contents[1]).strip()
         doi = doi_url.replace("https://doi.org/", "")
 
         #we check if article exists already
@@ -125,7 +128,7 @@ def extract_article(entry_id_list,entry,research):
             continue
 
         authors_list = []
-        for author_html in entry[entry_id].select(".highwire-citation-author"):
+        for author_html in entry.select(".highwire-citation-author"):
             
             try:
                 first_name = author_html.select_one(".nlm-given-names").string
@@ -134,7 +137,7 @@ def extract_article(entry_id_list,entry,research):
             except:
                 continue
 
-        date_str = entry[entry_id].select_one(".highwire-cite-metadata-pages").string[0:10]
+        date_str = entry.select_one(".highwire-cite-metadata-pages").string[0:10]
         publication = ''
         try:
             publication = datetime.datetime.strptime(date_str,"%Y.%m.%d").date()
@@ -142,7 +145,7 @@ def extract_article(entry_id_list,entry,research):
             publication = datetime.date(1900,1,1)
 
         try:
-            title_sel = entry[entry_id].select_one('.highwire-cite-linked-title')
+            title_sel = entry.select_one('.highwire-cite-linked-title')
             title = title_sel.text
             abstract_url = "https://www.medrxiv.org" + title_sel["href"]
             url = abstract_url + ".full.pdf"
@@ -189,30 +192,44 @@ def extract_article(entry_id_list,entry,research):
                 author = Author.objects.create(last_name=author[0],first_name=author[1])
             Article_Author.objects.create(article=article,author=author)
 
+        Article_Job.objects.create(research=research,type="entry_done",job=str(entry))
+
 
 def get_article( search, research,begin,end, number_thread=1):
     """ we get the article and write them in database. The process is parallelized"""
 
-    search_term = get_search_term(search)
-    id, entry = extract_id(search_term,begin,end)
-    total = str(len(id))
-
+    article_step = Article_Step.objects.get(research=research)
+    if article_step.step == "":
+        article_step.step = "entry"
+    
+    entry = []
+    if article_step.step == "entry":
+        search_term = get_search_term(search)
+        entry = extract_id(search_term,research,begin,end)
+        article_step.step = "extract"
+       
+    if article_step.step == "extract":
     #we distribute the job to each thread
-    list_job = []
-    for i in range(number_thread):
-        list_job.append([])
+        list_job = []
+        for i in range(number_thread):
+            list_job.append([])
+        
+        if entry == []:
+            entry_list = Article_Job.objects.filter(research=research,type="entry").values_list("job",flat=True)
+            for i in entry_list:
+                entry.append(BeautifulSoup(i,'html.parser'))
+
+        for i in range(len(entry)):
+            current_thread = i % number_thread
+            list_job[current_thread].append(entry[i])
     
-    for i in range(len(id)):
-        current_thread = i % number_thread
-        list_job[current_thread].append(id[i])
+        #we create the threads
+        list_thread = []
+        for i in range(number_thread):
+            list_thread.append(Thread(target=extract_article,args=(list_job[i],research)))
     
-    #we create the threads
-    list_thread = []
-    for i in range(number_thread):
-        list_thread.append(Thread(target=extract_article,args=(list_job[i],entry,research)))
-    
-    # we start the threads and wait they finish
-    for thread in list_thread:
-        thread.start()
-    for thread in list_thread:
-        thread.join()
+        # we start the threads and wait they finish
+        for thread in list_thread:
+            thread.start()
+        for thread in list_thread:
+            thread.join()

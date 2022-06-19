@@ -1,5 +1,4 @@
 from django.test import TestCase
-from webob import year
 from BackEnd.functions.Get_biorXiv import *
 
 class test_get_search_term(TestCase):

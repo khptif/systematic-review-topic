@@ -12,5 +12,14 @@ class Number_trial(models.Model):
 class Number_preprocess(models.Model):
     research = models.ForeignKey(Research,on_delete=models.CASCADE)
 
+class Article_Step(models.Model):
+    research = models.ForeignKey(Research,on_delete=models.CASCADE)
+    step = models.TextField()
+
+class Article_Job(models.Model):
+    research = models.ForeignKey(Research,on_delete=models.CASCADE)
+    job = models.TextField()
+    type = models.TextField()
+
 
 # Create your models here.

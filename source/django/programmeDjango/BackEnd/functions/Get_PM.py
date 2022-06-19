@@ -6,6 +6,7 @@ from lxml import etree as ET
 import pandas as pd
 #numpy is used for better arrays
 import numpy as np
+from BackEnd.models import *
 #unidecoed is for removing accents
 import unidecode as UN
 import BackEnd.functions.PDF_download as pdf
@@ -176,6 +177,10 @@ def get_article_parallel(research,ID_list):
     """ we get write the article in our database """
 
     for id in ID_list:
+
+        if Article_Job.objects.filter(research=research,type="id",job=str(id)).exists():
+            continue
+
         # we extract metadata
         metadata = extract_metadata(id)
         if not metadata:
@@ -222,6 +227,8 @@ def get_article_parallel(research,ID_list):
             else:
                 author = Author.objects.create(last_name = author[0],first_name = author[1])
                 Article_Author.objects.create(article=article,author=author)
+        
+        Article_Job.objects.create(research=research,type="id",job=str(id))
 
 def get_article(search,research,begin,end,number_threads=1):
 
