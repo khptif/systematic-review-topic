@@ -4,4 +4,4 @@ source/django/programmeDjango/DataBase/mock_data/df_sample.csv
 source/django/programmeDjango/BackEnd/data/*
 source/django/programmeDjango/docker_volume/*
 source/django/programmeDjango/BackEnd/functions/download/*
-source/django/programmeDjango/*/migrations/*
+
