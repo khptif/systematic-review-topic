@@ -450,7 +450,7 @@ def launch_process(research):
     
 
 def relaunch_if_fault():
-    """This is a infiny loop who check if there is a research who is running but there is no more thread alive."""
+    """ check if there is a research who is running but there is no more thread alive."""
 
    
     research_list = Research.objects.filter(is_running = True)
@@ -532,13 +532,3 @@ def delete(research):
 
     return True
 
-#we launch a thread as daemon for the method "relaunch_if_fault" so if there are some research with fault,
-# it will automatically restart it 
-
-#t = Thread(target=relaunch_if_fault,args={})
-#t.setDaemon(True)
-#t.start()
-
-#u = Thread(target=update_research,args={})
-#u.setDaemon(True)
-#u.start()

@@ -351,7 +351,7 @@ def page_table_choice(request):
         elif submit == 'finish':
             update_article_is_check_TableChoice(user=request.user,research=research,list_id=check_list)
             update_article_to_display_TableChoice(user=request.user,research=research,list_id=check_list)
-            return test_download_finalzip(research=research,user=user)
+            return download_finalzip(research=research,user=user)
         elif submit == 'previous':
             if current_page == 1:
                 pass

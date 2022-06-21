@@ -15,6 +15,10 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# we define the repertory where there is all temporary data
+TEMPORARY_DATA = os.path.join(BASE_DIR,'docker_volume/data')
+ARTICLE_DATA = os.path.join(BASE_DIR,'docker_volume/articles')
+PLOT_DATA = os.path.join(BASE_DIR,'docker_volume/plot')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
@@ -58,7 +62,7 @@ ROOT_URLCONF = 'programmeDjango.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [PLOT_DATA + "/"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -157,7 +161,3 @@ Y_INTERVAL_BIG = 4000
 # we define 1 month
 UPDATE_INTERVAL = 2700000
 
-# we define the repertory where there is all temporary data
-TEMPORARY_DATA = os.path.join(BASE_DIR,'docker_volume/data')
-ARTICLE_DATA = os.path.join(BASE_DIR,'docker_volume/articles')
-PLOT_DATA = os.path.join(BASE_DIR,'docker_volume/plot')

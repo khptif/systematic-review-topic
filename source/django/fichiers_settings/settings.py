@@ -12,9 +12,13 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 import os
 from pathlib import Path
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+TEMPORARY_DATA = os.path.join(BASE_DIR,'docker_volume/data')
+ARTICLE_DATA = os.path.join(BASE_DIR,'docker_volume/articles')
+PLOT_DATA = os.path.join(BASE_DIR,'docker_volume/plot')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
@@ -27,8 +31,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-#SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SECURE_SSL_REDIRECT = False
 # Application definition
 
 INSTALLED_APPS = [
@@ -58,7 +60,7 @@ ROOT_URLCONF = 'programmeDjango.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [PLOT_DATA + "/"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -141,6 +143,4 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 1000000
 
-TEMPORARY_DATA = os.path.join(BASE_DIR,'docker_volume/data')
-ARTICLE_DATA = os.path.join(BASE_DIR,'docker_volume/articles')
-PLOT_DATA = os.path.join(BASE_DIR,'docker_volume/plot')
+

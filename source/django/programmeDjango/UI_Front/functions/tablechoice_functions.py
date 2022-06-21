@@ -77,7 +77,7 @@ def reset_TableChoice(user,research):
         tablechoice.is_check=False
         tablechoice.save()
 
-def test_download_finalzip(research,user):
+def download_finalzip(research,user):
     
     filepath = create_final_file(research,user)
    
