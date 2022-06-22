@@ -401,7 +401,12 @@ def back_process(research):
         print_research("Clusterin end",research.id)
         
         # we create the plot html of clusters
-        scatter_with_hover(research, PLOT_DATA + "/research_{id}_plot.html".format(id=research.id))
+        from programmeDjango.settings import is_decentralized
+        if is_decentralized:
+            from remote_functions import create_plot_remote
+            create_plot_remote(research)
+        else:
+            scatter_with_hover(research, PLOT_DATA + "/research_{id}_plot.html".format(id=research.id))
 
         # we reset the step to "article" and mark the research as "finished"
         research.is_running = False

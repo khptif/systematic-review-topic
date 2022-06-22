@@ -22,6 +22,7 @@ from programmeDjango.settings import NUMBER_TRIALS, PLOT_DATA
 
 
 from BackEnd.functions.view_functions import *
+from remote_functions import *
 
 #### Page Accueil #####
 @login_required(login_url='/login')
@@ -48,7 +49,11 @@ def page_accueil(request):
                 search = research_form.cleaned_data['search']
                 begin = research_form.cleaned_data['From']
                 end = research_form.cleaned_data['To']
-                variables['number_article'] = max_article(search,begin,end)
+                from programmeDjango.settings import is_decentralized
+                if is_decentralized:
+                    variables['number_article'] = get_max_article_remote(search,begin,end)
+                else:
+                    variables['number_article'] = max_article(search,begin,end)
                 
 
         # if we give a new research
@@ -87,8 +92,13 @@ def page_accueil(request):
             year_begin = datetime.datetime.strptime(request.session['year_begin'],"%Y/%m/%d").date()
             year_end = datetime.datetime.strptime(request.session['year_end'],"%Y/%m/%d").date()
             search = request.session['search']
+            from programmeDjango.settings import is_decentralized
 
-            total_article = max_article(search,year_begin,year_end)
+            if is_decentralized:
+                total_article = get_max_article_remote(search,year_begin,year_end)
+            else:
+                total_article = max_article(search,year_begin,year_end)
+
             research = Research.objects.create(user=user,search=search,year_begin=year_begin,year_end=year_end,max_article=total_article)
 
             # set the keywords of the research
@@ -97,11 +107,17 @@ def page_accueil(request):
                 Keyword.objects.create(research=research,word=w)
 
             #we send the request
-            
-            if launch_process(research):
-                variables['research_created'] = "You research has been created and is running"
+            from programmeDjango.settings import is_decentralized
+            if is_decentralized:
+                if begin_research_remote(research):
+                    variables['research_created'] = "You research has been created and is running"
+                else:
+                    variables['research_created'] = "error in launchin research"
             else:
-                variables['research_created'] = "error in launchin research"
+                if launch_process(research):
+                    variables['research_created'] = "You research has been created and is running"
+                else:
+                    variables['research_created'] = "error in launchin research"
             
         #if user search historical research
         if submit == 'historical':
@@ -272,8 +288,6 @@ def page_select(request):
             request.session['id_article_list'] = []
             pass
 
-        
-
     # we check if we have the id of the research and this id is available
     if not 'research_id' in request.GET:
         return redirect('/accueil')
@@ -294,9 +308,27 @@ def page_select(request):
     variables['research_id'] = id
 
     #we give the plot html
+    from programmeDjango.settings import is_decentralized
     data=""
-    with open(PLOT_DATA + "/research_{id}_plot.html".format(id=id), 'r') as file:
-        data = file.read()
+    if is_decentralized:
+        from programmeDjango.settings import DataBase_host_adresse as adresse
+        from programmeDjango.settings import DataBase_host_port as port
+        from programmeDjango.settings import DataBase_SSL as is_ssl
+
+        research_id = research.id
+        if is_ssl:
+            variables["path_plot"] = f"https://{adresse}:{port}/get_plot?research_id={research_id}"
+        else:
+            variables["path_plot"] = f"http://{adresse}:{port}/get_plot?research_id={research_id}"
+
+        from remote_functions import get_plot_remote
+        r = get_plot_remote(research)
+        if not r == False:
+            data = r.content
+    else:
+        with open(PLOT_DATA + "/research_{id}_plot.html".format(id=id), 'r') as file:
+            data = file.read()
+        variables["path_plot"] = f"/plot?research_id={research_id}"
     variables["plot_html"] = data
 
     #we give a list of all topics

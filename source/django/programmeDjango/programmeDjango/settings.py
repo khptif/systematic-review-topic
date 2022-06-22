@@ -161,3 +161,4 @@ Y_INTERVAL_BIG = 4000
 # we define 1 month
 UPDATE_INTERVAL = 2700000
 
+is_decentralized=False

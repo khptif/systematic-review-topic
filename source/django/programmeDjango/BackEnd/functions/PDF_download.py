@@ -17,6 +17,9 @@ import PyPDF2
 import urllib.request
 from programmeDjango.settings import TEMPORARY_DATA
 from programmeDjango.settings import ARTICLE_DATA
+from programmeDjango.settings import is_decentralized
+from DataBase.models import Article
+from remote_functions import *
 
 #session = FuturesSession()
 
@@ -30,7 +33,7 @@ def name_article_pdf(article):
         name = name.format(id=str(article.id),title=article.title[0:].replace(" ","_"))
     else:
         name = name.format(id=str(article.id),title=article.title[0:30].replace(" ","_"))
-    return name + ".pdf"
+    return ARTICLE_DATA + "/" + name + ".pdf"
 
 def remove_char(string):
     '''
@@ -50,7 +53,7 @@ def remove_char(string):
     return ''.join(e for e in string if (e.isalpha() or e.isspace() or e == '-' or e == "'"))
 
 
-def download_from_URL(url,path_file):
+def download_from_URL(article,local=False):
     '''
     Description
     --------------
@@ -67,23 +70,26 @@ def download_from_URL(url,path_file):
     str status (string): status code of the requests
     file_size (int): size in bytes of the downloaded file
     '''
-    try:
-        response = urllib.request.urlopen(url)    
-    except:
-        print("error url pdf: " + url)
-        return False
-    
-    
+    if is_decentralized and not local:
+        return download_article_remote(article)
 
-    try:
-        file = open(path_file, 'wb')
-        file.write(response.read())
-        file.close()
-    except:
-        print("error in file pdf")
-        return False
+    else:
+        url = article.url_file
+        try:
+            response = urllib.request.urlopen(url)    
+        except:
+            print("error url pdf: " + url)
+            return False
+    
+        try:
+            file = open(name_article_pdf(article), 'wb')
+            file.write(response.read())
+            file.close()
+        except:
+            print("error in file pdf")
+            return False
 
-    return True
+        return True
 
 def convert_PDF(path_file):
     """
@@ -135,16 +141,20 @@ def convert_PDF(path_file):
     # we return the final text
     return final_text 
 
-def extract_full_text(url_PDF,name):
+def extract_full_text(article):
     """Extracts the full text. downloading cooresponding PDF from url and
        extracting the text. Return full_text pdf or nan if problem occurs"""
     
-    path_pdf = ARTICLE_DATA+ "/" + str(name) +".pdf"
-
-    if download_from_URL(url_PDF,path_pdf) :
+    # we download in our database
+    download_from_URL(article)
+    
+    # we download in local to extract the full text
+    
+    path_pdf = name_article_pdf(article)
+    if download_from_URL(article,True) :
         
         full_text = convert_PDF(path_pdf)
-        #os.remove(path_pdf)
+        os.remove(path_pdf)
         return full_text
 
     else: #(the link to pdf or downloading was not working for some reason)

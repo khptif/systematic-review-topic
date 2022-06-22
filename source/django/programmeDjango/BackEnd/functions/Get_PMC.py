@@ -193,23 +193,22 @@ def get_article_parallel(research,ID_list):
         if not metadata:
             continue
         #we check if we have this article with the doi
-        a = Article.objects.filter(doi=metadata["doi"])
-        if a.exists():
-            Research_Article.objects.create(research=research,article=a[0])
-            if not a[0].is_file_get:
-                is_download = pdf.download_from_URL(a[0].url_file,ARTICLE_DATA + "/" +pdf.name_article_pdf(a[0]))
+        article = Article.objects.filter(doi=metadata["doi"])
+        if article.exists():
+            article = article[0]
+            Research_Article.objects.create(research=research,article=article)
+            if not article.is_file_get:
+                is_download = pdf.download_from_URL(article)
                 if is_download:
-                    a[0].is_file_get = True
-                    a[0].save()
+                    article.is_file_get = True
+                    article.save()
             continue
         
         article = Article.objects.create(title=metadata['title'],doi=metadata['doi'],abstract=metadata['abstract'],publication=metadata['date'],url_file=metadata['url'])
         #we extract the pdf
         is_file_get = False
         try:
-            name = pdf.name_article_pdf(article)
-
-            full_text = pdf.extract_full_text(metadata['url'],name)
+            full_text = pdf.extract_full_text(article)
             full_text = remove_references(full_text)
             is_file_get = True
         except:

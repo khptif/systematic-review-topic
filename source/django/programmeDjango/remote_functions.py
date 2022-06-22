@@ -1,8 +1,8 @@
 import requests
 import json
  
-def http_request(adresse,port,path):
-    from programmeDjango.settings import BackEnd_SSL as is_ssl
+def http_request(adresse,port,path,is_ssl):
+    
     response_http = ""
     if is_ssl:
         response_http = requests.get(f"https://{adresse}:{port}/{path}")
@@ -20,7 +20,8 @@ def get_max_article_remote(search,date_begin,date_end):
     path = f"get_max?search_term={search}&date_begin={date_begin}&date_end={date_end}"
 
     try:
-        response_http =http_request(adresse,port,path)
+        from programmeDjango.settings import BackEnd_SSL as is_ssl
+        response_http =http_request(adresse,port,path,is_ssl)
     except:
         return -1
     
@@ -39,7 +40,8 @@ def begin_research_remote(research):
     path = f"research_create?research_id={id}"
 
     try:
-        response_http =http_request(adresse,port,path)
+        from programmeDjango.settings import BackEnd_SSL as is_ssl
+        response_http =http_request(adresse,port,path,is_ssl)
     except:
         return False
     
@@ -56,7 +58,8 @@ def download_article_remote(article):
     path = f"download_article?article_id={article_id}"
 
     try:
-        response_http =http_request(adresse,port,path)
+        from programmeDjango.settings import DataBase_SSL as is_ssl
+        response_http =http_request(adresse,port,path,is_ssl)
     except:
         return False
     return True
@@ -69,7 +72,8 @@ def create_plot_remote(research):
     path = f"create_plot?research_id={research_id}"
 
     try:
-        response_http =http_request(adresse,port,path)
+        from programmeDjango.settings import DataBase_SSL as is_ssl
+        response_http =http_request(adresse,port,path,is_ssl)
     except:
         return False
     return True
@@ -82,7 +86,8 @@ def get_plot_remote(research):
     path = f"get_plot?research_id={research_id}"
 
     try:
-        response_http =http_request(adresse,port,path)
+        from programmeDjango.settings import DataBase_SSL as is_ssl
+        response_http =http_request(adresse,port,path,is_ssl)
     except:
         return False
 
@@ -97,7 +102,8 @@ def get_final_zip_remote(research,user):
     path = f"get_plot?research_id={research_id}&user_id={user_id}"
 
     try:
-        response_http =http_request(adresse,port,path)
+        from programmeDjango.settings import DataBase_SSL as is_ssl
+        response_http =http_request(adresse,port,path,is_ssl)
     except:
         return False
 

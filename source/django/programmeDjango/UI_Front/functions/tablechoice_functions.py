@@ -79,13 +79,19 @@ def reset_TableChoice(user,research):
 
 def download_finalzip(research,user):
     
-    filepath = create_final_file(research,user)
-   
-    # Open the file for reading content
-    path = open(filepath, 'rb')
-    # Set the return value of the HttpResponse
-    response = HttpResponse(path, content_type="application/zip")
-    # Set the HTTP header for sending to browser
-    response['Content-Disposition'] = "attachment; filename={name_file}".format(name_file="final_articles.zip")
-    # Return the response value
-    return response
+    from programmeDjango.settings import is_decentralized
+    if is_decentralized:
+        from remote_functions import get_final_zip_remote
+        fichier_zip = get_final_zip_remote(research,user)
+        if not fichier_zip == False:
+            return fichier_zip
+    else:
+        filepath = create_final_file(research,user)
+        # Open the file for reading content
+        path = open(filepath, 'rb')
+        # Set the return value of the HttpResponse
+        response = HttpResponse(path, content_type="application/zip")
+        # Set the HTTP header for sending to browser
+        response['Content-Disposition'] = "attachment; filename={name_file}".format(name_file="final_articles.zip")
+        # Return the response value
+        return response

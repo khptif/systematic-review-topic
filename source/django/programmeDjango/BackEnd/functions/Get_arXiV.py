@@ -135,15 +135,16 @@ def extract_article(id_list,research):
         for tag in xml_doc.findall('.//'+ begin_sub + 'doi'):
             doi = tag.text
         #we check if the article is already in database with the doi
-        a = Article.objects.filter(doi=doi)
-        if not doi == '' and a.exists():
-            Research_Article.objects.create(research=research,article=a[0])
+        article = Article.objects.filter(doi=doi)
+        if not doi == '' and article.exists():
+            article = article[0]
+            Research_Article.objects.create(research=research,article=article)
             #we check if the pdf is in local
-            if not a[0].is_file_get:
-                is_download = pdf.download_from_URL(a[0].url_file,ARTICLE_DATA + "/" +pdf.name_article_pdf(a[0]))
+            if not article.is_file_get:
+                is_download = pdf.download_from_URL(article)
                 if is_download:
-                    a[0].is_file_get = True
-                    a[0].save()
+                    article.is_file_get = True
+                    article.save()
             continue
          
         #Extracts the date from the XML, always available
@@ -190,9 +191,7 @@ def extract_article(id_list,research):
         if doi == '' or not Article.objects.filter(doi=doi).exists():
             article = Article.objects.create(title=title,doi=doi,abstract=abstract,publication=Date,url_file=URL)
             try:
-                name = pdf.name_article_pdf(article)
-
-                full_text = pdf.extract_full_text(URL,name)
+                full_text = pdf.extract_full_text(article)
                 is_file_get = True
                 full_text = remove_references(full_text)
             except:

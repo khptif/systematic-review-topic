@@ -117,14 +117,15 @@ def extract_article(entry_list,research):
         doi = doi_url.replace("https://doi.org/", "")
 
         #we check if article exists already
-        a = Article.objects.filter(doi = doi)
-        if a.exists():
-            Research_Article.objects.create(research=research,article=a[0])
-            if not a[0].is_file_get:
-                is_download = pdf.download_from_URL(a[0].url_file,ARTICLE_DATA + "/" +pdf.name_article_pdf(a[0]))
+        article = Article.objects.filter(doi = doi)
+        if article.exists():
+            article = article[0]
+            Research_Article.objects.create(research=research,article=article)
+            if not article.is_file_get:
+                is_download = pdf.download_from_URL(article)
                 if is_download:
-                    a[0].is_file_get = True
-                    a[0].save()
+                    article.is_file_get = True
+                    article.save()
             continue
 
         authors_list = []
@@ -169,8 +170,7 @@ def extract_article(entry_list,research):
         else:
             article = Article.objects.create(title=title,doi=doi,abstract=abstract,publication=publication,url_file=url)
             try:
-                name = pdf.name_article_pdf(article)
-                full_text = pdf.extract_full_text(url,"research_"+str(research.id) + "_id_" + str(entry_id))
+                full_text = pdf.extract_full_text(article)
                 full_text = remove_references(full_text)
                 is_file_get = True
             except:
