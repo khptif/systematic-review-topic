@@ -11,8 +11,8 @@ export UI_Front_max_thread=4
 
 export UI_Front_ssl_full_chain=fullchain.pem
 export UI_Front_ssl_privkey=privkey.pem
-export UI_Front_ssl_option=options_ssl_nginx.conf
-export UI_Front_dhparam=ssl_dhparams.pem
+export UI_Front_ssl_option=options-ssl-nginx.conf
+export UI_Front_dhparam=ssl-dhparams.pem
 
 
 #### BACKEND HOST PARAMETERS ##### 
@@ -25,8 +25,8 @@ export BackEnd_max_thread=4
 
 export BackEnd_ssl_full_chain=fullchain.pem
 export BackEnd_ssl_privkey=privkey.pem
-export BackEnd_ssl_option=options_ssl_nginx.conf
-export BackEnd_dhparam=ssl_dhparams.pem
+export BackEnd_ssl_option=options-ssl-nginx.conf
+export BackEnd_dhparam=ssl-dhparams.pem
 
 
 #### DATABASE HOST PARAMETERS ##### 
@@ -39,5 +39,5 @@ export DataBase_max_thread=4
 
 export DataBase_ssl_full_chain=fullchain.pem
 export DataBase_ssl_privkey=privkey.pem
-export DataBase_ssl_option=options_ssl_nginx.conf
-export DataBase_dhparam=ssl_dhparams.pem
+export DataBase_ssl_option=options-ssl-nginx.conf
+export DataBase_dhparam=ssl-dhparams.pem
