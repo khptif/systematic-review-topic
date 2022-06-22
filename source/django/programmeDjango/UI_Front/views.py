@@ -201,14 +201,24 @@ def page_user(request):
             
             elif request.POST["submit"] == "restart_fault":
                 #we restart all research with fault
-                relaunch_if_fault()
+                from programmeDjango.settings import is_decentralized
+                if is_decentralized:
+                    from remote_functions import relaunch_if_fault_remote
+                    relaunch_if_fault_remote()
+                else:
+                    relaunch_if_fault()
 
             else:    
                 research_id = request.POST['research_id']
                 research = Research.objects.get(id=research_id)
                 # if this is a request for check process
                 if request.POST['submit'] == "check":
-                    variables["is_running"] = check(research)
+                    from programmeDjango.settings import is_decentralized
+                    if is_decentralized:
+                        from remote_functions import check_research_remote
+                        variables["is_running"] = check_research_remote(research)
+                    else:
+                        variables["is_running"] = check(research)
             
                 if request.POST['submit'] == "delete":
                     delete(research)

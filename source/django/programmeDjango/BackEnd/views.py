@@ -42,3 +42,18 @@ def get_max(request):
     number_article = max_article(search_term,date_begin,date_end)
 
     return HttpResponse(str(number_article),status=200)
+
+def check_research(request):
+    # we check if we have the Get parameter.
+    if not "research_id" in request.GET:
+        return HttpResponse("No id parameter",status=400)
+
+    # we check if the research exists 
+    id = request.GET["research_id"]
+    research = Research.objects.filter(id=int(id))
+    if not research.exists():
+        return HttpResponse("Research doesn't exists",status=400)
+    
+    research = research[0]
+    # we check if the research is still running in a thread
+    return HttpResponse(str(check(research)),status=200)

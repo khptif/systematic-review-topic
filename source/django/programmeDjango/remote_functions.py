@@ -52,6 +52,46 @@ def begin_research_remote(research):
         research.delete()
         return False
 
+def check_research_remote(research):
+    from programmeDjango.settings import BackEnd_host_adresse as adresse
+    from programmeDjango.settings import BackEnd_host_port as port
+
+    response_http = ''
+    id = str(research.id)
+    path = f"check_research?research_id={id}"
+
+    try:
+        from programmeDjango.settings import BackEnd_SSL as is_ssl
+        response_http =http_request(adresse,port,path,is_ssl)
+    except:
+        return False
+    
+    if response_http.status_code < 400:
+        is_alive = bool(response_http.content)
+        return is_alive
+    else:
+        return False
+
+def relaunch_if_fault_remote(research):
+    from programmeDjango.settings import BackEnd_host_adresse as adresse
+    from programmeDjango.settings import BackEnd_host_port as port
+
+    response_http = ''
+    id = str(research.id)
+    path = f"restart_research"
+
+    try:
+        from programmeDjango.settings import BackEnd_SSL as is_ssl
+        response_http =http_request(adresse,port,path,is_ssl)
+    except:
+        return False
+    
+    if response_http.status_code < 400:
+        return False
+    else:
+        return True
+
+
 def download_article_remote(article):
     from programmeDjango.settings import DataBase_host_adresse as adresse
     from programmeDjango.settings import DataBase_host_port as port

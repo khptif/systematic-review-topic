@@ -22,4 +22,5 @@ urlpatterns = [
     path('research_create', research_create),
     path('get_max',get_max),
     path('restart_research',restart_research),
+    path('check_research',check_research),
 ]

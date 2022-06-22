@@ -181,7 +181,7 @@ def remove_words(list_lemmatized, list_stopwords):
 
 def remove_misspelled(list_one_two):
 
-    f = open(f"{os.getcwd()}/BackEnd/files/dictionary_compact.json")
+    f = open(f"{os.getcwd()}/BackEnd/files/dictionary_compact.json", encoding='utf-8')
     dictionary = json.load(f)
     f.close()
 

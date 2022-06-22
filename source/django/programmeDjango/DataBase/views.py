@@ -18,16 +18,16 @@ def download_article(request):
     if not article.exists():
         return HttpResponse("Article doesn't exist",status=400)
     
+    article = article[0]
     # we check if the article is already in our machine
-    if article[0].is_file_get:
+    if article.is_file_get:
         return HttpResponse("Article already downloaded",status=400)
 
     from programmeDjango.settings import TEMPORARY_DATA
 
-    name = pdf.name_article_pdf(article[0])
-    if pdf.download_from_URL(article[0].url,TEMPORARY_DATA + "/" + name):
-        article[0].is_file_get = True
-        article[0].save()
+    if pdf.download_from_URL(article):
+        article.is_file_get = True
+        article.save()
 
     return HttpResponse("",status=200)
 
