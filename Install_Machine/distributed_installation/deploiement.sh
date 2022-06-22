@@ -17,7 +17,7 @@ if [ $UI_Front_deploy==True ];then
 	cp programmeDjango/launch_django.sh ./launch_django.sh
 	sed -i "s/x_Module_x/UI_Front/g" programmeDjango/launch_django.sh
 	# we build image and push to DockerHub
-	docker build --no-cache -t ${UI_Front_docker_image_name} .
+	docker build -t ${UI_Front_docker_image_name} .
 	docker push ${UI_Front_docker_image_name}
 	docker image rm ${UI_Front_docker_image_name}
 	# we replace the original file
