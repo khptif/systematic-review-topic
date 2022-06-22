@@ -95,7 +95,7 @@ ln -s /etc/nginx/sites-available/django_nginx.conf /etc/nginx/sites-enabled/djan
 
 # start nginx
 /etc/init.d/nginx start
-
+cat /var/log/nginx/error.log
 #install all modules required
 
 python3 -m pip install -r requirements.txt
