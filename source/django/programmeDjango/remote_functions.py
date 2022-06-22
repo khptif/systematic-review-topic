@@ -72,12 +72,11 @@ def check_research_remote(research):
     else:
         return False
 
-def relaunch_if_fault_remote(research):
+def relaunch_if_fault_remote():
     from programmeDjango.settings import BackEnd_host_adresse as adresse
     from programmeDjango.settings import BackEnd_host_port as port
 
     response_http = ''
-    id = str(research.id)
     path = f"restart_research"
 
     try:
