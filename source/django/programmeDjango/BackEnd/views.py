@@ -18,7 +18,7 @@ def research_create(request):
         return HttpResponse("Research doesn't exists",status=400)
     research = research[0]
     # we check if the research is already running or finished
-    if research.is_running or not research.is_finish:
+    if research.is_running or research.is_finish:
         return HttpResponse("Research already running or finished",status=400)
     
     launch_process(research)
