@@ -43,11 +43,13 @@ def begin_research_remote(research):
         from programmeDjango.settings import BackEnd_SSL as is_ssl
         response_http =http_request(adresse,port,path,is_ssl)
     except:
+        research.delete()
         return False
     
-    if not response_http.status_code < 400:
+    if response_http.status_code < 400:
         return True
     else:
+        research.delete()
         return False
 
 def download_article_remote(article):
