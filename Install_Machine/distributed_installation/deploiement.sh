@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 
 #### we deploy the software to the host machine ####
 

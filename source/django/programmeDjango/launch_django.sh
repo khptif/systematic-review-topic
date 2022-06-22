@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # the script that configure and run the django process
 
 # in which type of module we are
