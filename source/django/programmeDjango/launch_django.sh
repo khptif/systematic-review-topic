@@ -61,7 +61,7 @@ echo X_INTERVAL_BIG=${X_INTERVAL_BIG} >> $settings_path
 echo Y_INTERVAL_BIG=${Y_INTERVAL_BIG} >> $settings_path
 echo UPDATE_INTERVAL=${UPDATE_INTERVAL} >> $settings_path
 echo NUMBER_ARTICLE_BY_PAGE=${NUMBER_ARTICLE_BY_PAGE} >> $settings_path
-echo is_decentralised=${is_decentralised} >> $settings_path
+echo is_decentralized=${is_decentralised} >> $settings_path
 
 # we change the urls.py file if this a decentralized module
 if [ $module_name == UI_Front ]
