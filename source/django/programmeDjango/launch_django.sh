@@ -1,6 +1,6 @@
 #!/bin/sh
 # the script that configure and run the django process
-cat ./launch_django
+
 # in which type of module we are
 module_name=x_Module_x
 

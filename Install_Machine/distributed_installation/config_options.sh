@@ -14,7 +14,7 @@ env_file=options.sh
 echo DB_NAME=${db_name} >> $env_file
 echo DB_USER=${db_user_name} >> $env_file
 echo DB_PASSWORD=${password} >> $env_file
-echo DB_HOST=${host_adresse} >> $env_file
+echo DB_HOST=${DataBase_host_adresse} >> $env_file
 
 # we fill the file with the settings parameters for settings.py
 . ./parametres_settings.sh
