@@ -1,17 +1,17 @@
 #!/bin/sh
 # the script that configure and run the django process
-
+cat ./launch_django
 # in which type of module we are
 module_name=x_Module_x
 
 # get options
-if [ $module_name==UI_Front ];
+if [ $module_name==UI_Front ]
 then
 	. ./docker_volume/UI_Front_options.sh
-elif [ $module_name==BackEnd ];
+elif [ $module_name==BackEnd ]
 then
 	. ./docker_volume/BackEnd_options.sh
-elif [ $module_name==DataBase ];
+elif [ $module_name==DataBase ]
 then
 	. ./docker_volume/DataBase_options.sh
 else	
@@ -30,7 +30,7 @@ sed -i "s/x_db_host_x/${DB_HOST}/g" $settings_path
 # if this is ssl, we set parameters to redirects http to https
 if [ $is_ssl==True ];
 then
-	echo SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https') >> $settings_path
+	echo SECURE_PROXY_SSL_HEADER = \('HTTP_X_FORWARDED_PROTO', 'https'\) >> $settings_path
 	echo SECURE_SSL_REDIRECT = True >> $settings_path
 else
 	echo SECURE_SSL_REDIRECT = False >> $settings_path
@@ -85,6 +85,7 @@ then
 	sed -i "s/x_privkey.pem_x/${ssl_privkey}/g" /etc/nginx/sites-available/django_nginx.conf
 	sed -i "s/x_options-ssl-nginx.conf_x/${ssl_option}/g" /etc/nginx/sites-available/django_nginx.conf
 	sed -i "s/x_ssl-dhparams.pem_x/${dhparam}/g" /etc/nginx/sites-available/django_nginx.conf
+	sed -i "s/x_domain_name_x/${hostname}/g" /etc/nginx/sites-available/django_nginx.conf
 
 else
 	cp nginx_config/django_nginx.conf /etc/nginx/sites-available/django_nginx.conf

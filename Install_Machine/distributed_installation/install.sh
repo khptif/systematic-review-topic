@@ -34,7 +34,7 @@ echo max_thread=${UI_Front_max_thread} >> ./${env_file}
 
 sudo scp -i ${private_key_path} ./${env_file} ${user_name}@${host_adresse}:/home/${user_name}/docker_volume/UI_Front_options.sh
 # we send the urls.py file
-sudo scp -i ${private_key_path} ../source/django/fichiers_settings/UI_front_urls.py ${user_name}@${host_adresse}:/home/${user_name}/docker_volume/UI_front_urls.py
+sudo scp -i ${private_key_path} ../../source/django/fichiers_settings/UI_front_urls.py ${user_name}@${host_adresse}:/home/${user_name}/docker_volume/UI_front_urls.py
 
 
 
@@ -63,7 +63,7 @@ echo max_thread=${BackEnd_max_thread} >> ./${env_file}
 
 sudo scp -i ${private_key_path} ./${env_file} ${user_name}@${host_adresse}:/home/${user_name}/docker_volume/BackEnd_options.sh
 # we send the urls.py file
-sudo scp -i ${private_key_path} ../source/django/fichiers_settings/BackEnd_urls.py ${user_name}@${host_adresse}:/home/${user_name}/docker_volume/BackEnd_urls.py
+sudo scp -i ${private_key_path} ../../source/django/fichiers_settings/BackEnd_urls.py ${user_name}@${host_adresse}:/home/${user_name}/docker_volume/BackEnd_urls.py
 
 
 
@@ -107,6 +107,6 @@ echo max_thread=${DataBase_max_thread} >> ./${env_file}
 
 sudo scp -i ${private_key_path} ./${env_file} ${user_name}@${host_adresse}:/home/${user_name}/docker_volume/DataBase_options.sh
 # we send the urls.py file
-sudo scp -i ${private_key_path} ../source/django/fichiers_settings/DataBase_urls.py ${user_name}@${host_adresse}:/home/${user_name}/docker_volume/DataBase_urls.py
+sudo scp -i ${private_key_path} ../../source/django/fichiers_settings/DataBase_urls.py ${user_name}@${host_adresse}:/home/${user_name}/docker_volume/DataBase_urls.py
 
 

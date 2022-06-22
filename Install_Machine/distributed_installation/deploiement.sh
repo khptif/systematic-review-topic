@@ -12,7 +12,7 @@ git clone ${repository_url}
 # we create docker image, push it to docker hub et return to main directory
 cd ${repository_name}/${path_to_dockerfile}
 
-if [$UI_Front_deploy==True];then
+if [ $UI_Front_deploy==True ];then
 	# we save this file before change it
 	cp programmeDjango/launch_django.sh ../launch_django.sh
 	sed -i "s/x_Module_x/UI_Front/g" programmeDjango/launch_django.sh
@@ -24,7 +24,7 @@ if [$UI_Front_deploy==True];then
 	cp ../launch_django.sh programmeDjango/launch_django.sh
 fi
 
-if [$BackEnd_deploy==True];then
+if [ $BackEnd_deploy==True ];then
 	# we save this file before change it
 	cp programmeDjango/launch_django.sh ../launch_django.sh
 	sed -i "s/x_Module_x/BackEnd/g" programmeDjango/launch_django.sh
@@ -36,7 +36,7 @@ if [$BackEnd_deploy==True];then
 	cp ../launch_django.sh programmeDjango/launch_django.sh
 fi
 
-if [$DataBase_deploy==True];then
+if [ $DataBase_deploy==True ];then
 	# we save this file before change it
 	cp programmeDjango/launch_django.sh ../launch_django.sh
 	sed -i "s/x_Module_x/DataBase/g" programmeDjango/launch_django.sh
@@ -54,7 +54,7 @@ cd -
 rm -Rf ${repository_name}
 
 
-if [$UI_Front_deploy==True];then
+if [ $UI_Front_deploy==True ];then
 #we start container in UI-Front
 
 #we define variables
@@ -64,9 +64,10 @@ private_key_path=${UI_Front_private_key_path}
 docker_container_name=${UI_Front_docker_container_name}
 adresse=${user_name}@${host_adresse}
 host_port=${UI_Front_host_port}
+docker_image_name=${UI_Front_docker_image_name}
 
 #we connect to host
-connect_ssh="sudo ssh -i ${private_key_path} ${adresse}"
+connect_ssh="ssh -i ${private_key_path} ${adresse}"
 
 #we stop and rm the current container
 $connect_ssh "sudo docker container stop ${docker_container_name}"
@@ -82,7 +83,7 @@ fi
 
 
 
-if [$BackEnd_deploy==True];then
+if [ $BackEnd_deploy==True ];then
 #we start container in UI-Front
 
 #we define variables
@@ -92,9 +93,10 @@ private_key_path=${BackEnd_private_key_path}
 docker_container_name=${BackEnd_docker_container_name}
 adresse=${user_name}@${host_adresse}
 host_port=${BackEnd_host_port}
+docker_image_name=${BackEnd_docker_image_name}
 
 #we connect to host
-connect_ssh="sudo ssh -i ${private_key_path} ${adresse}"
+connect_ssh="ssh -i ${private_key_path} ${adresse}"
 
 #we stop and rm the current container
 $connect_ssh "sudo docker container stop ${docker_container_name}"
@@ -110,7 +112,7 @@ fi
 
 
 
-if [$DataBase_deploy==True];then
+if [ $DataBase_deploy==True ];then
 #we start container in UI-Front
 
 #we define variables
@@ -120,9 +122,10 @@ private_key_path=${DataBase_private_key_path}
 docker_container_name=${DataBase_docker_container_name}
 adresse=${user_name}@${host_adresse}
 host_port=${DataBase_host_port}
+docker_image_name=${DataBase_docker_image_name}
 
 #we connect to host
-connect_ssh="sudo ssh -i ${private_key_path} ${adresse}"
+connect_ssh="ssh -i ${private_key_path} ${adresse}"
 
 #we stop and rm the current container
 $connect_ssh "sudo docker container stop ${docker_container_name}"
