@@ -38,13 +38,13 @@ fi
 
 # we give coordinate of each module
 
-echo UI_Front_host_adresse=${UI_Front_host_adresse} >> $settings_path
+echo UI_Front_host_adresse=\"${UI_Front_host_adresse}\" >> $settings_path
 echo UI_Front_host_port=${UI_Front_host_port} >> $settings_path
 
-echo BackEnd_host_adresse=${BackEnd_host_adresse} >> $settings_path
+echo BackEnd_host_adresse=\"${BackEnd_host_adresse}\" >> $settings_path
 echo BackEnd_host_port=${BackEnd_host_port} >> $settings_path
 
-echo DataBase_host_adresse=${DataBase_host_adresse} >> $settings_path
+echo DataBase_host_adresse=\"${DataBase_host_adresse}\" >> $settings_path
 echo DataBase_host_port=${DataBase_host_port} >> $settings_path
 
 # we give variable if i a module us ssl
