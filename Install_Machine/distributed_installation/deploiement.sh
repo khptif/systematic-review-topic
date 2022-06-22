@@ -14,38 +14,38 @@ cd ${repository_name}/${path_to_dockerfile}
 
 if [ $UI_Front_deploy==True ];then
 	# we save this file before change it
-	cp programmeDjango/launch_django.sh ../launch_django.sh
+	cp programmeDjango/launch_django.sh ./launch_django.sh
 	sed -i "s/x_Module_x/UI_Front/g" programmeDjango/launch_django.sh
 	# we build image and push to DockerHub
 	docker build -t ${UI_Front_docker_image_name} .
 	docker push ${UI_Front_docker_image_name}
 	docker image rm ${UI_Front_docker_image_name}
 	# we replace the original file
-	cp ../launch_django.sh programmeDjango/launch_django.sh
+	cp ./launch_django.sh programmeDjango/launch_django.sh
 fi
 
 if [ $BackEnd_deploy==True ];then
 	# we save this file before change it
-	cp programmeDjango/launch_django.sh ../launch_django.sh
+	cp programmeDjango/launch_django.sh ./launch_django.sh
 	sed -i "s/x_Module_x/BackEnd/g" programmeDjango/launch_django.sh
 	# we build image and push to DockerHub
 	docker build -t ${BackEnd_docker_image_name} .
 	docker push ${BackEnd_docker_image_name}
 	docker image rm ${BackEnd_docker_image_name}
 	# we replace the original file
-	cp ../launch_django.sh programmeDjango/launch_django.sh
+	cp ./launch_django.sh programmeDjango/launch_django.sh
 fi
 
 if [ $DataBase_deploy==True ];then
 	# we save this file before change it
-	cp programmeDjango/launch_django.sh ../launch_django.sh
+	cp programmeDjango/launch_django.sh ./launch_django.sh
 	sed -i "s/x_Module_x/DataBase/g" programmeDjango/launch_django.sh
 	# we build image and push to DockerHub
 	docker build -t ${DataBase_docker_image_name} .
 	docker push ${DataBase_docker_image_name}
 	docker image rm ${DataBase_docker_image_name}
 	# we replace the original file
-	cp ../launch_django.sh programmeDjango/launch_django.sh
+	cp ./launch_django.sh programmeDjango/launch_django.sh
 fi
 
 cd -

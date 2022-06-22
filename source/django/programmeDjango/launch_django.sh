@@ -30,7 +30,7 @@ sed -i "s/x_db_host_x/${DB_HOST}/g" $settings_path
 # if this is ssl, we set parameters to redirects http to https
 if [ $is_ssl==True ];
 then
-	echo SECURE_PROXY_SSL_HEADER = \('HTTP_X_FORWARDED_PROTO', 'https'\) >> $settings_path
+	echo SECURE_PROXY_SSL_HEADER = \(\'HTTP_X_FORWARDED_PROTO\', \'https\'\) >> $settings_path
 	echo SECURE_SSL_REDIRECT = True >> $settings_path
 else
 	echo SECURE_SSL_REDIRECT = False >> $settings_path
@@ -121,7 +121,8 @@ then
 	then
 		curl https://${BackEnd_host_adresse}:${BackEnd_host_port}/restart_research
 	else
-		curl http://${BackEnd_host_adresse}:${BackEnd_host_port}/restart_research	
+		curl http://${BackEnd_host_adresse}:${BackEnd_host_port}/restart_research
+	fi
 fi
 done
 
