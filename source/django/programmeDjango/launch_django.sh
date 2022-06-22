@@ -5,13 +5,13 @@
 module_name=x_Module_x
 
 # get options
-if [ $module_name==UI_Front ]
+if [ $module_name == UI_Front ]
 then
 	. ./docker_volume/UI_Front_options.sh
-elif [ $module_name==BackEnd ]
+elif [ $module_name == BackEnd ]
 then
 	. ./docker_volume/BackEnd_options.sh
-elif [ $module_name==DataBase ]
+elif [ $module_name == DataBase ]
 then
 	. ./docker_volume/DataBase_options.sh
 else	
@@ -64,21 +64,21 @@ echo NUMBER_ARTICLE_BY_PAGE=${NUMBER_ARTICLE_BY_PAGE} >> $settings_path
 echo is_decentralised=${is_decentralised} >> $settings_path
 
 # we change the urls.py file if this a decentralized module
-if [ $module_name==UI_Front ];
+if [ $module_name == UI_Front ]
 then
 	cp ./docker_volume/UI_front_urls.py ./programmeDjango/urls.py
 
-elif [ $module_name==BackEnd ];
+elif [ $module_name == BackEnd ]
 then
 	cp ./docker_volume/BackEnd_urls.py ./programmeDjango/urls.py
-elif [ $module_name==DataBase ];
+elif [ $module_name == DataBase ]
 then
 	cp ./docker_volume/DataBase_urls.py ./programmeDjango/urls.py
 fi
 
 # we replace the nginx file and if SSL is active, we rewrite it
 
-if [ $is_ssl==True ];
+if [ $is_ssl == True ]
 then
 	cp nginx_config/django_nginx_ssl.conf /etc/nginx/sites-available/django_nginx.conf	
 	sed -i "s/x_fullchain.pem_x/${ssl_full_chain}/g" /etc/nginx/sites-available/django_nginx.conf
@@ -115,9 +115,9 @@ while true
 do 
 sleep 100
 # if this is BackEnd module, every 100 seconds, we make "restart_research" request so if a research have stopped, we restart it
-if [ $module_name==BackEnd ]
+if [ $module_name == BackEnd ]
 then
-	if [ $is_ssl==True ]
+	if [ $is_ssl == True ]
 	then
 		curl https://${BackEnd_host_adresse}:${BackEnd_host_port}/restart_research
 	else

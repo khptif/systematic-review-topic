@@ -12,7 +12,8 @@ git clone ${repository_url}
 # we create docker image, push it to docker hub et return to main directory
 cd ${repository_name}/${path_to_dockerfile}
 
-if [ $UI_Front_deploy==True ];then
+if [ $UI_Front_deploy == True ]
+then
 	# we save this file before change it
 	cp programmeDjango/launch_django.sh ./launch_django.sh
 	sed -i "s/x_Module_x/UI_Front/g" programmeDjango/launch_django.sh
@@ -24,7 +25,8 @@ if [ $UI_Front_deploy==True ];then
 	cp ./launch_django.sh programmeDjango/launch_django.sh
 fi
 
-if [ $BackEnd_deploy==True ];then
+if [ $BackEnd_deploy == True ]
+then
 	# we save this file before change it
 	cp programmeDjango/launch_django.sh ./launch_django.sh
 	sed -i "s/x_Module_x/BackEnd/g" programmeDjango/launch_django.sh
@@ -36,7 +38,8 @@ if [ $BackEnd_deploy==True ];then
 	cp ./launch_django.sh programmeDjango/launch_django.sh
 fi
 
-if [ $DataBase_deploy==True ];then
+if [ $DataBase_deploy == True ]
+then
 	# we save this file before change it
 	cp programmeDjango/launch_django.sh ./launch_django.sh
 	sed -i "s/x_Module_x/DataBase/g" programmeDjango/launch_django.sh
@@ -54,7 +57,8 @@ cd -
 rm -Rf ${repository_name}
 
 
-if [ $UI_Front_deploy==True ];then
+if [ $UI_Front_deploy == True ]
+then
 #we start container in UI-Front
 
 #we define variables
@@ -83,7 +87,8 @@ fi
 
 
 
-if [ $BackEnd_deploy==True ];then
+if [ $BackEnd_deploy == True ]
+then
 #we start container in UI-Front
 
 #we define variables
@@ -112,7 +117,8 @@ fi
 
 
 
-if [ $DataBase_deploy==True ];then
+if [ $DataBase_deploy == True ]
+then
 #we start container in UI-Front
 
 #we define variables
