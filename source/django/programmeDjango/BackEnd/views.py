@@ -16,7 +16,7 @@ def research_create(request):
     research = Research.objects.filter(id=int(id))
     if not research.exists():
         return HttpResponse("Research doesn't exists",status=400)
-    
+    research = research[0]
     # we check if the research is already running or finished
     if research.is_running or not research.is_finish:
         return HttpResponse("Research already running or finished",status=400)
