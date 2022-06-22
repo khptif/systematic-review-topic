@@ -111,21 +111,22 @@ uwsgi --socket django.sock --module programmeDjango.wsgi --daemonize=./docker_vo
 #python3 manage.py runserver 0.0.0.0:8000
 
 # we have to be in infinity loop so the docker container doesn't stop. 
-while true 
-do 
-sleep 100
+#while true 
+#do 
+#sleep 100
 # if this is BackEnd module, every 100 seconds, we make "restart_research" request so if a research have stopped, we restart it
-if [ $module_name==BackEnd ]
-then
-	if [ $is_ssl==True ]
-	then
-		curl https://${BackEnd_host_adresse}:${BackEnd_host_port}/restart_research
-	else
-		curl http://${BackEnd_host_adresse}:${BackEnd_host_port}/restart_research
-	fi
-fi
-done
+#if [ $module_name==BackEnd ]
+#then
+#	if [ $is_ssl==True ]
+#	then
+#		curl https://${BackEnd_host_adresse}:${BackEnd_host_port}/restart_research
+#	else
+#		curl http://${BackEnd_host_adresse}:${BackEnd_host_port}/restart_research
+#	fi
+#fi
+#done
 
+bash
 
 
 
