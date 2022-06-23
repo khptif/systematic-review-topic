@@ -23,9 +23,8 @@ def download_article(request):
 
     # we create a thread to download the article and return the http message
     def download(article):
-        from programmeDjango.settings import TEMPORARY_DATA
-
-        if pdf.download_from_URL(article):
+        import BackEnd.functions.PDF_download as pdf
+        if pdf.download_from_URL(article,True):
             article.is_file_get = True
             article.save()
 
