@@ -32,7 +32,7 @@ def download_article(request):
             article.is_file_get = True
             article.save()
 
-    t = Thread(target=download,args=(article))
+    t = Thread(target=download,args=(article,))
     t.setDaemon(True)
     t.start()  
 

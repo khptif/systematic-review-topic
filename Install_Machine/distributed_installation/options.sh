@@ -25,5 +25,5 @@ ssl_privkey=privkey.pem
 ssl_option=options-ssl-nginx.conf
 dhparam=ssl-dhparams.pem
 is_ssl=True
-hostname=ui-front.systematic-review-topic-test.ch
+hostname=database.systematic-review-topic-test.ch
 max_thread=4
