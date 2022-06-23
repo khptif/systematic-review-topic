@@ -140,7 +140,7 @@ def get_final_zip_remote(research,user):
     
     user_id = str(user.id)
     research_id = str(research.id)
-    path = f"get_plot?research_id={research_id}&user_id={user_id}"
+    path = f"get_final?research_id={research_id}&user_id={user_id}"
 
     try:
         from programmeDjango.settings import DataBase_SSL as is_ssl
