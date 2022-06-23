@@ -131,7 +131,7 @@ def get_plot_remote(research):
         response_http =http_request(adresse,port,path,is_ssl)
     except:
         return False
-
+    print("test remote: " + response_http.content[0:20])
     return response_http
 
 def get_final_zip_remote(research,user):
@@ -148,5 +148,5 @@ def get_final_zip_remote(research,user):
     except:
         return False
 
-    print("test remote: " + response_http.content[0:20])
+    
     return response_http
