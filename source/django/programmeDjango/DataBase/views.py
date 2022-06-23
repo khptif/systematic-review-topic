@@ -20,9 +20,6 @@ def download_article(request):
         return HttpResponse("Article doesn't exist",status=400)
     
     article = article[0]
-    # we check if the article is already in our machine
-    if article.is_file_get:
-        return HttpResponse("Article already downloaded",status=400)
 
     # we create a thread to download the article and return the http message
     def download(article):
