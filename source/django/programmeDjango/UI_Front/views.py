@@ -339,6 +339,7 @@ def page_select(request):
         with open(PLOT_DATA + "/research_{id}_plot.html".format(id=id), 'r') as file:
             data = file.read()
         variables["path_plot"] = f"/plot?research_id={research_id}"
+    print("view plot: " + data[0:20])
     variables["plot_html"] = data
 
     #we give a list of all topics

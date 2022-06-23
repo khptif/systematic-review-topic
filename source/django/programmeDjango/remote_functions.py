@@ -148,4 +148,5 @@ def get_final_zip_remote(research,user):
     except:
         return False
 
+    print("test remote: " + response_http.content[0:20])
     return response_http

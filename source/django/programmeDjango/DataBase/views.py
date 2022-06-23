@@ -66,6 +66,7 @@ def get_plot(request):
     if not os.path.exists(path_to_plot):
         return HttpResponse("Plot doesn't exist",status=400)
     
+    
     return render(request,path_to_plot)
 
 
