@@ -1,3 +1,4 @@
+from threading import Thread
 from django.http import HttpResponse
 from django.shortcuts import render
 from matplotlib import use 
@@ -23,11 +24,17 @@ def download_article(request):
     if article.is_file_get:
         return HttpResponse("Article already downloaded",status=400)
 
-    from programmeDjango.settings import TEMPORARY_DATA
+    # we create a thread to download the article and return the http message
+    def download(article):
+        from programmeDjango.settings import TEMPORARY_DATA
 
-    if pdf.download_from_URL(article):
-        article.is_file_get = True
-        article.save()
+        if pdf.download_from_URL(article):
+            article.is_file_get = True
+            article.save()
+
+    t = Thread(target=download,args=(article))
+    t.setDaemon(True)
+    t.start()  
 
     return HttpResponse("",status=200)
 
@@ -44,7 +51,7 @@ def create_plot(request):
     
     # we create the plot
     from programmeDjango.settings import PLOT_DATA
-    scatter_with_hover(research[0],PLOT_DATA + "/research_{id}_plot.html")
+    scatter_with_hover(research[0],PLOT_DATA + f"/research_{id}_plot.html")
 
     return HttpResponse("",status=200)
 
@@ -62,13 +69,37 @@ def get_plot(request):
     # we check if the plot exists
     import os
     from programmeDjango.settings import PLOT_DATA
-    path_to_plot = PLOT_DATA + "/research_{id}_plot.html"
+    path_to_plot = PLOT_DATA + f"/research_{id}_plot.html"
     if not os.path.exists(path_to_plot):
         return HttpResponse("Plot doesn't exist",status=400)
     
     
     return render(request,path_to_plot)
 
+def get_plot_html_string(request):
+    # we check if we have the research id
+    if not "research_id" in request.GET:
+        return HttpResponse("No research id",status=400)
+    
+    id = int(request.GET["research_id"])
+    # we check if the research exists
+    research = Research.objects.filter(id=id)
+    if not research.exists():
+        return HttpResponse("Research doesn't exist",status=400)
+    
+    # we check if the plot exists
+    import os
+    from programmeDjango.settings import PLOT_DATA
+    path_to_plot = PLOT_DATA + f"/research_{id}_plot.html"
+    if not os.path.exists(path_to_plot):
+        return HttpResponse("Plot doesn't exist",status=400)
+    
+    # we extract string from html plot and return it
+    data=''
+    with open(PLOT_DATA + "/research_{id}_plot.html".format(id=id), 'r') as file:
+            data = file.read()
+    
+    return HttpResponse(data,status=200)
 
 def get_final(request):
     # we check if we have the research id

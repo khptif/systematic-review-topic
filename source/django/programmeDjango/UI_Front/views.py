@@ -332,14 +332,14 @@ def page_select(request):
             variables["path_plot"] = f"http://{adresse}:{port}/get_plot?research_id={research_id}"
 
         from remote_functions import get_plot_remote
-        r = get_plot_remote(research)
+        r = get_plot_remote_string(research)
         if not r == False:
-            data = str(r.content)
+            data = r
     else:
         with open(PLOT_DATA + "/research_{id}_plot.html".format(id=id), 'r') as file:
             data = file.read()
         variables["path_plot"] = f"/plot?research_id={research_id}"
-    print("view plot: " + str(data)[0:20])
+    
     variables["plot_html"] = data
 
     #we give a list of all topics

@@ -25,4 +25,5 @@ urlpatterns = [
     path('create_plot',create_plot),
     path('get_final',get_final),
     path('get_plot',get_plot),
+    path('get_plot_string',get_plot_html_string),
 ]

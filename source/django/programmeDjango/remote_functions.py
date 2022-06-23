@@ -131,8 +131,21 @@ def get_plot_remote(research):
         response_http =http_request(adresse,port,path,is_ssl)
     except:
         return False
-    print("test remote: " + str(response_http.content)[0:20])
     return response_http
+
+def get_plot_remote_string(research):
+    from programmeDjango.settings import DataBase_host_adresse as adresse
+    from programmeDjango.settings import DataBase_host_port as port
+    
+    research_id = str(research.id)
+    path = f"get_plot_string?research_id={research_id}"
+
+    try:
+        from programmeDjango.settings import DataBase_SSL as is_ssl
+        response_http =http_request(adresse,port,path,is_ssl)
+    except:
+        return False
+    return str(response_http.content)
 
 def get_final_zip_remote(research,user):
     from programmeDjango.settings import DataBase_host_adresse as adresse
