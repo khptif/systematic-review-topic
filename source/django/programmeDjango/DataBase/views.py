@@ -6,6 +6,7 @@ from BackEnd.views import research_create
 from DataBase.functions.view_functions import *
 import BackEnd.functions.PDF_download as pdf
 from BackEnd.functions.scatter_with_hover import scatter_with_hover
+import json
 
 def download_article(request):
     # we check if we have the id of the article
@@ -95,7 +96,9 @@ def get_plot_html_string(request):
     with open(PLOT_DATA + "/research_{id}_plot.html".format(id=id), 'r') as file:
             data = file.read()
     
-    return HttpResponse(data,status=200)
+    #we send the data by json
+    content = json.dumps(data)
+    return HttpResponse(content,status=200)
 
 def get_final(request):
     # we check if we have the research id
