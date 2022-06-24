@@ -334,7 +334,7 @@ def page_select(request):
         from remote_functions import get_plot_remote
         r = get_plot_remote_string(research)
         if not r == False:
-            data = r[1:]
+            data = r
     else:
         with open(PLOT_DATA + "/research_{id}_plot.html".format(id=id), 'r') as file:
             data = file.read()
