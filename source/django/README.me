@@ -1,1 +1,5 @@
 This contain all element to build docker image. This is from this point you can build an image docker of the project.
+
+fichiers_settings contains the file of settings.py the application in container will use. There is for each module, the file urls.py that define mapping between url path and function application. As each image that represent each module contains all the code, we define the urls.py file so nobody can make by example the request of the user page to BackEnd module.
+
+nginx_config contains the nginx configuration for the reverse proxy in the container. We have two kind: if SSL is on or not. For Https and Http.

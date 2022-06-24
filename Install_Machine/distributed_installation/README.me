@@ -2,7 +2,24 @@
 
 ### INSTALLATION AND CONFIGURATION OF HOST MACHINE ###
 
-Before make any installation, we have to configure all parameters.
+Before make any installation, we have to configure the three machine.
+We must have three machine, with Ubuntu installed and to be accessed by internet.
+From your local machine, you can connect to machine with your private key created bay ssh-keygen.
+We have to give them hostname so we can configure certificat for Https access.
+
+## Get SSL Certificate ##
+
+Each machine is on Ubuntu, has a public ip and domaine name. For each one we do:
+
+-install nginx.
+ -> sudo apt-get update
+ -> sudo apt-get install nginx
+ -> sudo systemctl start nginx
+ 
+-create the repertory in your home directory docker_volume. Don't need to associate it to a docker volume now. The script ./install.sh will do it. We create this directory now because we will put in the certificates file.
+ -> mkdir docker_volume
+
+
 
 
 ## Set Parameters ##

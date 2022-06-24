@@ -1,5 +1,6 @@
 import requests
 import json
+from django.shortcuts import redirect
  
 def http_request(adresse,port,path,is_ssl):
     
@@ -158,9 +159,9 @@ def get_final_zip_remote(research,user):
 
     try:
         from programmeDjango.settings import DataBase_SSL as is_ssl
-        response_http =http_request(adresse,port,path,is_ssl)
+        if is_ssl:
+            return redirect("https://" + adresse + ":" + port + "/" + path)
+        else:
+            return redirect("http://" + adresse + ":" + port + "/" + path)
     except:
         return False
-
-    
-    return response_http
