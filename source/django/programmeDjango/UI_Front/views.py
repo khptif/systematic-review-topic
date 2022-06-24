@@ -320,12 +320,12 @@ def page_select(request):
     #we give the plot html
     from programmeDjango.settings import is_decentralized
     data=""
+    research_id = research.id
     if is_decentralized:
         from programmeDjango.settings import DataBase_host_adresse as adresse
         from programmeDjango.settings import DataBase_host_port as port
         from programmeDjango.settings import DataBase_SSL as is_ssl
 
-        research_id = research.id
         if is_ssl:
             variables["path_plot"] = f"https://{adresse}:{port}/get_plot?research_id={research_id}"
         else:
