@@ -146,7 +146,7 @@ def get_plot_remote_string(research):
     except:
         return False
     html_string = json.loads(response_http.content)
-    return html_string
+    return html_string.replace("'","\"")
 
 def get_final_zip_remote(research,user):
     from programmeDjango.settings import DataBase_host_adresse as adresse
