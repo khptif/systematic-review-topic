@@ -28,7 +28,7 @@ sed -i "s/x_db_password_x/${DB_PASSWORD}/g" $settings_path
 sed -i "s/x_db_host_x/${DB_HOST}/g" $settings_path
 
 # if this is ssl, we set parameters to redirects http to https
-if [ $is_ssl==True ];
+if [ $is_ssl == True ];
 then
 	echo SECURE_PROXY_SSL_HEADER = \(\'HTTP_X_FORWARDED_PROTO\', \'https\'\) >> $settings_path
 	echo SECURE_SSL_REDIRECT = True >> $settings_path
@@ -37,20 +37,23 @@ else
 fi
 
 # we give coordinate of each module
+if [ $is_decentralised == True ];
+then
 
-echo UI_Front_host_adresse=\"${UI_Front_host_adresse}\" >> $settings_path
-echo UI_Front_host_port=${UI_Front_host_port} >> $settings_path
+	echo UI_Front_host_adresse=\"${UI_Front_host_adresse}\" >> $settings_path
+	echo UI_Front_host_port=${UI_Front_host_port} >> $settings_path
 
-echo BackEnd_host_adresse=\"${BackEnd_host_adresse}\" >> $settings_path
-echo BackEnd_host_port=${BackEnd_host_port} >> $settings_path
+	echo BackEnd_host_adresse=\"${BackEnd_host_adresse}\" >> $settings_path
+	echo BackEnd_host_port=${BackEnd_host_port} >> $settings_path
 
-echo DataBase_host_adresse=\"${DataBase_host_adresse}\" >> $settings_path
-echo DataBase_host_port=${DataBase_host_port} >> $settings_path
+	echo DataBase_host_adresse=\"${DataBase_host_adresse}\" >> $settings_path
+	echo DataBase_host_port=${DataBase_host_port} >> $settings_path
 
-# we give variable if i a module us ssl
-echo UI_Front_SSL=${UI_Front_SSL} >> $settings_path
-echo BackEnd_SSL=${BackEnd_SSL} >> $settings_path
-echo DataBase_SSL=${DataBase_SSL} >> $settings_path
+	# we give variable if i a module us ssl
+	echo UI_Front_SSL=${UI_Front_SSL} >> $settings_path
+	echo BackEnd_SSL=${BackEnd_SSL} >> $settings_path
+	echo DataBase_SSL=${DataBase_SSL} >> $settings_path
+fi
 
 # some global parameters for settings.py
 echo NUMBER_THREADS_ALLOWED=${NUMBER_THREADS_ALLOWED} >> $settings_path

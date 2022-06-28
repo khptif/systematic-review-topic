@@ -160,8 +160,8 @@ def get_final_zip_remote(research,user):
     try:
         from programmeDjango.settings import DataBase_SSL as is_ssl
         if is_ssl:
-            return redirect(f"https://{adresse}:{port}/{path}")
+            return f"https://{adresse}:{port}/{path}"
         else:
-            return redirect(f"http://{adresse}:{port}/{path}")
+            return f"http://{adresse}:{port}/{path}"
     except:
         return False

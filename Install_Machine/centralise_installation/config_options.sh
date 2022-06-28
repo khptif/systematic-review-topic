@@ -27,4 +27,6 @@ echo Y_INTERVAL_BIG=${Y_INTERVAL_BIG} >> $env_file
 echo UPDATE_INTERVAL=${UPDATE_INTERVAL} >> $env_file
 echo NUMBER_ARTICLE_BY_PAGE=${NUMBER_ARTICLE_BY_PAGE} >> $env_file
 
-
+# we fill the variable that check if installation is centralised or not
+echo is_decentralised=False >> $env_file
+echo SSL=${SSL} >> $env_file

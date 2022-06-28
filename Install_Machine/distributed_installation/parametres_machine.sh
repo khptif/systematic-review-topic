@@ -21,7 +21,7 @@ export BackEnd_user_name=ubuntu
 export BackEnd_host_adresse=backend.systematic-review-topic-test.ch
 export BackEnd_private_key_path=/home/fatih/.ssh/id_machine_BackEnd
 export BackEnd_host_port=8000
-export BackEnd_max_thread=4
+export BackEnd_max_thread=16
 
 export BackEnd_ssl_full_chain=fullchain.pem
 export BackEnd_ssl_privkey=privkey.pem

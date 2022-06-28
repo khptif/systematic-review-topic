@@ -2,8 +2,39 @@
 
 ### INSTALLATION AND CONFIGURATION OF HOST MACHINE ###
 
-Before make any installation, we have to configure all parameters.
+Before make any installation, we have to configure the three machine.
+We must have three machine, with Ubuntu installed and to be accessed by internet.
+From your local machine, you can connect to machine with your private key created bay ssh-keygen.
+We have to give them hostname so we can configure certificat for Https access.
 
+## Get SSL Certificate ##
+
+Each machine is on Ubuntu, has a public ip and domaine name. For each one we do:
+
+-install nginx.
+ -> sudo apt-get update
+ -> sudo apt-get install nginx
+ -> sudo systemctl start nginx
+ 
+-create the repertory in your home directory docker_volume. Don't need to associate it to a docker volume now. The script ./install.sh will do it. We create this directory now because we will put in the certificates file.
+ -> mkdir docker_volume
+
+-Now we can ask for a ssl certificate. We ask to certbot. It makes it automatically.
+ -> sudo apt-get install snapd
+ -> sudo snap install core; sudo snap refresh core
+ -> sudo apt-get remove certbot
+ -> sudo snap install --classic certbot
+ -> sudo ln -s /snap/bin/certbot /usr/bin/certbot
+ -> sudo certbot --nginx
+-We give an adresse email and the domaine name of the machine. certbot define the nginx parameters and download certificate.
+
+-We copy the certificates file in docker_volume. It lets the container to use the https protocol.
+ -> cp /etc/letsencrypt/live/"the domain name of the machin"/fullchain.pem docker_volume/fullchain.pem
+ -> cp /etc/letsencrypt/live/"the domain name of the machin"/privkey.pem docker_volume/privkey.pem
+ -> cp /etc/letsencrypt/options-ssl-nginx.conf docker_volume/options-ssl-nginx.conf
+ -> cp /etc/letsencrypt/ssl-dhparams.pem docker_volume/ssl-dhparams.pem
+ 
+Now we can set the parameters.
 
 ## Set Parameters ##
 
@@ -19,6 +50,8 @@ Example:
 user_name=ubuntu
 host_adresse=195.15.243.254
 
+For ssl protocol, we have to give the domaine name and not the ip adresse.
+
 To make connection, we use private key. We need to give absolute path to file with this private key.
 -> private_key_path= absolute_path_to_private_key_file
 Example:
@@ -29,6 +62,18 @@ We have to indicate by which port we will connect to our app
 Example:
 host_port=8000
 
+We have to define the number max of thread than the machine can manage in parallel.
+Example:
+max_thread=4
+
+We have to give the name of each certificate file in docker_volume for the https protocol.
+Example:
+ssl_full_chain=fullchain.pem
+ssl_privkey=privkey.pem
+ssl_option=options-ssl-nginx.conf
+dhparam=ssl-dhparams.pem
+
+For each machine, UI_Front, BackEnd and DataBase, we have to give the parameters.
 
 # Database parameters #
 
@@ -57,7 +102,7 @@ The parameters are in ./parametres_settings.sh and it defines some variable to a
 
 -> NUMBER_ARTICLE_BY_PAGE= number of article by page in the table_choice page.
 
-
+-> SSL=True For each machine, we set if it use ssl or not
 
 ## Installation and Configuration ##
 
@@ -73,7 +118,8 @@ with ours so the database accept connections
 
 - We create a file with all option for our app and send it to the host
 
-
+For each machine, we do the same thing. Only in the DataBase host, we install PostgreSQL.
+If you change some parameters, you have to execute the script again before deployment.
 
 ### Deployment of the app ###
 
@@ -94,6 +140,8 @@ Example : khptif/systematic_review:latest
 
 -> docker_local_port= the port in the container that the app listens.
 Example: container is launch with -p 3000:6000, we have to give docker_local_port=6000
+
+We have to give data for each module. One module has his own docker image and container name. If you want to deploy one of the module, you can set "deploy" variable for each module. For ssl, local container port is 443.
 
 ## Deployment ##
 

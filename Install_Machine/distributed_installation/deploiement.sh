@@ -89,7 +89,7 @@ fi
 
 if [ $BackEnd_deploy == True ]
 then
-#we start container in UI-Front
+#we start container in BackEnd
 
 #we define variables
 user_name=${BackEnd_user_name}
@@ -119,7 +119,7 @@ fi
 
 if [ $DataBase_deploy == True ]
 then
-#we start container in UI-Front
+#we start container in DataBase
 
 #we define variables
 user_name=${DataBase_user_name}
