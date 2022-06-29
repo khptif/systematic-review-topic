@@ -138,8 +138,10 @@ def make_research (search,research,begin,end,thread=1):
         step_article.step = ""
         step_article.save()
         Article_Job.objects.filter(research = research).delete()
-        research.current_article_db = "paperity"
+        research.current_article_db = "PMC"
         research.save()
+        #research.current_article_db = "paperity"
+        #research.save()
 
     # for now we pass the paperity database beacause it's too long
     #if research.current_article_db == "paperity":
@@ -154,8 +156,6 @@ def make_research (search,research,begin,end,thread=1):
         step_article.save()
         research.current_article_db = "PMC"
         research.save()
-    research.current_article_db = "PMC"
-    research.save()
 
     if research.current_article_db == "PMC":
 
