@@ -68,7 +68,8 @@ def max_article(search,begin,end):
         pass
 
     try:
-        article += max_pap(search,begin,end) 
+        #article += max_pap(search,begin,end) 
+        pass
     except:
         print("error pap",file=sys.stderr)
         pass
@@ -140,7 +141,9 @@ def make_research (search,research,begin,end,thread=1):
         research.current_article_db = "paperity"
         research.save()
 
-    if research.current_article_db == "paperity":
+    # for now we pass the paperity database beacause it's too long
+    #if research.current_article_db == "paperity":
+    if False:
 
         thread_pap = Thread(target=pap,args=arg)
         thread_pap.start()
@@ -151,6 +154,8 @@ def make_research (search,research,begin,end,thread=1):
         step_article.save()
         research.current_article_db = "PMC"
         research.save()
+    research.current_article_db = "PMC"
+    research.save()
 
     if research.current_article_db == "PMC":
 

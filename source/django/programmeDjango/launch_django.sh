@@ -81,7 +81,7 @@ fi
 
 # we replace the nginx file and if SSL is active, we rewrite it
 
-if [ $is_ssl == True ]
+if [ $is_ssl == True ];
 then
 	cp nginx_config/django_nginx_ssl.conf /etc/nginx/sites-available/django_nginx.conf	
 	sed -i "s/x_fullchain.pem_x/${ssl_full_chain}/g" /etc/nginx/sites-available/django_nginx.conf

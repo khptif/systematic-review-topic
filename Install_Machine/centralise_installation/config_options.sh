@@ -30,3 +30,10 @@ echo NUMBER_ARTICLE_BY_PAGE=${NUMBER_ARTICLE_BY_PAGE} >> $env_file
 # we fill the variable that check if installation is centralised or not
 echo is_decentralised=False >> $env_file
 echo SSL=${SSL} >> $env_file
+echo max_thread=${max_thread} >> $env_file
+
+echo ssl_full_chain=${ssl_full_chain}  >> $env_file
+echo ssl_privkey=${ssl_privkey} >> $env_file
+echo ssl_option=${ssl_option} >> $env_file
+echo dhparam=${dhparam} >> $env_file
+
