@@ -234,7 +234,7 @@ def get_article_parallel(research,ID_list):
                 author = Author.objects.create(last_name = author[0],first_name = author[1])
                 Article_Author.objects.create(article=article,author=author)
 
-        Article_Job.objects.filter(research=research,type="id",job=str(id))
+        Article_Job.objects.create(research=research,type="id",job=str(id))
 
 def get_article(search,research,begin,end,number_threads=1):
 
