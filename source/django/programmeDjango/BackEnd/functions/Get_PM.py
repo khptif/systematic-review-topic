@@ -182,10 +182,16 @@ def get_article_parallel(research,ID_list):
             continue
 
         # we extract metadata
-        metadata = extract_metadata(id)
+        metadata = ''
+        try :
+            metadata = extract_metadata(id)
+        except:
+            metadata = ''
         if not metadata:
             continue
-        #we check if we have this article with the doi
+        #we check if we have this article with the doi and doi is not empty
+        if not metadata["doi"]:
+            continue
         article = Article.objects.filter(doi=metadata["doi"])
         if article.exists():
             article = article[0]
