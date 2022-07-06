@@ -106,12 +106,15 @@ def extract_metadata(id):
 
     # we extract de doi
     doi = ''
-    doi_parent = xml_doc.find("article").find("front").find("article-meta")
+    try:
+        doi_parent = xml_doc.find("article").find("front").find("article-meta")
 
-    for child in doi_parent:
-        if child.tag == "article-id" and child.attrib['pub-id-type'] == "doi":
-            doi = child.text
-            break
+        for child in doi_parent:
+            if child.tag == "article-id" and child.attrib['pub-id-type'] == "doi":
+                doi = child.text
+                break
+    except:
+        doi = ''
     
     # we extract the date of the publication
     date = ''
