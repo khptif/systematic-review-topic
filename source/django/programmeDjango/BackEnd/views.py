@@ -3,7 +3,18 @@ from django.http import HttpResponse
 from BackEnd.functions.view_functions import *
 
 def restart_research(request):
-    relaunch_if_fault()
+    # we check if we have the Get parameter.
+    if not "research_id" in request.GET:
+        return HttpResponse("No id parameter",status=400)
+
+    # we check if the research exists 
+    id = request.GET["research_id"]
+    research = Research.objects.filter(id=int(id))
+    if not research.exists():
+        return HttpResponse("Research doesn't exists",status=400)
+    research = research[0]
+
+    relaunch_if_fault(research.id)
     return HttpResponse("",status=200)
 
 def research_create(request):

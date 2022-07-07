@@ -197,16 +197,19 @@ def page_user(request):
         if "submit" in request.POST:
             if request.POST["submit"] == "delete_all":
                 # we delete all research 
-                Research.objects.all().delete() 
+                #Research.objects.all().delete() 
+                pass
             
-            elif request.POST["submit"] == "restart_fault":
+            elif request.POST["submit"] == "restart":
                 #we restart all research with fault
                 from programmeDjango.settings import is_decentralized
+                id = request.POST[research_id]
+                research = Research.objects.get(id=id)
                 if is_decentralized:
                     from remote_functions import relaunch_if_fault_remote
-                    relaunch_if_fault_remote()
+                    relaunch_if_fault_remote(research)
                 else:
-                    relaunch_if_fault()
+                    relaunch_if_fault(research.id)
 
             else:    
                 research_id = request.POST['research_id']

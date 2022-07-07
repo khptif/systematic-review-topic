@@ -68,17 +68,17 @@ def check_research_remote(research):
         return False
     
     if response_http.status_code < 400:
-        is_alive = bool(response_http.content)
-        return is_alive
-    else:
-        return False
+        if response_http.content == 'False':
+            return False
+        else:
+            return True
 
-def relaunch_if_fault_remote():
+def relaunch_if_fault_remote(research):
     from programmeDjango.settings import BackEnd_host_adresse as adresse
     from programmeDjango.settings import BackEnd_host_port as port
 
     response_http = ''
-    path = f"restart_research"
+    path = f"restart_research?research_id={research.id}"
 
     try:
         from programmeDjango.settings import BackEnd_SSL as is_ssl

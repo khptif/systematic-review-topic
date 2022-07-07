@@ -457,40 +457,41 @@ def launch_process(research):
     list_thread[research_id].start()
 
     return True
+
+def relaunch_if_fault(research_id):
+    research_list = Research.objects.filter(is_running = True,id=research_id)
+    if not research_list.exists():
+        return False
+    
+    research = research_list[0]
+    #we check if the research has his own entry
+    if not research.id in list_thread:
+        list_thread[research.id] = Thread(target=back_process,args=[research])
+        list_thread[research.id].setDaemon(True)
+        list_thread[research.id].start()
+        return True
+
+    t = list_thread[research.id]
+    if not t.is_alive():
+        # if the thread is not alive, we recreate thread
+        list_thread[research.id] = Thread(target=back_process,args=[research])
+        list_thread[research.id].setDaemon(True)
+        list_thread[research.id].start()
+
+    return True
+
     
 
-def relaunch_if_fault():
+def relaunch_if_fault_all():
     """ check if there is a research who is running but there is no more thread alive."""
 
    
     research_list = Research.objects.filter(is_running = True)
 
     for research in research_list:
-
-        #we check if the research has his own entry
-        if not research.id in list_thread:
-            list_thread[research.id] = Thread(target=back_process,args=[research])
-            list_thread[research.id].setDaemon(True)
-            list_thread[research.id].start()
-            continue
-
-        t = list_thread[research.id]
-        if not t.is_alive():
-            # if the thread is not alive, we check if the the research is already finished
-            r = Research.objects.filter(id=research.id)
-            # if the research exist no more, it means it was deleted and it's ok that the thread is not running
-            # and we pass to next iteration
-            if not r.exists():
-                continue
-            else:
-                r = r[0]
-                if r.is_running:
-                    #if the research is_running is true, we recreate a new thread
-                    list_thread[research.id] = Thread(target=back_process,args=[research])
-                    list_thread[research.id].setDaemon(True)
-                    list_thread[research.id].start()
-                else:
-                    continue
+        relaunch_if_fault(research.id)
+    
+    return True
             
             
 def update_research():
