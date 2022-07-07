@@ -201,9 +201,9 @@ def page_user(request):
                 pass
             
             elif request.POST["submit"] == "restart":
-                #we restart all research with fault
+                #we restart research with fault
                 from programmeDjango.settings import is_decentralized
-                id = request.POST[research_id]
+                id = request.POST["research_id"]
                 research = Research.objects.get(id=id)
                 if is_decentralized:
                     from remote_functions import relaunch_if_fault_remote
