@@ -49,7 +49,7 @@ then
 	echo DataBase_host_adresse=\"${DataBase_host_adresse}\" >> $settings_path
 	echo DataBase_host_port=${DataBase_host_port} >> $settings_path
 
-	# we give variable if i a module us ssl
+	# we give variable if a module use ssl connection
 	echo UI_Front_SSL=${UI_Front_SSL} >> $settings_path
 	echo BackEnd_SSL=${BackEnd_SSL} >> $settings_path
 	echo DataBase_SSL=${DataBase_SSL} >> $settings_path
@@ -98,7 +98,7 @@ ln -s /etc/nginx/sites-available/django_nginx.conf /etc/nginx/sites-enabled/djan
 
 # start nginx
 /etc/init.d/nginx start
-cat /var/log/nginx/error.log
+
 #install all modules required
 
 python3 -m pip install -r requirements.txt

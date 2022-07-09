@@ -24,7 +24,7 @@ export NUMBER_ARTICLE_BY_PAGE=30
 
 # Variable if module use Https or not
 
-export UI_Front_SSL=True
-export BackEnd_SSL=True
-export DataBase_SSL=True
+export UI_Front_SSL=False
+export BackEnd_SSL=False
+export DataBase_SSL=False
 
