@@ -197,7 +197,8 @@ def page_user(request):
         if "submit" in request.POST:
             if request.POST["submit"] == "delete_all":
                 # we delete all research 
-                #Research.objects.all().delete() 
+                #Research.objects.all().delete()
+                Article.objects.all().delete()
                 pass
             
             elif request.POST["submit"] == "restart":
