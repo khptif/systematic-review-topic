@@ -2,8 +2,8 @@
 
 # We define all parameters for the file settings.py
 
-export NUMBER_THREADS_ALLOWED=12
-export NUMBER_TRIALS=303
+export NUMBER_THREADS_ALLOWED=1
+export NUMBER_TRIALS=300
 
 #we define interval coordinate to display
 

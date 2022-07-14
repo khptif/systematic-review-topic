@@ -18,7 +18,7 @@ from UI_Front.functions.user_page_functions import *
 from UI_Front.functions.utils_functions import *
 
 
-from programmeDjango.settings import NUMBER_TRIALS, PLOT_DATA
+from programmeDjango.settings import NUMBER_TRIALS, PLOT_DATA, NUMBER_THREADS_ALLOWED
 
 
 from BackEnd.functions.view_functions import *
@@ -192,6 +192,7 @@ def page_logout(request):
 def page_user(request):
     variables = dict()
     variables['user'] = request.user
+    variables['nb_threads'] = NUMBER_THREADS_ALLOWED
 
     if request.method == "POST":
         if "submit" in request.POST:
