@@ -15,6 +15,10 @@ If you want an ssl certication for one of your machine.
 - In ./parametres_machine.sh put to True the option *_SSL. 
   Each machine has this parameters.
 - In ./parametres_machines.sh, for the parameters *_host_adresse, give the domain name and not the ip adresse.
+- During deployment, you have to give the local container port *_docker_local_port 443. If no, 8000.
+
+The nginx config file of the container are in projet/source/django/nginx_config/. One file for ssl and
+one for no ssl.
 
 ## Set Parameters ##
 

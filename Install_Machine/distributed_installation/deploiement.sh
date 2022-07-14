@@ -69,6 +69,7 @@ docker_container_name=${UI_Front_docker_container_name}
 adresse=${user_name}@${host_adresse}
 host_port=${UI_Front_host_port}
 docker_image_name=${UI_Front_docker_image_name}
+docker_local_port=${UI_Front_docker_local_port}
 
 #we connect to host
 connect_ssh="ssh -i ${private_key_path} ${adresse}"
@@ -99,6 +100,7 @@ docker_container_name=${BackEnd_docker_container_name}
 adresse=${user_name}@${host_adresse}
 host_port=${BackEnd_host_port}
 docker_image_name=${BackEnd_docker_image_name}
+docker_local_port=${BackEnd_docker_local_port}
 
 #we connect to host
 connect_ssh="ssh -i ${private_key_path} ${adresse}"
@@ -129,6 +131,7 @@ docker_container_name=${DataBase_docker_container_name}
 adresse=${user_name}@${host_adresse}
 host_port=${DataBase_host_port}
 docker_image_name=${DataBase_docker_image_name}
+docker_local_port=${DataBase_docker_local_port}
 
 #we connect to host
 connect_ssh="ssh -i ${private_key_path} ${adresse}"
