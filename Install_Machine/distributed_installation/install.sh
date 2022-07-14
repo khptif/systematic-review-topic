@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 
 # we create the parameters
 
@@ -7,7 +7,9 @@
 . ./parametres_machine.sh
 . ./parametres_BD.sh
 
-
+echo
+echo " ****** UI-FRONT MACHINE INSTALLATION ****** "
+echo
 
 # we configure the UI_Front host
 # we configure the command
@@ -21,6 +23,13 @@ connect_ssh="sudo ssh -i ${private_key_path} ${adresse}"
 # we send the script of docker installation and install docker in host machine
 $connect_scp ./docker_install.sh ${adresse}:/home/${user_name}/docker_install.sh
 $connect_ssh "./docker_install.sh ; "
+
+# we get ssl certificate if ssl is True
+if [ $UI_Front_SSL == True ]
+then
+$connect_scp ./install_SSL.sh ${adresse}:/home/${user_name}/install_SSL.sh
+$connect_ssh "./install_SSL.sh $host_adresse $Email_SSL"
+fi
 
 # we set some parameter in the option.sh and send to the host
 . ./config_options.sh
@@ -37,6 +46,9 @@ sudo scp -i ${private_key_path} ./${env_file} ${user_name}@${host_adresse}:/home
 sudo scp -i ${private_key_path} ../../source/django/fichiers_settings/UI_front_urls.py ${user_name}@${host_adresse}:/home/${user_name}/docker_volume/UI_front_urls.py
 
 
+echo
+echo " ****** BACKEND MACHINE INSTALLATION ****** "
+echo
 
 # we configure the BackEnd host
 # we configure the command
@@ -44,12 +56,22 @@ user_name=${BackEnd_user_name}
 host_adresse=${BackEnd_host_adresse}
 private_key_path=${BackEnd_private_key_path}
 adresse=${user_name}@${host_adresse}
+# to remote copy file
 connect_scp="sudo scp -i ${private_key_path}"
+# to execute remote file
 connect_ssh="sudo ssh -i ${private_key_path} ${adresse}"
 
 # we send the script of docker installation and install docker in host machine
 $connect_scp ./docker_install.sh ${adresse}:/home/${user_name}/docker_install.sh
 $connect_ssh "./docker_install.sh ; "
+
+# we get ssl certificate if ssl is True
+if [ $BackEnd_SSL == True ]
+then
+$connect_scp ./install_SSL.sh ${adresse}:/home/${user_name}/install_SSL.sh
+$connect_ssh "./install_SSL.sh $host_adresse $Email_SSL"
+fi
+
 
 # we set some parameter in the option.sh and send to the host
 . ./config_options.sh
@@ -66,6 +88,10 @@ sudo scp -i ${private_key_path} ./${env_file} ${user_name}@${host_adresse}:/home
 sudo scp -i ${private_key_path} ../../source/django/fichiers_settings/BackEnd_urls.py ${user_name}@${host_adresse}:/home/${user_name}/docker_volume/BackEnd_urls.py
 
 
+echo
+echo " ****** DATABASE MACHINE INSTALLATION ****** "
+echo
+
 
 # we configure the DataBase host
 # we configure the command
@@ -79,6 +105,13 @@ connect_ssh="sudo ssh -i ${private_key_path} ${adresse}"
 # we send the script of docker installation and install docker in host machine
 $connect_scp ./docker_install.sh ${adresse}:/home/${user_name}/docker_install.sh
 $connect_ssh "./docker_install.sh ; "
+
+# we get ssl certificate if ssl is True
+if [ $DataBase_SSL == True ]
+then
+$connect_scp ./install_SSL.sh ${adresse}:/home/${user_name}/install_SSL.sh
+$connect_ssh "./install_SSL.sh $host_adresse $Email_SSL"
+fi
 
 # we send script for installation of Postgresql database and install it
 $connect_scp ./sqlCommand.sh ${adresse}:/home/${user_name}/sqlCommand.sh

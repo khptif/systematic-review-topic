@@ -9,32 +9,12 @@ We have to give them hostname so we can configure certificat for Https access.
 
 ## Get SSL Certificate ##
 
-Each machine is on Ubuntu, has a public ip and domaine name. For each one we do:
+If you want an ssl certication for one of your machine.
 
--install nginx.
- -> sudo apt-get update
- -> sudo apt-get install nginx
- -> sudo systemctl start nginx
- 
--create the repertory in your home directory docker_volume. Don't need to associate it to a docker volume now. The script ./install.sh will do it. We create this directory now because we will put in the certificates file.
- -> mkdir docker_volume
-
--Now we can ask for a ssl certificate. We ask to certbot. It makes it automatically.
- -> sudo apt-get install snapd
- -> sudo snap install core; sudo snap refresh core
- -> sudo apt-get remove certbot
- -> sudo snap install --classic certbot
- -> sudo ln -s /snap/bin/certbot /usr/bin/certbot
- -> sudo certbot --nginx
--We give an adresse email and the domaine name of the machine. certbot define the nginx parameters and download certificate.
-
--We copy the certificates file in docker_volume. It lets the container to use the https protocol.
- -> cp /etc/letsencrypt/live/"the domain name of the machin"/fullchain.pem docker_volume/fullchain.pem
- -> cp /etc/letsencrypt/live/"the domain name of the machin"/privkey.pem docker_volume/privkey.pem
- -> cp /etc/letsencrypt/options-ssl-nginx.conf docker_volume/options-ssl-nginx.conf
- -> cp /etc/letsencrypt/ssl-dhparams.pem docker_volume/ssl-dhparams.pem
- 
-Now we can set the parameters.
+- Give a domaine name to your machine.
+- In ./parametres_machine.sh put to True the option *_SSL. 
+  Each machine has this parameters.
+- In ./parametres_machines.sh, for the parameters *_host_adresse, give the domain name and not the ip adresse.
 
 ## Set Parameters ##
 

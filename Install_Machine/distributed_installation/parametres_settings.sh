@@ -2,8 +2,8 @@
 
 # We define all parameters for the file settings.py
 
-export NUMBER_THREADS_ALLOWED=4
-export NUMBER_TRIALS=300
+export NUMBER_THREADS_ALLOWED=12
+export NUMBER_TRIALS=303
 
 #we define interval coordinate to display
 
@@ -22,9 +22,5 @@ export UPDATE_INTERVAL=2700000
 
 export NUMBER_ARTICLE_BY_PAGE=30
 
-# Variable if module use Https or not
 
-export UI_Front_SSL=False
-export BackEnd_SSL=False
-export DataBase_SSL=False
 
