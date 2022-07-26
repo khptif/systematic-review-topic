@@ -133,12 +133,12 @@ class Objective(object):
 
         tf_idf = self.tf_idf
         
-        pacmap_n_dims = trial.suggest_int("pacmap_n_dims", 2, 400)
-        pacmap_n_neighbors = trial.suggest_int("pacmap_n_neighbors", 4, 400)
+        pacmap_n_dims = trial.suggest_int("pacmap_n_dims", 2, min(400, self.matrix.shape[0]))
+        pacmap_n_neighbors = trial.suggest_int("pacmap_n_neighbors", 4, min(399, self.matrix.shape[0] - 1))
        
 
-        hdbscan_min_cluster_size = trial.suggest_int("hdbscan_min_cluster_size", 2, 400)
-        hdbscan_min_samples = trial.suggest_int("hdbscan_min_samples", 2, 400)
+        hdbscan_min_cluster_size = trial.suggest_int("hdbscan_min_cluster_size", 2, min(400, self.matrix.shape[0]))
+        hdbscan_min_samples = trial.suggest_int("hdbscan_min_samples", 4, min(399, self.matrix.shape[0] - 1))
         hdbscan_cluster_selection_method = trial.suggest_categorical(
             "hdbscan_cluster_selection_method", ["eom", "leaf"]
         )
@@ -171,7 +171,7 @@ class Objective(object):
         return return_data 
 
 
-def optimization(research,tf_idf, name, n_trials=100, n_threads = 1):
+def optimization(research, tf_idf, name, n_trials=100, n_threads = 1):
 
     from programmeDjango.settings import DATABASES as db
 
