@@ -6,6 +6,13 @@
 . ./parametres_deploiement.sh
 . ./parametres_machine.sh
 
+# we install docker in local
+./docker_install.sh
+
+# we lo in in our docker hub
+
+docker login
+
 # we download git repository
 git clone ${repository_url}
 
