@@ -6,7 +6,10 @@ import requests
 import numpy as np
 #Time for waiting
 import time
-from BackEnd.functions.filter_article import split_search_term
+import DataBase.functions.PDF_download as pdf
+from DataBase.functions.Remove_references import remove_references
+from DataBase.functions.filter_article import split_search_term
+
 #unidecoed is for removing accents
 import unidecode as UN
 import datetime
@@ -14,12 +17,8 @@ import datetime
 from DataBase.models import *
 from BackEnd.models import *
 
-#Downloading PDF
-import BackEnd.functions.PDF_download as pdf
-
 from threading import Thread,Lock
 
-from BackEnd.functions.Remove_references import remove_references
 from programmeDjango.settings import ARTICLE_DATA
 
 paperity_mutex = Lock()

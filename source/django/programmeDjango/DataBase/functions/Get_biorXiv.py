@@ -3,12 +3,11 @@ from urllib.request import urlopen
 import requests
 from bs4 import BeautifulSoup
 
-import BackEnd.functions.PDF_download as pdf
-from BackEnd.functions.Remove_references import remove_references
-from BackEnd.functions.filter_article import split_search_term
+import DataBase.functions.PDF_download as pdf
+from DataBase.functions.Remove_references import remove_references
+from DataBase.functions.filter_article import split_search_term
 
 from DataBase.models import *
-from BackEnd.models import *
 
 from threading import Thread
 

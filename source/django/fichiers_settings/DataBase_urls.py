@@ -26,4 +26,6 @@ urlpatterns = [
     path('get_final',get_final),
     path('get_plot',get_plot),
     path('get_plot_string',get_plot_html_string),
+    path('fetch',fetch_article),
+    path('get_max',get_max),
 ]

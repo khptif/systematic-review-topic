@@ -8,7 +8,7 @@ import random
 
 from DataBase.models import *
 from BackEnd.models import *
-from BackEnd.functions.view_functions import max_article
+from DataBase.functions.view_functions import max_article
 from remote_functions import *
 
 register = template.Library()

@@ -1,12 +1,46 @@
 from threading import Thread
 from django.http import HttpResponse
 from django.shortcuts import render
-from matplotlib import use 
+from matplotlib import use
+from BackEnd.models import Number_trial 
 from BackEnd.views import research_create
 from DataBase.functions.view_functions import *
-import BackEnd.functions.PDF_download as pdf
+import DataBase.functions.PDF_download as pdf
 from BackEnd.functions.scatter_with_hover import scatter_with_hover
 import json
+
+def get_max(request):
+    # we check if we have all parameters
+    if not "search_term" in request.GET:
+        return HttpResponse("No search",status=400)
+
+    if not "date_begin" in request.GET or not "date_end" in request.GET:
+        return HttpResponse("No dates",status=400)
+    
+    search_term = request.GET["search_term"]
+    date_begin = request.GET["date_begin"]
+    date_begin =  datetime.datetime.strptime(date_begin,"%Y/%m/%d").date()
+    date_end = request.GET["date_end"]
+    date_end = datetime.datetime.strptime(date_end,"%Y/%m/%d").date()
+
+    number_article = max_article(search_term,date_begin,date_end)
+
+    return HttpResponse(str(number_article),status=200)
+
+def fetch_article(request):
+    # we check if we have the research id
+    if not "research_id" in request.GET:
+        return HttpResponse("No research id",status=400)
+    
+    id = int(request.GET["research_id"])
+    # we check if the research exists
+    research = Research.objects.filter(id=id)
+    if not research.exists():
+        return HttpResponse("Research doesn't exist",status=400)
+    from programmeDjango.settings import NUMBER_TRIALS
+    make_research(research.search,research,research.year_begin,research.year_end,NUMBER_TRIALS)
+    
+    return HttpResponse("",status=200)
 
 def download_article(request):
     # we check if we have the id of the article
@@ -24,7 +58,6 @@ def download_article(request):
 
     # we create a thread to download the article and return the http message
     def download(article):
-        import BackEnd.functions.PDF_download as pdf
         if pdf.download_from_URL(article,True):
             article.is_file_get = True
             article.save()

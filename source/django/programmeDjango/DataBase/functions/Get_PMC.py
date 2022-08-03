@@ -6,18 +6,18 @@ from lxml import etree as ET
 import pandas as pd
 #numpy is used for better arrays
 import numpy as np
-from BackEnd.models import *
 #unidecoed is for removing accents
 import unidecode as UN
-import BackEnd.functions.PDF_download as pdf
-from BackEnd.functions.Remove_references import *
+import DataBase.functions.PDF_download as pdf
+from DataBase.functions.Remove_references import remove_references
+from DataBase.functions.filter_article import split_search_term
 
 from threading import Thread
 
 from DataBase.models import *
-from BackEnd.functions.filter_article import split_search_term
+from BackEnd.models import *
 from programmeDjango.settings import ARTICLE_DATA
-db = 'pubmed'
+db = 'pmc'
 
 def get_search_term(search):
     """we translate the search to a readable string search for the api"""
@@ -55,6 +55,7 @@ def get_max_article(search,begin,end):
 
 def get_ID(search,begin,end):
     """ return a list of id of article"""
+
     year_begin = str(begin.year)
     month_begin = str(begin.month)
     day_begin = str(begin.day)
@@ -91,7 +92,7 @@ def extract_metadata(id):
     """ extract metadata from the id input and return a dictionnary with these data"""
     #Gets the xml with all meta-data
     api_fetch = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?'
-    fetch = api_fetch + 'db=' + db + '&id=' + str(id) +"&format=xml"
+    fetch = api_fetch + 'db=' + db + '&id=' + str(id) 
     
     try:
         xml_doc = ET.parse(urlopen(fetch)).getroot()
@@ -99,13 +100,22 @@ def extract_metadata(id):
         return False
 
 
+    #Removes all unnecessary data (Tables, captions and figure related tags)
+    ET.strip_elements(xml_doc, 'xref','table-wrap','fig', with_tail=False)
+    #Extracts the date from the XML, always available
+
     # we extract de doi
     doi = ''
     try:
-        doi = xml_doc.find("Article").find("ELocationID").text
-    except:
-        pass
+        doi_parent = xml_doc.find("article").find("front").find("article-meta")
 
+        for child in doi_parent:
+            if child.tag == "article-id" and child.attrib['pub-id-type'] == "doi":
+                doi = child.text
+                break
+    except:
+        doi = ''
+    
     # we extract the date of the publication
     date = ''
     year = 0
@@ -113,22 +123,22 @@ def extract_metadata(id):
     day = 0
 
     try:
-        for tag in xml_doc.findall('.//ArticleDate/Year'):
+        for tag in xml_doc.iter('year'):
             year = int(tag.text)
             break
-        for tag in xml_doc.findall('.//ArticleDate/Month'):
+        for tag in xml_doc.iter('month'):
             month = int(tag.text)
             break
-        for tag in xml_doc.findall('.//ArticleDate/Day'):
+        for tag in xml_doc.iter('day'):
             day = int(tag.text)
         date = datetime.date(year,month,day)
     except:
-        date = datetime.date(1800,1,1)
+        date = datetime.date(1900,1,1)
     
     #Extracts the title of the paper, always available
     title = ''
-    for tag in xml_doc.findall('.//Article/ArticleTitle'):
-        title = tag.text
+    for tag in xml_doc.iter('title-group'):
+        title = tag.find('article-title').text
     if title is None:
         print(" title none: " + fetch)
         title = ''
@@ -137,27 +147,28 @@ def extract_metadata(id):
     # we return a list in the format (last name, first name)
 
     author = []
-    for tag in xml_doc.findall('.//Author'):
-
-        last_name=''
-        first_name=''
-        try:
-            last_name = tag.find('LastName').text
-        except AttributeError:
-            pass
-        try:
-            first_name = tag.find('ForeName').text
-        except AttributeError:
-            pass
-        except TypeError:
-            pass
-        author.append((last_name,first_name))
+    for tags in xml_doc.iter('contrib'):
+        for tag in tags.iter('name'):
+            last_name=''
+            first_name=''
+            try:
+                last_name = tag.find('surname').text
+            except AttributeError:
+                pass
+            #Sometimes only the surname is given, nit the names
+            try:
+                first_name = tag.find('given-names').text
+            except AttributeError:
+                pass
+            except TypeError:
+                pass
+            author.append((last_name,first_name))
 
     
     #Extracts the full abstract (itertext takes all text between the abstract tags, so we
     #   remove all \n characters and all superfluous spaces), not always available
     abstract = ''
-    for tag in xml_doc.findall('.//AbstractText'):
+    for tag in xml_doc.iter('abstract'):
         a = "".join(tag.itertext()).replace('\n','')
         if a != '' and a != None:
             abstract += UN.unidecode(" ".join(a.split())) + " "
@@ -177,10 +188,10 @@ def get_article_parallel(research,ID_list):
     """ we get write the article in our database """
 
     for id in ID_list:
-
+        
         if Article_Job.objects.filter(research=research,type="id",job=str(id)).exists():
             continue
-
+        # we extract metadata
         # we extract metadata
         metadata = ''
         try :
@@ -212,7 +223,7 @@ def get_article_parallel(research,ID_list):
             is_file_get = True
         except:
             full_text = ""
-
+        
         article.full_text=full_text.replace("\x00", "\uFFFD")
         article.is_file_get=is_file_get
         article.save()
@@ -232,7 +243,7 @@ def get_article_parallel(research,ID_list):
             else:
                 author = Author.objects.create(last_name = author[0],first_name = author[1])
                 Article_Author.objects.create(article=article,author=author)
-        
+
         Article_Job.objects.create(research=research,type="id",job=str(id))
 
 def get_article(search,research,begin,end,number_threads=1):

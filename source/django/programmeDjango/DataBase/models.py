@@ -73,3 +73,12 @@ class ThreadDaemon(models.Model):
     name = models.CharField(max_length=128)
     is_running = models.BooleanField(default=False)
     check_still_running = models.IntegerField(default=0)
+
+class Article_Step(models.Model):
+    research = models.ForeignKey(Research,on_delete=models.CASCADE)
+    step = models.TextField()
+
+class Article_Job(models.Model):
+    research = models.ForeignKey(Research,on_delete=models.CASCADE)
+    job = models.TextField()
+    type = models.TextField()

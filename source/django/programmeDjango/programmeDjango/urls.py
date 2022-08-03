@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path , include
+from DataBase.views import fetch_article, get_max
 from UI_Front.views import *
 from BackEnd.views import *
 from django.views.generic import RedirectView
@@ -29,4 +30,6 @@ urlpatterns = [
     path('select',page_select),
     path('table_choice',page_table_choice),
     path('plot',render_plot),
+    path('fetch',fetch_article),
+    path('get_max',get_max),
 ]

@@ -6,6 +6,12 @@
 . ./parametres_deploiement.sh
 . ./parametres_machine.sh
 
+# we install docker
+sudo ./docker_install.sh
+
+# we connect to Docker Hub. We have to give the username and password
+docker login
+
 # we download git repository
 git clone ${repository_url}
 
@@ -25,18 +31,18 @@ then
 	cp ./launch_django.sh programmeDjango/launch_django.sh
 fi
 
-if [ $BackEnd_deploy == True ]
-then
+#if [ $BackEnd_deploy == True ]
+#then
 	# we save this file before change it
-	cp programmeDjango/launch_django.sh ./launch_django.sh
-	sed -i "s/x_Module_x/BackEnd/g" programmeDjango/launch_django.sh
+#	cp programmeDjango/launch_django.sh ./launch_django.sh
+#	sed -i "s/x_Module_x/BackEnd/g" programmeDjango/launch_django.sh
 	# we build image and push to DockerHub
-	docker build -t ${BackEnd_docker_image_name} .
-	docker push ${BackEnd_docker_image_name}
-	docker image rm ${BackEnd_docker_image_name}
+#	docker build -t ${BackEnd_docker_image_name} .
+#	docker push ${BackEnd_docker_image_name}
+#	docker image rm ${BackEnd_docker_image_name}
 	# we replace the original file
-	cp ./launch_django.sh programmeDjango/launch_django.sh
-fi
+#	cp ./launch_django.sh programmeDjango/launch_django.sh
+#fi
 
 if [ $DataBase_deploy == True ]
 then
@@ -88,34 +94,34 @@ fi
 
 
 
-if [ $BackEnd_deploy == True ]
-then
+#if [ $BackEnd_deploy == True ]
+#then
 #we start container in BackEnd
 
 #we define variables
-user_name=${BackEnd_user_name}
-host_adresse=${BackEnd_host_adresse}
-private_key_path=${BackEnd_private_key_path}
-docker_container_name=${BackEnd_docker_container_name}
-adresse=${user_name}@${host_adresse}
-host_port=${BackEnd_host_port}
-docker_image_name=${BackEnd_docker_image_name}
-docker_local_port=${BackEnd_docker_local_port}
+#user_name=${BackEnd_user_name}
+#host_adresse=${BackEnd_host_adresse}
+#private_key_path=${BackEnd_private_key_path}
+#docker_container_name=${BackEnd_docker_container_name}
+#adresse=${user_name}@${host_adresse}
+#host_port=${BackEnd_host_port}
+#docker_image_name=${BackEnd_docker_image_name}
+#docker_local_port=${BackEnd_docker_local_port}
 
 #we connect to host
-connect_ssh="ssh -i ${private_key_path} ${adresse}"
+#connect_ssh="ssh -i ${private_key_path} ${adresse}"
 
 #we stop and rm the current container
-$connect_ssh "sudo docker container stop ${docker_container_name}"
-$connect_ssh "sudo docker container rm ${docker_container_name}"
+#$connect_ssh "sudo docker container stop ${docker_container_name}"
+#$connect_ssh "sudo docker container rm ${docker_container_name}"
 
 #we remove the local docker image
-$connect_ssh "sudo docker image rm ${docker_image_name}"
+#$connect_ssh "sudo docker image rm ${docker_image_name}"
 
 #we start the new container
-$connect_ssh "sudo docker container run --mount source=docker_volume,target=/programmeDjango/docker_volume --name=${docker_container_name} -d -p ${host_port}:${docker_local_port} ${docker_image_name}
-"
-fi
+#$connect_ssh "sudo docker container run --mount source=docker_volume,target=/programmeDjango/docker_volume --name=${docker_container_name} -d -p ${host_port}:${docker_local_port} ${docker_image_name}
+#"
+#fi
 
 
 

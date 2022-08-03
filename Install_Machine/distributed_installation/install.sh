@@ -46,46 +46,46 @@ sudo scp -i ${private_key_path} ./${env_file} ${user_name}@${host_adresse}:/home
 sudo scp -i ${private_key_path} ../../source/django/fichiers_settings/UI_front_urls.py ${user_name}@${host_adresse}:/home/${user_name}/docker_volume/UI_front_urls.py
 
 
-echo
-echo " ****** BACKEND MACHINE INSTALLATION ****** "
-echo
+#echo
+#echo " ****** BACKEND MACHINE INSTALLATION ****** "
+#echo
 
 # we configure the BackEnd host
 # we configure the command
-user_name=${BackEnd_user_name}
-host_adresse=${BackEnd_host_adresse}
-private_key_path=${BackEnd_private_key_path}
-adresse=${user_name}@${host_adresse}
+#user_name=${BackEnd_user_name}
+#host_adresse=${BackEnd_host_adresse}
+#private_key_path=${BackEnd_private_key_path}
+#adresse=${user_name}@${host_adresse}
 # to remote copy file
-connect_scp="sudo scp -i ${private_key_path}"
+#connect_scp="sudo scp -i ${private_key_path}"
 # to execute remote file
-connect_ssh="sudo ssh -i ${private_key_path} ${adresse}"
+#connect_ssh="sudo ssh -i ${private_key_path} ${adresse}"
 
 # we send the script of docker installation and install docker in host machine
-$connect_scp ./docker_install.sh ${adresse}:/home/${user_name}/docker_install.sh
-$connect_ssh "./docker_install.sh ; "
+#$connect_scp ./docker_install.sh ${adresse}:/home/${user_name}/docker_install.sh
+#$connect_ssh "./docker_install.sh ; "
 
 # we get ssl certificate if ssl is True
-if [ $BackEnd_SSL == True ]
-then
-$connect_scp ./install_SSL.sh ${adresse}:/home/${user_name}/install_SSL.sh
-$connect_ssh "./install_SSL.sh $host_adresse $Email_SSL"
-fi
+#if [ $BackEnd_SSL == True ]
+#then
+#$connect_scp ./install_SSL.sh ${adresse}:/home/${user_name}/install_SSL.sh
+#$connect_ssh "./install_SSL.sh $host_adresse $Email_SSL"
+#fi
 
 
 # we set some parameter in the option.sh and send to the host
-. ./config_options.sh
-echo ssl_full_chain=${BackEnd_ssl_full_chain} >> ./${env_file}
-echo ssl_privkey=${BackEnd_ssl_privkey} >> ./${env_file}
-echo ssl_option=${BackEnd_ssl_option} >> ./${env_file}
-echo dhparam=${BackEnd_dhparam} >> ./${env_file}
-echo is_ssl=${BackEnd_SSL} >> ./${env_file}
-echo hostname=${BackEnd_host_adresse} >> ./${env_file}
-echo max_thread=${BackEnd_max_thread} >> ./${env_file}
+#. ./config_options.sh
+#echo ssl_full_chain=${BackEnd_ssl_full_chain} >> ./${env_file}
+#echo ssl_privkey=${BackEnd_ssl_privkey} >> ./${env_file}
+#echo ssl_option=${BackEnd_ssl_option} >> ./${env_file}
+#echo dhparam=${BackEnd_dhparam} >> ./${env_file}
+#echo is_ssl=${BackEnd_SSL} >> ./${env_file}
+#echo hostname=${BackEnd_host_adresse} >> ./${env_file}
+#echo max_thread=${BackEnd_max_thread} >> ./${env_file}
 
-sudo scp -i ${private_key_path} ./${env_file} ${user_name}@${host_adresse}:/home/${user_name}/docker_volume/BackEnd_options.sh
+#sudo scp -i ${private_key_path} ./${env_file} ${user_name}@${host_adresse}:/home/${user_name}/docker_volume/BackEnd_options.sh
 # we send the urls.py file
-sudo scp -i ${private_key_path} ../../source/django/fichiers_settings/BackEnd_urls.py ${user_name}@${host_adresse}:/home/${user_name}/docker_volume/BackEnd_urls.py
+#sudo scp -i ${private_key_path} ../../source/django/fichiers_settings/BackEnd_urls.py ${user_name}@${host_adresse}:/home/${user_name}/docker_volume/BackEnd_urls.py
 
 
 echo

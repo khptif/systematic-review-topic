@@ -6,13 +6,13 @@ from lxml import etree as ET
 
 #numpy is used for better arrays
 import numpy as np
-from BackEnd.models import Article_Job, Article_Step
+from DataBase.models import Article_Job, Article_Step
 #unidecoed is for removing accents
 import unidecode as UN
 
-import BackEnd.functions.PDF_download as pdf
-from BackEnd.functions.Remove_references import remove_references
-from BackEnd.functions.filter_article import split_search_term
+import DataBase.functions.PDF_download as pdf
+from DataBase.functions.Remove_references import remove_references
+from DataBase.functions.filter_article import split_search_term
 
 from DataBase.models import *
 

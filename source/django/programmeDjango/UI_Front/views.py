@@ -423,6 +423,9 @@ def page_table_choice(request):
     variables['number_Article_neighbour'] = TableChoice.objects.filter(user=user,research=research,is_initial=False,to_display=True,is_check=False).count()
     variables['number_Article_chosen'] = TableChoice.objects.filter(user=user,research=research,is_check=True).count()
 
+    #we give the k_neighbour
+    variables['number_neighbour'] = research.number_neighbour
+
     #we define the interval of article for the current page
     first_article = (current_page - 1)*NUMBER_ARTICLE_BY_PAGE
     last_article = current_page * NUMBER_ARTICLE_BY_PAGE

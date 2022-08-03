@@ -1,10 +1,5 @@
 
-from BackEnd.functions.Get_arXiV import get_article as arxiv,get_max_article as max_arxiv
-from BackEnd.functions.Get_biorXiv import get_article as biorxiv, get_max_article as max_biorxiv
-from BackEnd.functions.Get_medrXiv import get_article as medrxiv, get_max_article as max_medrxiv
-from BackEnd.functions.Get_PAP import get_article as pap, get_max_article as max_pap
-from BackEnd.functions.Get_PMC import get_article as pmc, get_max_article as max_pmc
-from BackEnd.functions.Get_PM import get_article as pm, get_max_article as max_pm
+
 from BackEnd.functions.scatter_with_hover import scatter_with_hover
 
 import BackEnd.functions.text_processing as text_processing
@@ -45,141 +40,6 @@ def print_research(output_text,research_id):
         print(output_text,file=a)
     finally:
         a.close()
-
-
-def max_article(search,begin,end):
-    article = 0
-    try:
-        article += max_arxiv(search)
-    except:
-        print("error arxiv",file=sys.stderr)
-        pass
-
-    try:
-        article += max_biorxiv(search,begin,end)
-    except:
-        print("error bio",file=sys.stderr)
-        pass
-     
-    try:
-        article += max_medrxiv(search,begin,end) 
-    except:
-        print("error med",file=sys.stderr)
-        pass
-
-    try:
-        #article += max_pap(search,begin,end) 
-        pass
-    except:
-        print("error pap",file=sys.stderr)
-        pass
-    
-    try:
-        article += max_pmc(search,begin,end) 
-    except:
-        print("error pmc",file=sys.stderr)
-        pass
-
-    try:
-        article += max_pm(search,begin,end) 
-    except:
-        print("error pubmed",file=sys.stderr)
-        pass
-
-    return  article
-
-def make_research (search,research,begin,end,thread=1):
-
-    arg = (search,research,begin,end,thread)
-    
-    print_research("Research thread created",research.id)
-
-    if research.current_article_db == '':
-        research.current_article_db = "arxiv"
-        research.save()
-        step_article = Article_Step.objects.create(research=research,step="")
-    else:
-        step_article = Article_Step.objects.get(research=research)
-    
-    if research.current_article_db == "arxiv":
-    
-        thread_arxiv = Thread(target=arxiv,args=arg)
-        thread_arxiv.start()
-        print_research("Research in arxiv begin",research.id)
-        thread_arxiv.join()
-        print_research("Research in arxiv end",research.id)
-        step_article.step = ""
-        step_article.save()
-        Article_Job.objects.filter(research = research).delete()
-        research.current_article_db = "biorxiv"
-        research.save()
-
-    
-    if research.current_article_db == "biorxiv":
-
-        thread_biorxiv = Thread(target=biorxiv,args=arg)
-        thread_biorxiv.start()
-        print_research("Research in biorxiv begin",research.id)
-        thread_biorxiv.join()
-        print_research("Research in biorxiv end",research.id)
-        step_article.step = ""
-        step_article.save()
-        Article_Job.objects.filter(research = research).delete()
-        research.current_article_db = "medrxiv"
-        research.save()
-
-    if research.current_article_db == "medrxiv":
-
-        thread_medrxiv = Thread(target=medrxiv,args=arg)
-        thread_medrxiv.start()
-        print_research("Research in medrxiv begin",research.id)
-        thread_medrxiv.join()
-        print_research("Research in medrxiv end",research.id)
-        step_article.step = ""
-        step_article.save()
-        Article_Job.objects.filter(research = research).delete()
-        research.current_article_db = "PMC"
-        research.save()
-        #research.current_article_db = "paperity"
-        #research.save()
-
-    # for now we pass the paperity database beacause it's too long
-    #if research.current_article_db == "paperity":
-    if False:
-
-        thread_pap = Thread(target=pap,args=arg)
-        thread_pap.start()
-        print_research("Research in paperity begin",research.id)
-        thread_pap.join()
-        print_research("Research in paperity end",research.id)
-        step_article.step = ""
-        step_article.save()
-        research.current_article_db = "PMC"
-        research.save()
-
-    if research.current_article_db == "PMC":
-
-        thread_pmc = Thread(target=pmc,args=arg)
-        thread_pmc.start()
-        print_research("Research in pmc begin",research.id)
-        thread_pmc.join()
-        print_research("Research in pmc end",research.id)
-        step_article.step = ""
-        step_article.save()
-        research.current_article_db = "PM"
-        research.save()
-
-    if research.current_article_db == "PM":
-        
-        thread_pm = Thread(target=pm,args=arg)
-        thread_pm.start()
-        print_research("Research in pm begin",research.id)
-        thread_pm.join()
-        print_research("Research in pm end",research.id)
-        step_article.step = ""
-        step_article.save()
-        research.current_article_db = ""
-        research.save()
 
 
 def preprocessing_parallel(research,articles,corpus):
@@ -333,7 +193,7 @@ def make_cluster(research,list_id,list_final,tf_idf,n_trials,n_threads):
     print_research("Optimization begin" ,research.id)
     # run optimization
     study = clustering.optimization(
-       research, tf_idf, "study_research_"+str(research.id), n_trials, n_threads
+       research, tf_idf, "study_research_"+str(research.id), n_trials
     )
     print_research("Optimization end" ,research.id)
     # extract best study

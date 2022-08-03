@@ -12,8 +12,8 @@ def http_request(adresse,port,path,is_ssl):
     return response_http
 
 def get_max_article_remote(search,date_begin,date_end):
-    from programmeDjango.settings import BackEnd_host_adresse as adresse
-    from programmeDjango.settings import BackEnd_host_port as port
+    from programmeDjango.settings import DataBase_host_adresse as adresse
+    from programmeDjango.settings import DataBase_host_port as port
     
     response_http = ''
     date_begin = date_begin.strftime("%Y/%m/%d")

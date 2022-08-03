@@ -17,6 +17,6 @@ export BackEnd_deploy=True
 export DataBase_deploy=True
 
 export UI_Front_docker_local_port=443
-export BackEnd_docker_local_port=8000
+export BackEnd_docker_local_port=443
 export DataBase_docker_local_port=443
 
