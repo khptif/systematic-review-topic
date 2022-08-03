@@ -1,6 +1,6 @@
 FROM ubuntu:20.04
 
-RUN apt-get -y update
+RUN apt-get -y update --fix-missing
 
 RUN apt-get -y install python3
 RUN apt-get -y install python3-pip
