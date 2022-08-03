@@ -41,7 +41,7 @@ def create_final_file(research,user):
         else:
             path_to_article = TEMPORARY_DATA + "/research_{id_research}_user_{id_user}_article_{id_article}.txt".format(id_research = research.id,id_user = user.id,id_article = article.id)
             #we create a little file .txt with information about the article
-            f = open(path_to_article,mode="w")
+            f = open(path_to_article,mode="w",encoding="UTF-8")
 
             try:
                 #we write the title, doi, url, author and abstract
